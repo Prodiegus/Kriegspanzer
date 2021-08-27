@@ -2,7 +2,6 @@
 
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ComboBox?>
-<?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
@@ -10,7 +9,7 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.shape.Line?>
 
-<AnchorPane id="AnchorPane" prefHeight="636.0" prefWidth="865.0" style="-fx-background-color: #c3c3c3;" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/16" fx:controller="IniciarJuegoViewController">
+<AnchorPane id="AnchorPane" prefHeight="618.0" prefWidth="871.0" style="-fx-background-color: #c3c3c3;" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/16" fx:controller="IniciarJuegoViewController">
     <children>
       <Pane layoutX="20.0" layoutY="20.0" prefHeight="465.0" prefWidth="826.0">
          <children>
@@ -24,7 +23,6 @@
       <Pane cache="true" layoutX="25.0" layoutY="505.0" prefHeight="117.0" prefWidth="826.0">
          <children>
               <Button fx:id="play" layoutX="756.0" layoutY="78.0" onAction="#handlePlay" text="Jugar" />
-              <Label fx:id="aviso" layoutX="506.0" layoutY="35.0" minHeight="16" minWidth="69" prefHeight="17.0" prefWidth="250.0" />
             <TextField fx:id="nJugador1" layoutX="25.0" layoutY="14.0" promptText="- Nombre jugador 1 - " />
             <TextField fx:id="nJugador2" layoutX="200.0" layoutY="14.0" promptText="- Nombre jugador 2 - " />
             <ComboBox fx:id="cJugador1" layoutX="24.0" layoutY="59.0" prefWidth="150.0" promptText="Color Tanque 1" />
@@ -32,8 +30,8 @@
          </children>
       </Pane>
       <Line endX="19.999984741210938" endY="485.0" startX="20.5" startY="19.5" strokeWidth="3.0" />
-      <Line endX="725.0" layoutX="121.0" layoutY="20.0" startX="-100.0" strokeWidth="3.0" />
-      <Line endX="846.0" endY="485.0" startX="20.0" startY="485.0" strokeWidth="3.0" />
-      <Line endX="832.5" endY="-30.5" layoutX="14.0" layoutY="50.0" startX="832.5" startY="435.5" strokeWidth="3.0" />
+      <Line endX="723.0" layoutX="121.0" layoutY="20.0" startX="-100.0" strokeWidth="3.0" />
+      <Line endX="844.0" endY="485.0" startX="20.0" startY="485.0" strokeWidth="3.0" />
+      <Line endX="832.5" endY="-30.5" layoutX="12.0" layoutY="50.0" startX="832.5" startY="435.5" strokeWidth="3.0" />
     </children>
 </AnchorPane>

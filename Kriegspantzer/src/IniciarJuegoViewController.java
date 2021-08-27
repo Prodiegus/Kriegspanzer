@@ -5,6 +5,9 @@
  */
 import java.net.URL;
 import java.util.ResourceBundle;
+
+import javax.swing.JOptionPane;
+
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -17,13 +20,12 @@ import javafx.scene.control.Label;
  */
 public class IniciarJuegoViewController implements Initializable {
     
-    @FXML private Label aviso;
     @FXML private ComboBox<String> cJugador1;
     @FXML private ComboBox<String> cJugador2;
     
     @FXML
     private void handlePlay(ActionEvent event) {
-        aviso.setText("Has apretado jugar");
+        JOptionPane.showMessageDialog(null, "Has precionado para jugar :c\nLamentablemente esta funcionalidad aun no esta incorporada");
     }
     public void setBoxes(String[] colors){
         this.cJugador1.getItems().removeAll(this.cJugador1.getItems());
