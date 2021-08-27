@@ -1,16 +1,5 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-package pseudo.java;
-
-/**
- *
- * @author omaii
- */
-public class Monitor {
-    
-}
-public calcularLanzamiento(Bala bala){
+public interface Monitor {
+    private int calcularLanzamiento(Bala bala){
+        return 12;
+    }
 }
