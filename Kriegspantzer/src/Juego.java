@@ -1,5 +1,4 @@
 import java.util.ArrayList;
-
 public class Juego {
     private ArrayList<Jugador> jugadores;
     private boolean estadoJuego;
@@ -9,5 +8,3 @@ public class Juego {
         this.jugadores = jugadores;
     }
 }
-
-
