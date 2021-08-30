@@ -1,10 +1,9 @@
-public class Jugador extends Juego {
+public class Jugador{
     private String nombre;
     private boolean estado;
     private Tanque tanque;
      
     public Jugador(String nombre){
-        super(null);
         this.nombre = nombre;
     }
 
