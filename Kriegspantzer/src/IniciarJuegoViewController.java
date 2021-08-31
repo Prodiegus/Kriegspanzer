@@ -6,18 +6,15 @@ import java.util.ResourceBundle;
 import javax.swing.JOptionPane;
 
 import javafx.event.ActionEvent;
-import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.geometry.Bounds;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
-import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Modality;
@@ -53,6 +50,7 @@ public class IniciarJuegoViewController implements Initializable {
 
             controller.setMap(map);
             stage.initModality(Modality.APPLICATION_MODAL);
+            stage.setResizable(false);
             stage.setTitle("Kriegspanzer Map Editor");
             stage.getIcons().add(new Image(getClass().getResourceAsStream("img/icon.png")));
             stage.setScene(scene);
