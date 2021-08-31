@@ -1,5 +1,5 @@
 public interface Monitor {
-    private int calcularLanzamiento(Bala bala){
-        return 12;
+    public default int calcularLanzamiento(Bala bala){
+       return 12;
     }
 }
