@@ -51,6 +51,7 @@ public class JuegoController implements Initializable{
     
     public void setJugadores(ArrayList<Jugador> jugadores){
         this.jugadores = jugadores;
+        turnoPanel.setText("Turno: "+jugadores.get(0).getName());
     }
     public void addViews(){
         for (int i = 0; i<jugadores.size(); i++) {

@@ -17,9 +17,14 @@ public class Jugador{
         this.tanque = tanque;
     }
 
+    public String getName(){
+        return nombre;
+    }
+
     public Tanque getTanque(){
         return this.tanque;
     }
+    
     public boolean cheekTanque(){
         return estado;
     }
