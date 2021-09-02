@@ -1,6 +1,5 @@
 import java.io.IOException;
 import java.net.URL;
-import java.security.Key;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
 
@@ -55,7 +54,7 @@ public class JuegoController implements Initializable{
     }
     public void addViews(){
         for (int i = 0; i<jugadores.size(); i++) {
-            tanks.add(new ImageView(new Image(getClass().getResourceAsStream("img/TanqueRojo"))));
+            tanks.add(new ImageView(new Image(getClass().getResourceAsStream("img/Tanque_Rojo.png"))));
         }
     }
     public void posTank(){
