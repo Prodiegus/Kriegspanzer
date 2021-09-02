@@ -15,7 +15,6 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
-import javafx.scene.control.ProgressIndicator;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.input.MouseEvent;
@@ -39,8 +38,8 @@ public class IniciarJuegoViewController implements Initializable {
     private void handlePlay(ActionEvent event) {
         
         //antes de cargar el juego necesitamos capturar algunos datos
-        int[] pos1 = {30,30};
-        int[] pos2 = {300,30};
+        int[] pos1 = {75,194};
+        int[] pos2 = {600,257};
         Jugador jugador1 = new Jugador(nJugador1.getText().trim());
         Jugador jugador2 = new Jugador(nJugador2.getText().trim());
         Tanque tanque1 = new Tanque(cJugador1.getValue(), pos1);
@@ -62,6 +61,8 @@ public class IniciarJuegoViewController implements Initializable {
             
             controller.setMap(map, event);
             controller.setJugadores(jugadores);
+            controller.addViews();
+            controller.posTank();
 
             stage.initModality(Modality.WINDOW_MODAL);
             stage.setResizable(true);

@@ -6,9 +6,9 @@
 <?import javafx.scene.effect.InnerShadow?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="614.0" prefWidth="801.0" style="-fx-background-color: #c3c3c3;" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="JuegoController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onKeyPressed="#scale" prefHeight="614.0" prefWidth="801.0" style="-fx-background-color: #c3c3c3;" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="JuegoController">
    <children>
-      <AnchorPane fx:id="mapaPanel" layoutX="34.0" layoutY="14.0" prefHeight="465.0" prefWidth="733.0" AnchorPane.bottomAnchor="135.0" AnchorPane.leftAnchor="34.0" AnchorPane.rightAnchor="34.0" AnchorPane.topAnchor="14.0">
+      <AnchorPane fx:id="mapaPanel" layoutX="34.0" layoutY="14.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="465.0" prefWidth="733.0" AnchorPane.bottomAnchor="135.0" AnchorPane.leftAnchor="34.0" AnchorPane.rightAnchor="34.0" AnchorPane.topAnchor="14.0">
          <effect>
             <InnerShadow choke="1.0" height="6.17" radius="2.585" width="6.17" />
          </effect></AnchorPane>
@@ -20,6 +20,7 @@
             <TextField fx:id="velocidad" layoutX="51.0" layoutY="81.0" prefHeight="25.0" prefWidth="82.0" promptText="- Velocidad -" AnchorPane.bottomAnchor="23.0" AnchorPane.leftAnchor="51.0" />
             <Label layoutX="141.0" layoutY="44.0" text="[Grados°]" AnchorPane.bottomAnchor="68.0" AnchorPane.leftAnchor="141.0" />
             <Label layoutX="150.0" layoutY="85.0" text="[mt/s]" AnchorPane.bottomAnchor="27.0" AnchorPane.leftAnchor="150.0" />
+            <Label layoutX="539.0" layoutY="85.0" text="Precione &quot;R&quot; para Reposicionar" AnchorPane.bottomAnchor="27.0" AnchorPane.rightAnchor="30.0" />
          </children>
       </AnchorPane>
    </children>
