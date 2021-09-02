@@ -7,4 +7,5 @@ public class Juego {
     public Juego(ArrayList<Jugador> jugadores){
         this.jugadores = jugadores;
     }
+    
 }

@@ -1,5 +1,6 @@
 public interface Monitor {
-    private int calcularLanzamiento(Bala bala){
+    /*
+    public int calcularLanzamiento(){
         return 12;
-    }
+    }*/
 }
