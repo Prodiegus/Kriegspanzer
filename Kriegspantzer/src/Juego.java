@@ -4,7 +4,8 @@ public class Juego {
     private boolean estadoJuego;
     private String ganador;
     
-    public Juego(ArrayList<Jugador> jugadores){
+public Juego(ArrayList<Jugador> jugadores){
         this.jugadores = jugadores;
     }
+    
 }

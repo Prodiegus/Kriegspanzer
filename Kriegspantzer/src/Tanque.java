@@ -1,14 +1,15 @@
 public class Tanque implements Monitor {
     private String color;
     private int [] posTanque;
-    private boolean estado_tanque;
+    private int barraVida;
+    private boolean estadoTanque;
         
     public Tanque (String color, int[] posTanque){
         this.color = color;
         this.posTanque = posTanque;
     }
 
-    public boolean disparo(double velocidad, double angulo){
+    public boolean disparo(double velocidad, double angulo,int sentido){
         return false;
     }
 
