@@ -7,8 +7,12 @@ public class Jugador{
         this.nombre = nombre;
         this.estado = true;
     }
-
-    public boolean lanzamiento(double velocidad, double angulo){
+    
+    public boolean Lanzamiento(double velocidad, double angulo, int sentido){
+        if ( velocidad>=0 && (angulo>=0 && angulo<=360) ){
+            //tanque.Disparo(velocidad, angulo,sentido);
+            System.out.println("funciona tanque de "+this.nombre+" :)");
+        }
         return false;
     }
 
@@ -29,5 +33,9 @@ public class Jugador{
         return estado;
     }
 
+    public String getNombre() {
+        return nombre;
+    }
+    
 }
 
