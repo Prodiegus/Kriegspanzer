@@ -1,5 +1,6 @@
 import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.Random;
 import java.util.ResourceBundle;
 
@@ -14,6 +15,8 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
+import javafx.scene.control.ProgressIndicator;
+import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
@@ -24,6 +27,8 @@ public class IniciarJuegoViewController implements Initializable {
     @FXML private ComboBox<String> cJugador1;
     @FXML private ComboBox<String> cJugador2;
     @FXML private AnchorPane mapaPanel;
+    @FXML private TextField nJugador1;
+    @FXML private TextField nJugador2;
 
     //label de testeo
     @FXML private Label mouseLb;
@@ -32,7 +37,42 @@ public class IniciarJuegoViewController implements Initializable {
 
     @FXML
     private void handlePlay(ActionEvent event) {
-        JOptionPane.showMessageDialog(null, "Has precionado para jugar :c\nLamentablemente esta funcionalidad aun no esta incorporada");
+        
+        //antes de cargar el juego necesitamos capturar algunos datos
+        int[] pos1 = {30,30};
+        int[] pos2 = {300,30};
+        Jugador jugador1 = new Jugador(nJugador1.getText().trim());
+        Jugador jugador2 = new Jugador(nJugador2.getText().trim());
+        Tanque tanque1 = new Tanque(cJugador1.getValue(), pos1);
+        Tanque tanque2 = new Tanque(cJugador2.getValue(), pos2);
+
+        jugador1.setTanque(tanque1);
+        jugador2.setTanque(tanque2);
+        ArrayList<Jugador> jugadores = new ArrayList<Jugador>();
+        jugadores.add(jugador1);
+        jugadores.add(jugador2);
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("JuegoView.fxml"));
+
+            Parent root = loader.load();
+            Scene scene = new Scene(root);
+            Stage stage = new Stage();
+
+            JuegoController controller = loader.getController();
+            
+            controller.setMap(map, event);
+            controller.setJugadores(jugadores);
+
+            stage.initModality(Modality.WINDOW_MODAL);
+            stage.setResizable(true);
+            stage.setTitle("Kiegspanzer Game");
+            stage.getIcons().add(new Image(getClass().getResourceAsStream("img/icon.png")));
+            stage.setScene(scene);
+            stage.show();
+            close(event);
+        } catch (IOException e) {
+            JOptionPane.showMessageDialog(null, "Error: 006\nno se a podido cargar el juego");
+        }
     }
 
     @FXML
@@ -48,7 +88,7 @@ public class IniciarJuegoViewController implements Initializable {
             EditorMapaController controller = loader.getController();
 
 
-            controller.setMap(map);
+            controller.setMap(map+1);
             stage.initModality(Modality.APPLICATION_MODAL);
             stage.setResizable(false);
             stage.setTitle("Kriegspanzer Map Editor");
@@ -93,15 +133,16 @@ public class IniciarJuegoViewController implements Initializable {
     public void setMap(){
         //se crea un random con la idea de generar un mapa random a futuro
         Random index = new Random();
-        this.map = index.nextInt(1)+1;
+        this.map = index.nextInt(1);
+        this.map = 0;
         //ese valor dentro del nextint es la cantidad de mapas creados en existencia
         mapaPanel.getStylesheets().clear();
         mapaPanel.getStylesheets().add("Estilos.css");
-        mapaPanel.getStyleClass().add("map"+map);
+        mapaPanel.getStyleClass().add("map"+(map+1));
     }
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        // TODO
+        
     }    
     
 }

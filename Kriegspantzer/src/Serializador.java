@@ -12,7 +12,7 @@ public class Serializador implements Serializable{
 
     //para serializar el objeto 
     public Mapa ingresarABD(Mapa mapa) throws IOException{
-        FileOutputStream file = new FileOutputStream("Mapas/"+mapa.getId());
+        FileOutputStream file = new FileOutputStream("Mapas/Mapa"+mapa.getId());
         ObjectOutputStream output = new ObjectOutputStream(file);
         if(output != null){
             output.writeObject(mapa);
