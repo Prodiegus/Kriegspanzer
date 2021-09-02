@@ -1,2 +1,2 @@
 
-Copyright (C) 2021 prodiegus
+Copyright (C) 2021 prodiegus, Omar, Bastian  y Carlos.

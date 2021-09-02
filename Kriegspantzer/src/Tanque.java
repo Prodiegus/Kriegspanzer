@@ -1,17 +1,20 @@
-public class Tanque extends Jugador implements Monitor {
+public class Tanque implements Monitor {
     private String color;
-    private int [] pos_tanque;
-    private boolean estado_tanque;
+    private int [] posTanque;
+    private int barraVida;
+    private boolean estadoTanque;
         
-    public Tanque (String color, int[] pos_tanque){
-        super("");
+    public Tanque (String color, int[] posTanque){
         this.color = color;
-        this.pos_tanque = pos_tanque;
+        this.posTanque = posTanque;
     }
 
-    public boolean Disparo(double velocidad, double angulo){
+    public boolean disparo(double velocidad, double angulo,int sentido){
         return false;
     }
 
+    public int[] getPos(){
+        return posTanque;
+    }
 }
 

@@ -1,9 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -11,10 +5,6 @@ import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
-/**
- *
- * @author basti
- */
 public class Kriegspantzer extends Application {
     
     @Override
@@ -29,7 +19,9 @@ public class Kriegspantzer extends Application {
         String[] colors = {"Azul", "Verde", "Amarillo", "Rojo", "Morado", "Naranja"};
 
         controller.setBoxes(colors);
-        stage.setResizable(false);
+        controller.setMap();
+        stage.setResizable(true);
+        stage.setTitle("Kriegspanzer Game");
         stage.getIcons().add(new Image(getClass().getResourceAsStream("img/icon.png")));
         stage.setScene(scene);
         stage.show();
