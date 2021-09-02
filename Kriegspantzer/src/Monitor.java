@@ -1,6 +1,5 @@
 public interface Monitor {
-    /*
-    public int calcularLanzamiento(){
-        return 12;
-    }*/
+    public default int calcularLanzamiento(Bala bala){
+       return 12;
+    }
 }

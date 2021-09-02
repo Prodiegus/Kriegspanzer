@@ -1,5 +1,6 @@
 import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.Random;
 import java.util.ResourceBundle;
 
@@ -14,13 +15,12 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
 import javafx.scene.control.ProgressBar;
 import javafx.scene.control.Spinner;
 import javafx.scene.control.SpinnerValueFactory;
-import javafx.scene.control.ProgressIndicator;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
@@ -35,33 +35,61 @@ public class IniciarJuegoViewController implements Initializable {
     @FXML private ProgressBar barraJ2;
     @FXML private TextField nJugador1;
     @FXML private TextField nJugador2;
-    @FXML private Spinner<Integer> angJ1 = new Spinner();
-    @FXML private Spinner<Integer> angJ2 = new Spinner();
-    @FXML private Spinner<Integer> velJ1 = new Spinner();
-    @FXML private Spinner<Integer> velJ2 = new Spinner();
-    @FXML private Spinner<String> dirJ1 = new Spinner();
-    @FXML private Spinner<String> dirJ2 = new Spinner();
+    @FXML private Spinner<Integer> angJ1 = new Spinner<Integer>();
+    @FXML private Spinner<Integer> angJ2 = new Spinner<Integer>();
+    @FXML private Spinner<Integer> velJ1 = new Spinner<Integer>();
+    @FXML private Spinner<Integer> velJ2 = new Spinner<Integer>();
+    @FXML private Spinner<String> dirJ1 = new Spinner<String>();
+    @FXML private Spinner<String> dirJ2 = new Spinner<String>();
 
     //label de testeo
     @FXML private Label mouseLb;
     private int map;
     //prueba
     int turno=1;
-    Jugador player1,player2;
+    Jugador player1;
+    Jugador player2;
 
     @FXML
     private void handlePlay(ActionEvent event) {
-        //JOptionPane.showMessageDialog(null, "Has presionado para jugar :c\nLamentablemente esta funcionalidad aun no esta incorporada");
-        if (turno==1){
-            //System.out.print("la velocidad del jugador 1 es: "+velJ1.getValue()); 
-            player1.Lanzamiento(velJ1.getValue(), angJ1.getValue(),1);
-            turno--;
-        }
-        else{
-            player2.Lanzamiento(velJ2.getValue(), angJ2.getValue(),1);
-            turno++;
-        }
         
+        //antes de cargar el juego necesitamos capturar algunos datos
+        int[] pos1 = {75,194};
+        int[] pos2 = {600,257};
+        Jugador jugador1 = new Jugador(nJugador1.getText().trim());
+        Jugador jugador2 = new Jugador(nJugador2.getText().trim());
+        Tanque tanque1 = new Tanque(cJugador1.getValue(), pos1);
+        Tanque tanque2 = new Tanque(cJugador2.getValue(), pos2);
+
+        jugador1.setTanque(tanque1);
+        jugador2.setTanque(tanque2);
+        ArrayList<Jugador> jugadores = new ArrayList<Jugador>();
+        jugadores.add(jugador1);
+        jugadores.add(jugador2);
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("JuegoView.fxml"));
+
+            Parent root = loader.load();
+            Scene scene = new Scene(root);
+            Stage stage = new Stage();
+
+            JuegoController controller = loader.getController();
+            
+            controller.setMap(map, event);
+            controller.setJugadores(jugadores);
+            controller.addViews();
+            controller.posTank();
+
+            stage.initModality(Modality.WINDOW_MODAL);
+            stage.setResizable(true);
+            stage.setTitle("Kiegspanzer Game");
+            stage.getIcons().add(new Image(getClass().getResourceAsStream("img/icon.png")));
+            stage.setScene(scene);
+            stage.show();
+            close(event);
+        } catch (IOException e) {
+            JOptionPane.showMessageDialog(null, "Error: 006\nno se a podido cargar el juego");
+        }
     }
     
     @FXML
@@ -84,7 +112,7 @@ public class IniciarJuegoViewController implements Initializable {
             EditorMapaController controller = loader.getController();
 
 
-            controller.setMap(map);
+            controller.setMap(map+1);
             stage.initModality(Modality.APPLICATION_MODAL);
             stage.setResizable(false);
             stage.setTitle("Kriegspanzer Map Editor");
@@ -129,33 +157,33 @@ public class IniciarJuegoViewController implements Initializable {
     public void setMap(){
         //se crea un random con la idea de generar un mapa random a futuro
         Random index = new Random();
-        this.map = index.nextInt(1)+1;
+        this.map = index.nextInt(1);
+        this.map = 0;
         //ese valor dentro del nextint es la cantidad de mapas creados en existencia
         mapaPanel.getStylesheets().clear();
         mapaPanel.getStylesheets().add("Estilos.css");
-        mapaPanel.getStyleClass().add("map"+map);
+        mapaPanel.getStyleClass().add("map"+(map+1));
     }
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        // TODO
         barraJ1.setStyle("-fx-accent:#5faf5f");
         barraJ2.setStyle("-fx-accent:#5faf5f");
         barraJ1.setProgress(0.8);barraJ2.setProgress(0.3);
         ObservableList<String> direcciones = FXCollections.observableArrayList("Izquierda","Derecha");
         
-        SpinnerValueFactory<Integer> caja_spinner1 = new SpinnerValueFactory.IntegerSpinnerValueFactory(0,90,60); //(min,max,ejemplo)
-        SpinnerValueFactory<Integer> caja_spinner2 = new SpinnerValueFactory.IntegerSpinnerValueFactory(0,90,60); //(min,max,ejemplo)
-        SpinnerValueFactory<Integer> caja_spinner3 = new SpinnerValueFactory.IntegerSpinnerValueFactory(0,1000,50); //(min,max,ejemplo)
-        SpinnerValueFactory<Integer> caja_spinner4 = new SpinnerValueFactory.IntegerSpinnerValueFactory(0,1000,50); //(min,max,ejemplo)
-        SpinnerValueFactory<String>  caja_spinner5 = new SpinnerValueFactory.ListSpinnerValueFactory<>(direcciones);
-        SpinnerValueFactory<String>  caja_spinner6 = new SpinnerValueFactory.ListSpinnerValueFactory<>(direcciones);
-        caja_spinner5.setValue("Derecha");dirJ1.setValueFactory(caja_spinner5);
-        caja_spinner5.setValue("Derecha");dirJ2.setValueFactory(caja_spinner6);
+        SpinnerValueFactory<Integer> cajaSpinner1 = new SpinnerValueFactory.IntegerSpinnerValueFactory(0,90,60); //(min,max,ejemplo)
+        SpinnerValueFactory<Integer> cajaSpinner2 = new SpinnerValueFactory.IntegerSpinnerValueFactory(0,90,60); //(min,max,ejemplo)
+        SpinnerValueFactory<Integer> cajaSpinner3 = new SpinnerValueFactory.IntegerSpinnerValueFactory(0,1000,50); //(min,max,ejemplo)
+        SpinnerValueFactory<Integer> cajaSpinner4 = new SpinnerValueFactory.IntegerSpinnerValueFactory(0,1000,50); //(min,max,ejemplo)
+        SpinnerValueFactory<String>  cajaSpinner5 = new SpinnerValueFactory.ListSpinnerValueFactory<>(direcciones);
+        SpinnerValueFactory<String>  cajaSpinner6 = new SpinnerValueFactory.ListSpinnerValueFactory<>(direcciones);
+        cajaSpinner5.setValue("Derecha");dirJ1.setValueFactory(cajaSpinner5);
+        cajaSpinner5.setValue("Derecha");dirJ2.setValueFactory(cajaSpinner6);
         
-        this.angJ1.setValueFactory(caja_spinner1);angJ1.setEditable(true);
-        this.angJ2.setValueFactory(caja_spinner2);angJ2.setEditable(true);
-        velJ1.setValueFactory(caja_spinner3);velJ1.setEditable(true);
-        velJ2.setValueFactory(caja_spinner4);velJ2.setEditable(true);
+        this.angJ1.setValueFactory(cajaSpinner1);angJ1.setEditable(true);
+        this.angJ2.setValueFactory(cajaSpinner2);angJ2.setEditable(true);
+        velJ1.setValueFactory(cajaSpinner3);velJ1.setEditable(true);
+        velJ2.setValueFactory(cajaSpinner4);velJ2.setEditable(true);
         
     }    
     
