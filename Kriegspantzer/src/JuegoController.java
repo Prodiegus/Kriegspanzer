@@ -54,7 +54,9 @@ public class JuegoController implements Initializable{
     }
     public void addViews(){
         for (int i = 0; i<jugadores.size(); i++) {
-            tanks.add(new ImageView(new Image(getClass().getResourceAsStream("img/Tanque_Rojo.png"))));
+            tanks.add(new ImageView(
+                new Image(getClass()
+                .getResourceAsStream("img/Tanque_"+jugadores.get(i).getTanque().getColor()+".png"))));
         }
     }
     public void posTank(){
@@ -64,9 +66,18 @@ public class JuegoController implements Initializable{
         double anchoI = mapaPanel.getPrefWidth();
         double altoScale = ancho/anchoI;
         double anchoScale = alto/altoI;
+        ArrayList<int[]> campos = mapa.getCampos();
         for (int i = 0; i<jugadores.size(); i++) {
-            tanks.get(i).setX(jugadores.get(i).getTanque().getPos()[0]*altoScale);
-            tanks.get(i).setY(jugadores.get(i).getTanque().getPos()[1]*anchoScale);
+            Double x = jugadores.get(i).getTanque().getPos()[0]*altoScale;
+            tanks.get(i).setX(x);
+            for (int[] campo : campos) {
+                if(campo[0]==x){
+                    tanks.get(i).setY(campo[1]);
+                    jugadores.get(i).getTanque().setPos((int)Math.round(x), campo[1]);
+                }
+            }
+            
+                
             mapaPanel.getChildren().add(tanks.get(i));
         }
 
