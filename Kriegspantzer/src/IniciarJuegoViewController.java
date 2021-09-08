@@ -96,7 +96,7 @@ public class IniciarJuegoViewController implements Initializable {
     private void handleSubirNom(ActionEvent event){
         String nom = nJugador1.getText(); player1= new Jugador(nom);
         nom = nJugador2.getText();player2 = new Jugador(nom);
-        System.out.println( player1.getNombre() );System.out.println( player2.getNombre() ); //prueba de que se crean
+        System.out.println( player1.getName() );System.out.println( player2.getName() ); //prueba de que se crean
     }
     
     @FXML
