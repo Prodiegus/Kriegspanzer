@@ -2,6 +2,8 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.swing.JOptionPane;
 
@@ -16,14 +18,25 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
+import java.lang.Thread;
+import javafx.animation.RotateTransition;
+import javafx.animation.TranslateTransition;
+import javafx.util.Duration;
 
-public class JuegoController implements Initializable{
+
+
+
+
+public class JuegoController extends Thread implements Initializable {
     @FXML private AnchorPane mapaPanel;
     @FXML private Label turnoPanel;
+    @FXML private ArrayList<ImageView> balasImagen = new ArrayList<ImageView>();
     @FXML private ArrayList<ImageView> tanks = new ArrayList<ImageView>();
     private Mapa mapa;
     private ArrayList<Jugador> jugadores = new ArrayList<Jugador>();
-
+    TranslateTransition mover=new TranslateTransition();
+    RotateTransition rotar=new RotateTransition();
+    
     @FXML public void scale(KeyEvent event){
         if(event.getCode().equals(KeyCode.R)){
             posTank(1);
@@ -55,8 +68,11 @@ public class JuegoController implements Initializable{
     public void addViews(){
         for (int i = 0; i<jugadores.size(); i++) {
             tanks.add(new ImageView(new Image(getClass().getResourceAsStream("img/Tanque_Rojo.png"))));
+            balasImagen.add(new ImageView(new Image(getClass().getResourceAsStream("img/bala.png"))));
+           
         }
     }
+
     public void posTank(){
         double alto = 465;
         double ancho = 733;
@@ -81,13 +97,103 @@ public class JuegoController implements Initializable{
         for (int i = 0; i<jugadores.size(); i++) {
             tanks.get(i).setX(jugadores.get(i).getTanque().getPos()[0]*altoScale);
             tanks.get(i).setY(jugadores.get(i).getTanque().getPos()[1]*anchoScale);
+            balasImagen.get(i).setX(jugadores.get(i).getTanque().getBala().getPosBala()[0]*altoScale);
+            balasImagen.get(i).setY(jugadores.get(i).getTanque().getBala().getPosBala()[1]*anchoScale);
             
         }
 
     }
+    
+
+    public void posBala(){
+        double alto = 465;
+        double ancho = 733;
+        double altoI = mapaPanel.getPrefHeight();
+        double anchoI = mapaPanel.getPrefWidth();
+        double altoScale = ancho/anchoI;
+        double anchoScale = alto/altoI;
+        for (int i=0; i<jugadores.size();i++){
+            if (i==1){
+                balasImagen.get(i).setX(jugadores.get(i).getTanque().getBala().getPosBala()[0]*altoScale);
+                balasImagen.get(i).setY(jugadores.get(i).getTanque().getBala().getPosBala()[1]*anchoScale);
+                balasImagen.get(i).setRotate(180);
+
+            }
+            else{
+            balasImagen.get(i).setX(jugadores.get(i).getTanque().getBala().getPosBala()[0]*altoScale);
+            balasImagen.get(i).setY(jugadores.get(i).getTanque().getBala().getPosBala()[1]*anchoScale);
+            }
+
+            mapaPanel.getChildren().add(balasImagen.get(i));
+            
+        
+        }
+    }
+
+    @FXML public void pressShoot  (ActionEvent event) {
+        mover.setNode(balasImagen.get(0)); 
+        mover.setDuration(Duration.millis(1500));
+        mover.setByX(320);
+        mover.setByY(-320);
+        
+        mover.play();
+
+        
+        
+    
+        
+
+        
+       
+
+
+        /*try{
+            balasImagen.get(0).setTranslateX(x);
+
+            Thread.sleep(1000);
+        }
+        catch(InterruptedException e){
+        }
+        Platform.runLater(new Runnable() {
+            @Override public void run() {
+                balasImagen.get(0).setTranslateX(x+10);
+                
+            }
+        });
+
+        
+
+        
+        
+        
+      
+        //balasImagen.get(0).setX((x)*altoScale);
+
+      
+
+        /*for (int i=0;i<200;i=i+20){
+            try {
+                
+                TimeUnit.SECONDS.sleep(1);
+            }
+            catch (Exception e) {
+                    System.out.println("Oops! Something went wrong!");
+            }
+            balasImagen.get(0).setX((jugadores.get(0).getTanque().getBala().getPosBala()[0]+i)*altoScale);
+
+
+        }*/
+            
+
+        
+    }
+
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        
+   
+        
         
     }
     

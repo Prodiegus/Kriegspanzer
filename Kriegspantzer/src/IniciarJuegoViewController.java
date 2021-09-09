@@ -26,6 +26,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.scene.image.ImageView;
 public class IniciarJuegoViewController implements Initializable {
     
     @FXML private ComboBox<String> cJugador1;
@@ -49,17 +50,21 @@ public class IniciarJuegoViewController implements Initializable {
     int turno=1;
     Jugador player1;
     Jugador player2;
-
     @FXML
     private void handlePlay(ActionEvent event) {
         
         //antes de cargar el juego necesitamos capturar algunos datos
+        int [] posBala1={75,194};
+        int [] posBala2={600,257};
         int[] pos1 = {75,194};
         int[] pos2 = {600,257};
         Jugador jugador1 = new Jugador(nJugador1.getText().trim());
         Jugador jugador2 = new Jugador(nJugador2.getText().trim());
-        Tanque tanque1 = new Tanque(cJugador1.getValue(), pos1);
-        Tanque tanque2 = new Tanque(cJugador2.getValue(), pos2);
+        Bala bala1= new Bala(posBala1);
+        Bala bala2=new Bala(posBala2);  
+        Tanque tanque1 = new Tanque(cJugador1.getValue(), pos1,bala1);
+        Tanque tanque2 = new Tanque(cJugador2.getValue(), pos2, bala2);
+ 
 
         jugador1.setTanque(tanque1);
         jugador2.setTanque(tanque2);
@@ -79,6 +84,7 @@ public class IniciarJuegoViewController implements Initializable {
             controller.setJugadores(jugadores);
             controller.addViews();
             controller.posTank();
+            controller.posBala();
 
             stage.initModality(Modality.WINDOW_MODAL);
             stage.setResizable(true);
@@ -126,6 +132,7 @@ public class IniciarJuegoViewController implements Initializable {
         }
         
     }
+
     //metodo de testeo
     @FXML
     private void handleMouseMove(MouseEvent event){
@@ -164,6 +171,7 @@ public class IniciarJuegoViewController implements Initializable {
         mapaPanel.getStylesheets().add("Estilos.css");
         mapaPanel.getStyleClass().add("map"+(map+1));
     }
+
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         barraJ1.setStyle("-fx-accent:#5faf5f");
@@ -186,5 +194,7 @@ public class IniciarJuegoViewController implements Initializable {
         velJ2.setValueFactory(cajaSpinner4);velJ2.setEditable(true);
         
     }    
+    
+    
     
 }
