@@ -16,11 +16,6 @@ import javafx.scene.Scene;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
-import javafx.scene.control.ProgressBar;
-import javafx.scene.control.Spinner;
-import javafx.scene.control.SpinnerValueFactory;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.scene.image.Image;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
@@ -31,11 +26,8 @@ public class IniciarJuegoViewController implements Initializable {
     @FXML private ComboBox<String> cJugador1;
     @FXML private ComboBox<String> cJugador2;
     @FXML private AnchorPane mapaPanel;
-    @FXML private ProgressBar barraJ1=new ProgressBar();//@FXML private ProgressIndicator indJ1 = new ProgressIndicator(0.5);
-    @FXML private ProgressBar barraJ2=new ProgressBar();;
     @FXML private TextField nJugador1;
     @FXML private TextField nJugador2;
-    
 
     //label de testeo
     @FXML private Label mouseLb;
@@ -45,12 +37,17 @@ public class IniciarJuegoViewController implements Initializable {
     private void handlePlay(ActionEvent event) {
         
         //antes de cargar el juego necesitamos capturar algunos datos
-        int[] pos1 = {75,194};
-        int[] pos2 = {600,257};
+        Random r = new Random();
+        int x1 = r.nextInt(733/2);
+        int[] pos1 = {x1,0};
+        int[] pos2 = {x1+(733/2),0};
         Jugador jugador1 = new Jugador(nJugador1.getText().trim());
         Jugador jugador2 = new Jugador(nJugador2.getText().trim());
-        Tanque tanque1 = new Tanque(cJugador1.getValue(), pos1);
-        Tanque tanque2 = new Tanque(cJugador2.getValue(), pos2);
+        Bala bala1= new Bala(pos1);
+        Bala bala2=new Bala(pos2);  
+        Tanque tanque1 = new Tanque(cJugador1.getValue(), pos1,bala1);
+        Tanque tanque2 = new Tanque(cJugador2.getValue(), pos2, bala2);
+ 
 
         jugador1.setTanque(tanque1);
         jugador2.setTanque(tanque2);
@@ -70,6 +67,7 @@ public class IniciarJuegoViewController implements Initializable {
             controller.setJugadores(jugadores);
             controller.addViews();
             controller.posTank();
+            controller.posBala();
 
             stage.initModality(Modality.WINDOW_MODAL);
             stage.setResizable(true);
@@ -97,6 +95,7 @@ public class IniciarJuegoViewController implements Initializable {
 
 
             controller.setMap(map+1);
+            controller.iniciarMapa();
             stage.initModality(Modality.APPLICATION_MODAL);
             stage.setResizable(false);
             stage.setTitle("Kriegspanzer Map Editor");
@@ -110,6 +109,7 @@ public class IniciarJuegoViewController implements Initializable {
         }
         
     }
+
     //metodo de testeo
     @FXML
     private void handleMouseMove(MouseEvent event){
@@ -148,13 +148,11 @@ public class IniciarJuegoViewController implements Initializable {
         mapaPanel.getStylesheets().add("Estilos.css");
         mapaPanel.getStyleClass().add("map"+(map+1));
     }
+
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        barraJ1.setStyle("-fx-accent:#5faf5f");
-        barraJ2.setStyle("-fx-accent:#5faf5f");
-        barraJ1.setProgress(0.8);barraJ2.setProgress(0.3);
-        
-        
     }    
+    
+    
     
 }

@@ -26,14 +26,12 @@
       </AnchorPane>
       <AnchorPane layoutX="24.0" layoutY="481.0" prefHeight="119.0" prefWidth="803.0" AnchorPane.bottomAnchor="14.0" AnchorPane.leftAnchor="27.0" AnchorPane.rightAnchor="21.0">
          <children>
-            <ComboBox fx:id="cJugador2" layoutX="227.0" layoutY="64.0" prefHeight="26.0" prefWidth="122.0" promptText="Color Tanque 2" />
-            <ComboBox fx:id="cJugador1" layoutX="23.0" layoutY="64.0" prefHeight="26.0" prefWidth="122.0" promptText="Color Tanque 1" AnchorPane.leftAnchor="23.0" />
+            <ComboBox fx:id="cJugador2" layoutX="281.0" layoutY="65.0" prefHeight="25.0" prefWidth="191.0" promptText="Color Tanque 2" />
+            <ComboBox fx:id="cJugador1" layoutX="23.0" layoutY="64.0" prefHeight="25.0" prefWidth="185.0" promptText="Color Tanque 1" AnchorPane.leftAnchor="23.0" />
             <Button fx:id="EdMap" layoutX="704.0" layoutY="24.0" onAction="#handleEdMap" text="Editar Mapa" AnchorPane.rightAnchor="27.0" />
               <Button fx:id="play" layoutX="704.0" layoutY="64.0" onAction="#handlePlay" prefHeight="25.0" prefWidth="80.0" text="Jugar" AnchorPane.rightAnchor="27.0" />
-            <TextField fx:id="nJugador2" layoutX="227.0" layoutY="24.0" prefHeight="25.0" prefWidth="122.0" promptText="- Nombre jugador 2 - " />
-            <TextField fx:id="nJugador1" layoutX="23.0" layoutY="24.0" prefHeight="25.0" prefWidth="122.0" promptText="- Nombre jugador 1 - " AnchorPane.leftAnchor="23.0" />
-            <ProgressBar fx:id="barraJ1" layoutX="23.0" layoutY="100.0" prefHeight="26.0" prefWidth="122.0" progress="1.0" />
-            <ProgressBar fx:id="barraJ2" layoutX="227.0" layoutY="102.0" prefHeight="26.0" prefWidth="122.0" progress="1.0" />
+            <TextField fx:id="nJugador2" layoutX="281.0" layoutY="14.0" prefHeight="25.0" prefWidth="191.0" promptText="- Nombre jugador 2 - " />
+            <TextField fx:id="nJugador1" layoutX="23.0" layoutY="14.0" prefHeight="25.0" prefWidth="185.0" promptText="- Nombre jugador 1 - " AnchorPane.leftAnchor="23.0" />
          </children>
       </AnchorPane>
     </children>

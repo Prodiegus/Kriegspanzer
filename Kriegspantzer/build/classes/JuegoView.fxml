@@ -14,7 +14,7 @@
          </effect></AnchorPane>
       <AnchorPane layoutX="34.0" layoutY="471.0" prefHeight="129.0" prefWidth="733.0" AnchorPane.bottomAnchor="14.0" AnchorPane.leftAnchor="34.0" AnchorPane.rightAnchor="34.0" AnchorPane.topAnchor="471.0">
          <children>
-            <Button fx:id="disparar" layoutX="590.0" layoutY="52.0" mnemonicParsing="false" text="Disparar" AnchorPane.bottomAnchor="52.0" AnchorPane.rightAnchor="82.0" />
+            <Button fx:id="disparar" layoutX="590.0" layoutY="52.0" mnemonicParsing="false" onAction="#pressShoot" text="Disparar" AnchorPane.bottomAnchor="52.0" AnchorPane.rightAnchor="82.0" />
             <Label fx:id="turnoPanel" layoutX="14.0" layoutY="14.0" prefHeight="17.0" prefWidth="453.0" text="Truno:" AnchorPane.bottomAnchor="98.0" AnchorPane.leftAnchor="14.0" />
             <Label layoutX="141.0" layoutY="44.0" text="[Grados°]" AnchorPane.bottomAnchor="68.0" AnchorPane.leftAnchor="141.0" />
             <Label layoutX="150.0" layoutY="85.0" text="[mt/s]" AnchorPane.bottomAnchor="27.0" AnchorPane.leftAnchor="150.0" />
