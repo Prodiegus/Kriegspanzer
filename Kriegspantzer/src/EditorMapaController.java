@@ -16,7 +16,7 @@ import javafx.stage.Stage;
 public class EditorMapaController implements Initializable{
 
     @FXML private AnchorPane mapaPanel;
-    @FXML private Label mouseLb;
+    @FXML private Label mouseLb;    
 
     private int map;
 
@@ -72,4 +72,5 @@ public class EditorMapaController implements Initializable{
     public void initialize(URL url, ResourceBundle rb) {
         // TODO
     } 
-}
+    
+}        
