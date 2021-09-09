@@ -16,11 +16,6 @@ import javafx.scene.Scene;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
-import javafx.scene.control.ProgressBar;
-import javafx.scene.control.Spinner;
-import javafx.scene.control.SpinnerValueFactory;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.scene.image.Image;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
@@ -31,35 +26,28 @@ public class IniciarJuegoViewController implements Initializable {
     @FXML private ComboBox<String> cJugador1;
     @FXML private ComboBox<String> cJugador2;
     @FXML private AnchorPane mapaPanel;
-    @FXML private ProgressBar barraJ1=new ProgressBar();//@FXML private ProgressIndicator indJ1 = new ProgressIndicator(0.5);
-    @FXML private ProgressBar barraJ2;
     @FXML private TextField nJugador1;
     @FXML private TextField nJugador2;
-    @FXML private Spinner<Integer> angJ1 = new Spinner<Integer>();
-    @FXML private Spinner<Integer> angJ2 = new Spinner<Integer>();
-    @FXML private Spinner<Integer> velJ1 = new Spinner<Integer>();
-    @FXML private Spinner<Integer> velJ2 = new Spinner<Integer>();
-    @FXML private Spinner<String> dirJ1 = new Spinner<String>();
-    @FXML private Spinner<String> dirJ2 = new Spinner<String>();
 
     //label de testeo
     @FXML private Label mouseLb;
     private int map;
-    //prueba
-    int turno=1;
-    Jugador player1;
-    Jugador player2;
 
     @FXML
     private void handlePlay(ActionEvent event) {
         
         //antes de cargar el juego necesitamos capturar algunos datos
-        int[] pos1 = {75,194};
-        int[] pos2 = {600,257};
+        Random r = new Random();
+        int x1 = r.nextInt(733/2);
+        int[] pos1 = {x1,0};
+        int[] pos2 = {x1+(733/2),0};
         Jugador jugador1 = new Jugador(nJugador1.getText().trim());
         Jugador jugador2 = new Jugador(nJugador2.getText().trim());
-        Tanque tanque1 = new Tanque(cJugador1.getValue(), pos1);
-        Tanque tanque2 = new Tanque(cJugador2.getValue(), pos2);
+        Bala bala1= new Bala(pos1);
+        Bala bala2=new Bala(pos2);  
+        Tanque tanque1 = new Tanque(cJugador1.getValue(), pos1,bala1);
+        Tanque tanque2 = new Tanque(cJugador2.getValue(), pos2, bala2);
+ 
 
         jugador1.setTanque(tanque1);
         jugador2.setTanque(tanque2);
@@ -79,6 +67,7 @@ public class IniciarJuegoViewController implements Initializable {
             controller.setJugadores(jugadores);
             controller.addViews();
             controller.posTank();
+            controller.posBala();
 
             stage.initModality(Modality.WINDOW_MODAL);
             stage.setResizable(true);
@@ -90,13 +79,6 @@ public class IniciarJuegoViewController implements Initializable {
         } catch (IOException e) {
             JOptionPane.showMessageDialog(null, "Error: 006\nno se a podido cargar el juego");
         }
-    }
-    
-    @FXML
-    private void handleSubirNom(ActionEvent event){
-        String nom = nJugador1.getText(); player1= new Jugador(nom);
-        nom = nJugador2.getText();player2 = new Jugador(nom);
-        System.out.println( player1.getNombre() );System.out.println( player2.getNombre() ); //prueba de que se crean
     }
     
     @FXML
@@ -113,6 +95,7 @@ public class IniciarJuegoViewController implements Initializable {
 
 
             controller.setMap(map+1);
+            controller.iniciarMapa();
             stage.initModality(Modality.APPLICATION_MODAL);
             stage.setResizable(false);
             stage.setTitle("Kriegspanzer Map Editor");
@@ -126,6 +109,7 @@ public class IniciarJuegoViewController implements Initializable {
         }
         
     }
+
     //metodo de testeo
     @FXML
     private void handleMouseMove(MouseEvent event){
@@ -164,27 +148,11 @@ public class IniciarJuegoViewController implements Initializable {
         mapaPanel.getStylesheets().add("Estilos.css");
         mapaPanel.getStyleClass().add("map"+(map+1));
     }
+
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        barraJ1.setStyle("-fx-accent:#5faf5f");
-        barraJ2.setStyle("-fx-accent:#5faf5f");
-        barraJ1.setProgress(0.8);barraJ2.setProgress(0.3);
-        ObservableList<String> direcciones = FXCollections.observableArrayList("Izquierda","Derecha");
-        
-        SpinnerValueFactory<Integer> cajaSpinner1 = new SpinnerValueFactory.IntegerSpinnerValueFactory(0,90,60); //(min,max,ejemplo)
-        SpinnerValueFactory<Integer> cajaSpinner2 = new SpinnerValueFactory.IntegerSpinnerValueFactory(0,90,60); //(min,max,ejemplo)
-        SpinnerValueFactory<Integer> cajaSpinner3 = new SpinnerValueFactory.IntegerSpinnerValueFactory(0,1000,50); //(min,max,ejemplo)
-        SpinnerValueFactory<Integer> cajaSpinner4 = new SpinnerValueFactory.IntegerSpinnerValueFactory(0,1000,50); //(min,max,ejemplo)
-        SpinnerValueFactory<String>  cajaSpinner5 = new SpinnerValueFactory.ListSpinnerValueFactory<>(direcciones);
-        SpinnerValueFactory<String>  cajaSpinner6 = new SpinnerValueFactory.ListSpinnerValueFactory<>(direcciones);
-        cajaSpinner5.setValue("Derecha");dirJ1.setValueFactory(cajaSpinner5);
-        cajaSpinner5.setValue("Derecha");dirJ2.setValueFactory(cajaSpinner6);
-        
-        this.angJ1.setValueFactory(cajaSpinner1);angJ1.setEditable(true);
-        this.angJ2.setValueFactory(cajaSpinner2);angJ2.setEditable(true);
-        velJ1.setValueFactory(cajaSpinner3);velJ1.setEditable(true);
-        velJ2.setValueFactory(cajaSpinner4);velJ2.setEditable(true);
-        
     }    
+    
+    
     
 }

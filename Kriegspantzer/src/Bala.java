@@ -1,12 +1,21 @@
 public class Bala{
-    private int [] pos_bala;
+    private int [] posBala;
     private boolean estado_bala;
     private double velocidad;
     private double angulo;
-    private Bala(){
+    public Bala(int [] posBala){
+        this.posBala=posBala;
     }
-    public void  Bala(int pos_bala, double velocidad, double angulo){
+
+    public void setPosBala(int[] posBala) {
+        this.posBala = posBala;
     }
+
+    public int[] getPosBala() {
+        return posBala;
+    }
+    
+    
 }
 
 
