@@ -4,8 +4,6 @@ import java.util.ArrayList;
 import java.util.ResourceBundle;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import javax.swing.JOptionPane;
 
@@ -22,7 +20,6 @@ import javafx.scene.control.SpinnerValueFactory;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
-import java.lang.Thread;
 import javafx.animation.RotateTransition;
 import javafx.animation.TranslateTransition;
 import javafx.util.Duration;
@@ -31,7 +28,7 @@ import javafx.util.Duration;
 
 
 
-public class JuegoController extends Thread implements Initializable {
+public class JuegoController implements Initializable {
     @FXML private AnchorPane mapaPanel;
     @FXML private Label turnoPanel;
     @FXML private ArrayList<ImageView> balasImagen = new ArrayList<ImageView>();
@@ -59,14 +56,7 @@ public class JuegoController extends Thread implements Initializable {
     }
     
     @FXML private void dispara(ActionEvent event){
-        //falta llamar el metodo de lanzamiento
-        /*
-        if ( "Izquierda".equals(dir.getValue())){
-            this.jugadores.get(0).Lanzamiento(vel.getValue(), ang.getValue(),1);
-        }
-        else{
-            this.jugadores.get(0).Lanzamiento(vel.getValue(), ang.getValue(),2);
-        }*/
+       
     }
     
     public void setMap(int map, ActionEvent event){
@@ -95,12 +85,9 @@ public class JuegoController extends Thread implements Initializable {
     }
 
     public void posTank(){
-        double alto = 465;
         double ancho = 733;
-        double altoI = mapaPanel.getPrefHeight();
         double anchoI = mapaPanel.getPrefWidth();
         double altoScale = ancho/anchoI;
-        double anchoScale = alto/altoI;
         ArrayList<int[]> campos = mapa.getCampos();
         for (int i = 0; i<jugadores.size(); i++) {
             Double x = jugadores.get(i).getTanque().getPos()[0]*altoScale;
@@ -127,8 +114,8 @@ public class JuegoController extends Thread implements Initializable {
         for (int i = 0; i<jugadores.size(); i++) {
             tanks.get(i).setX(jugadores.get(i).getTanque().getPos()[0]*altoScale);
             tanks.get(i).setY(jugadores.get(i).getTanque().getPos()[1]*anchoScale);
-            balasImagen.get(i).setX(jugadores.get(i).getTanque().getBala().getPosBala()[0]*altoScale);
-            balasImagen.get(i).setY(jugadores.get(i).getTanque().getBala().getPosBala()[1]*anchoScale);
+            balasImagen.get(i).setX(jugadores.get(i).getTanque().getPos()[0]*altoScale);
+            balasImagen.get(i).setY(jugadores.get(i).getTanque().getPos()[1]*anchoScale);
             
         }
 
@@ -173,7 +160,14 @@ public class JuegoController extends Thread implements Initializable {
 
         
         
-    
+        //falta llamar el metodo de lanzamiento
+        /*
+        if ( "Izquierda".equals(dir.getValue())){
+            this.jugadores.get(0).Lanzamiento(vel.getValue(), ang.getValue(),1);
+        }
+        else{
+            this.jugadores.get(0).Lanzamiento(vel.getValue(), ang.getValue(),2);
+        }*/
         
 
         

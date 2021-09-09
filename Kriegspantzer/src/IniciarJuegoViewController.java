@@ -21,7 +21,6 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-import javafx.scene.image.ImageView;
 public class IniciarJuegoViewController implements Initializable {
     
     @FXML private ComboBox<String> cJugador1;
