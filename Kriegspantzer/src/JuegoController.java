@@ -54,7 +54,7 @@ public class JuegoController implements Initializable {
         Stage stage = (Stage) source.getScene().getWindow();
         stage.close();
     }
-    
+    //que este metodo lo vamos a eliminar
     @FXML private void dispara(ActionEvent event){
        
     }
