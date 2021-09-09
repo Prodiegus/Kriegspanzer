@@ -33,10 +33,6 @@ public class IniciarJuegoViewController implements Initializable {
     //label de testeo
     @FXML private Label mouseLb;
     private int map;
-    //prueba
-    int turno=1;
-    Jugador player1;
-    Jugador player2;
 
     @FXML
     private void handlePlay(ActionEvent event) {

@@ -2,6 +2,8 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -15,6 +17,8 @@ import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
+import javafx.scene.control.Spinner;
+import javafx.scene.control.SpinnerValueFactory;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
@@ -32,6 +36,10 @@ public class JuegoController extends Thread implements Initializable {
     @FXML private Label turnoPanel;
     @FXML private ArrayList<ImageView> balasImagen = new ArrayList<ImageView>();
     @FXML private ArrayList<ImageView> tanks = new ArrayList<ImageView>();
+    @FXML private Spinner<Integer> ang = new Spinner<Integer>();
+    @FXML private Spinner<Integer> vel = new Spinner<Integer>();
+    @FXML private Spinner<String> dir = new Spinner<String>();
+    
     private Mapa mapa;
     private ArrayList<Jugador> jugadores = new ArrayList<Jugador>();
     TranslateTransition mover=new TranslateTransition();
@@ -49,6 +57,18 @@ public class JuegoController extends Thread implements Initializable {
         Stage stage = (Stage) source.getScene().getWindow();
         stage.close();
     }
+    
+    @FXML private void dispara(ActionEvent event){
+        //falta llamar el metodo de lanzamiento
+        /*
+        if ( "Izquierda".equals(dir.getValue())){
+            this.jugadores.get(0).Lanzamiento(vel.getValue(), ang.getValue(),1);
+        }
+        else{
+            this.jugadores.get(0).Lanzamiento(vel.getValue(), ang.getValue(),2);
+        }*/
+    }
+    
     public void setMap(int map, ActionEvent event){
         mapaPanel.getStylesheets().clear();
         mapaPanel.getStylesheets().add("Estilos.css");
@@ -204,10 +224,14 @@ public class JuegoController extends Thread implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        ObservableList<String> direcciones = FXCollections.observableArrayList("Izquierda","Derecha");
+        SpinnerValueFactory<Integer> cajaSpinner1 = new SpinnerValueFactory.IntegerSpinnerValueFactory(0,90,60); //(min,max,ejemplo)
+        SpinnerValueFactory<Integer> cajaSpinner3 = new SpinnerValueFactory.IntegerSpinnerValueFactory(0,1000,50); //(min,max,ejemplo)
+        SpinnerValueFactory<String>  cajaSpinner5 = new SpinnerValueFactory.ListSpinnerValueFactory<>(direcciones);
+        cajaSpinner5.setValue("Derecha");dir.setValueFactory(cajaSpinner5);
         
-   
-        
-        
+        ang.setValueFactory(cajaSpinner1);ang.setEditable(true);
+        vel.setValueFactory(cajaSpinner3);vel.setEditable(true);
     }
     
 }
