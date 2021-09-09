@@ -38,7 +38,9 @@ public class EditorMapaController implements Initializable{
                         "\nPanel Scale: "+altoScale+"X"+anchoScale);
         mapa.setMapeado(mouseX, mouseY);
     }
-
+    public void iniciarMapa() {
+        mapa.fillAire();
+    }
     @FXML
     private void handleSerializar(ActionEvent event){
         Serializador sb = new Serializador();

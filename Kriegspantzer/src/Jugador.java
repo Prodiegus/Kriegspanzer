@@ -32,10 +32,6 @@ public class Jugador{
     public boolean cheekTanque(){
         return estado;
     }
-
-    public String getNombre() {
-        return nombre;
-    }
     
 }
 

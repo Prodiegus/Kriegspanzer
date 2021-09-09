@@ -18,6 +18,13 @@ public class Tanque implements Monitor {
     public int[] getPos(){
         return posTanque;
     }
+    public String getColor() {
+        return color;
+    }
+    public void setPos(int x, int y){
+        int [] pos = {x, y};
+        posTanque = pos;
+    }
     
     public void setBala(Bala bala){
         this.bala=bala;
