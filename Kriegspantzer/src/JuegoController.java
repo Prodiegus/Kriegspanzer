@@ -124,16 +124,16 @@ public class JuegoController extends Thread implements Initializable {
         double anchoScale = alto/altoI;
         for (int i=0; i<jugadores.size();i++){
             if (i==1){
-                balasImagen.get(i).setX(jugadores.get(i).getTanque().getBala().getPosBala()[0]*altoScale);
-                balasImagen.get(i).setY(jugadores.get(i).getTanque().getBala().getPosBala()[1]*anchoScale);
+                balasImagen.get(i).setX(jugadores.get(i).getTanque().getPos()[0]*altoScale);
+                balasImagen.get(i).setY(jugadores.get(i).getTanque().getPos()[1]*anchoScale);
                 balasImagen.get(i).setRotate(180);
 
             }
             else{
-            balasImagen.get(i).setX(jugadores.get(i).getTanque().getBala().getPosBala()[0]*altoScale);
-            balasImagen.get(i).setY(jugadores.get(i).getTanque().getBala().getPosBala()[1]*anchoScale);
+            balasImagen.get(i).setX(jugadores.get(i).getTanque().getPos()[0]*altoScale);
+            balasImagen.get(i).setY(jugadores.get(i).getTanque().getPos()[1]*anchoScale);
             }
-
+            balasImagen.get(i).setVisible(false);
             mapaPanel.getChildren().add(balasImagen.get(i));
             
         
@@ -141,6 +141,9 @@ public class JuegoController extends Thread implements Initializable {
     }
 
     @FXML public void pressShoot  (ActionEvent event) {
+        for (ImageView bala : balasImagen) {
+            bala.setVisible(true);
+        }
         mover.setNode(balasImagen.get(0)); 
         mover.setDuration(Duration.millis(1500));
         mover.setByX(320);
