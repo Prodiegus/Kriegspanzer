@@ -25,9 +25,6 @@ import javafx.animation.TranslateTransition;
 import javafx.util.Duration;
 
 
-
-
-
 public class JuegoController implements Initializable {
     @FXML private AnchorPane mapaPanel;
     @FXML private Label turnoPanel;
@@ -44,7 +41,7 @@ public class JuegoController implements Initializable {
     
     @FXML public void scale(KeyEvent event){
         if(event.getCode().equals(KeyCode.R)){
-            posTank(1);
+            posTank();
         }
 
     }
@@ -59,16 +56,11 @@ public class JuegoController implements Initializable {
        
     }
     
-    public void setMap(int map, ActionEvent event){
+    public void setMap(Mapa mapa){
         mapaPanel.getStylesheets().clear();
         mapaPanel.getStylesheets().add("Estilos.css");
-        mapaPanel.getStyleClass().add("map"+(map+1));
-        Serializador serializador = new Serializador();
-        try {
-            this.mapa = serializador.cargarDataBase(map);
-        } catch (IOException e) {
-            JOptionPane.showMessageDialog(null, "ERROR: 004\nno se a podido cargar el mapa");
-        }
+        mapaPanel.getStyleClass().add("map"+(mapa.getId()+1));
+        this.mapa = mapa;
     }
     
     public void setJugadores(ArrayList<Jugador> jugadores){
@@ -84,11 +76,11 @@ public class JuegoController implements Initializable {
         }
     }
 
-    public void posTank(){
+    public void posTank(ArrayList<int[]> campos){
         double ancho = 733;
         double anchoI = mapaPanel.getPrefWidth();
         double altoScale = ancho/anchoI;
-        ArrayList<int[]> campos = mapa.getCampos();
+        //ArrayList<int[]> campos = mapa.getCampos();
         for (int i = 0; i<jugadores.size(); i++) {
             Double x = jugadores.get(i).getTanque().getPos()[0]*altoScale;
             tanks.get(i).setX(x);
@@ -96,15 +88,15 @@ public class JuegoController implements Initializable {
                 if(campo[0]==x){
                     tanks.get(i).setY(campo[1]);
                     jugadores.get(i).getTanque().setPos((int)Math.round(x), campo[1]);
+                    mapa.addTank((int)Math.round(x), campo[1]);
                 }
             }
-            
-                
+
             mapaPanel.getChildren().add(tanks.get(i));
         }
 
     }
-    public void posTank(int a){
+    public void posTank(){
         double alto = mapaPanel.getHeight();
         double ancho = mapaPanel.getWidth();
         double altoI = mapaPanel.getPrefHeight();
