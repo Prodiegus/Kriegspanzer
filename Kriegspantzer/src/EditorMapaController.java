@@ -1,19 +1,24 @@
+import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+import javax.swing.JOptionPane;
 
 import javafx.scene.input.MouseEvent;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
+import javafx.stage.Stage;
 
 public class EditorMapaController implements Initializable{
 
     @FXML private AnchorPane mapaPanel;
-    @FXML private Label mouseLb;
+    @FXML private Label mouseLb;    
 
-    private int map = 0;
+    private int map;
 
     private Mapa mapa = new Mapa(map);
 
@@ -33,6 +38,22 @@ public class EditorMapaController implements Initializable{
                         "\nPanel Scale: "+altoScale+"X"+anchoScale);
         mapa.setMapeado(mouseX, mouseY);
     }
+    public void iniciarMapa() {
+        mapa.fillAire();
+    }
+    @FXML
+    private void handleSerializar(ActionEvent event){
+        Serializador sb = new Serializador();
+        //mapa.verMapa();
+        try {
+            sb.ingresarABD(this.mapa);
+            close(event);
+        } catch (IOException e) {
+            JOptionPane.showMessageDialog(null, "Error: 003\nSerializado fallido\n"+e.getCause());
+        }
+        
+
+    }
 
     public void setMap(int map){
         mapaPanel.getStylesheets().clear();
@@ -40,8 +61,16 @@ public class EditorMapaController implements Initializable{
         mapaPanel.getStyleClass().add("map"+map);
         this.map = map;
     }
+    //closer
+    @FXML 
+    private void close(ActionEvent event) {
+        Node source = (Node) event.getSource();
+        Stage stage = (Stage) source.getScene().getWindow();
+        stage.close();
+    }
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         // TODO
     } 
-}
+    
+}        
