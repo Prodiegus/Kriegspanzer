@@ -1,6 +1,7 @@
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Random;
 import java.util.ResourceBundle;
 
@@ -32,19 +33,53 @@ public class IniciarJuegoViewController implements Initializable {
     //label de testeo
     @FXML private Label mouseLb;
     private int map;
+    private Mapa mapa;
+    
 
     @FXML
-    private void handlePlay(ActionEvent event) {
+    private boolean handlePlay(ActionEvent event) {
         
-        //antes de cargar el juego necesitamos capturar algunos datos
-        Random r = new Random();
-        int x1 = r.nextInt(733/2);
+        /* Antes de inicial el juego necesitamos capturar ciertos datos
+         * Primero generamos un algoritmo rapido para encontrar posiciones x
+         * Admisibles para los tanques
+         * 
+         * y luego creamos los objetos de los jugadores y tanques para poder 
+         * manipularnos dentro del juego
+         * */
+
+        //primero cargamos el mapa para ver los campos
+        Serializador serializador = new Serializador();
+        try {
+            mapa = serializador.cargarDataBase(map);
+        } catch (IOException e) {
+            JOptionPane.showMessageDialog(null, "ERROR: 004\nno se a podido cargar el mapa");
+        }
+
+        //cargamos los campos del mapa para encontrar posicion para los tanques
+        ArrayList<int[]> campos = mapa.getCampos();
+
+        //Creamos un Array de solamente el campo x de las coordenadas
+        ArrayList<Integer> camposX = new ArrayList<Integer>();
+        for (int[] campo : campos) {
+            camposX.add(campo[0]);
+        }
+
+        //convertimos a Array
+        Integer[] posiciones = camposX.stream().toArray(Integer[]::new);
+        Arrays.sort(posiciones);
+
+        int x1 = foundX(posiciones);
+
         int[] pos1 = {x1,0};
         int[] pos2 = {x1+(733/2),0};
         Jugador jugador1 = new Jugador(nJugador1.getText().trim());
         Jugador jugador2 = new Jugador(nJugador2.getText().trim());
         Bala bala1= new Bala(pos1);
-        Bala bala2=new Bala(pos2);  
+        Bala bala2=new Bala(pos2);
+        if(cJugador1.getValue().equals(cJugador2.getValue())){
+            JOptionPane.showMessageDialog(null, "Los colores de los tanques no pueden ser iguales");
+            return false;
+        }
         Tanque tanque1 = new Tanque(cJugador1.getValue(), pos1,bala1);
         Tanque tanque2 = new Tanque(cJugador2.getValue(), pos2, bala2);
  
@@ -63,10 +98,10 @@ public class IniciarJuegoViewController implements Initializable {
 
             JuegoController controller = loader.getController();
             
-            controller.setMap(map, event);
+            controller.setMap(mapa);
             controller.setJugadores(jugadores);
             controller.addViews();
-            controller.posTank();
+            controller.posTank(campos);
             controller.posBala();
 
             stage.initModality(Modality.WINDOW_MODAL);
@@ -79,6 +114,7 @@ public class IniciarJuegoViewController implements Initializable {
         } catch (IOException e) {
             JOptionPane.showMessageDialog(null, "Error: 006\nno se a podido cargar el juego");
         }
+        return true;
     }
     
     @FXML
@@ -129,6 +165,21 @@ public class IniciarJuegoViewController implements Initializable {
         Node source = (Node) event.getSource();
         Stage stage = (Stage) source.getScene().getWindow();
         stage.close();
+    }
+    private int foundX(Integer[] posiciones){
+        try{
+            Random r = new Random();
+            int x1;
+            //verificamos que las x sean campos admisibles
+            for (x1 = r.nextInt(733/2);true;x1 = r.nextInt(733/2)){
+                if(Arrays.binarySearch(posiciones, x1)>0 && Arrays.binarySearch(posiciones, (x1+(733/2)))>0){
+                    return x1;  
+                }
+            }
+        }catch(Exception e){
+            foundX(posiciones);
+        }
+        return 200;
     }
     public void setBoxes(String[] colors){
         this.cJugador1.getItems().removeAll(this.cJugador1.getItems());
