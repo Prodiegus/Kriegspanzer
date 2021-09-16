@@ -10,8 +10,8 @@ public class Jugador{
     
     public boolean Lanzamiento(double velocidad, double angulo){
         if ( velocidad>=0 && (angulo>=0 && angulo<=360) ){
-            //tanque.disparo(velocidad, angulo);
-            System.out.println("funciona tanque de "+this.nombre+" :)");
+            return(tanque.disparo(velocidad, angulo));
+            //System.out.println("funciona tanque de "+this.nombre+" :)");
         }
         return false;
     }

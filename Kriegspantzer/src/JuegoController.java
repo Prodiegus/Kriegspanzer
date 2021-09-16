@@ -34,12 +34,15 @@ public class JuegoController implements Initializable {
     @FXML private Spinner<Integer> vel = new Spinner<Integer>();
     @FXML private Spinner<String> dir = new Spinner<String>();
     
-    
     int turno=1;
     private Mapa mapa;
     private ArrayList<Jugador> jugadores = new ArrayList<Jugador>();
     TranslateTransition mover=new TranslateTransition();
     RotateTransition rotar=new RotateTransition();
+    
+    SpinnerValueFactory<Integer> cajaSpinner1 = new SpinnerValueFactory.IntegerSpinnerValueFactory(0,180,60); //(min,max,ejemplo)
+    SpinnerValueFactory<Integer> cajaSpinner3 = new SpinnerValueFactory.IntegerSpinnerValueFactory(0,300,50); //(min,max,ejemplo)
+
     
     @FXML public void scale(KeyEvent event){
         if(event.getCode().equals(KeyCode.R)){
@@ -53,58 +56,21 @@ public class JuegoController implements Initializable {
         Stage stage = (Stage) source.getScene().getWindow();
         stage.close();
     }
-    
-<<<<<<< Updated upstream
-    public void setMap(Mapa mapa){
-=======
     @FXML private void pressShoot(ActionEvent event) {
         if (turno==1){ //turno jugador 1
-            turnoPanel.setText("Turno: "+jugadores.get(0).getName());
-            //this.jugadores.get(0).Lanzamiento(vel.getValue(), ang.getValue());
-            System.out.println("se recibio "+jugadores.get(0).getName()+": vel="+vel.getValue()+", ang="+ang.getValue());
+            System.out.println(jugadores.get(0).Lanzamiento(vel.getValue(), ang.getValue()) ? "tiro correcto":"tiro fuera limite" );
+            //System.out.println("se recibio jugador1: vel="+vel.getValue()+", ang="+ang.getValue());
             turno++;
+            turnoPanel.setText("Turno: "+jugadores.get(1).getName());
         }
         else{   //turno jugador 2
-            turnoPanel.setText("Turno: "+jugadores.get(1).getName());
-            //this.jugadores.get(1).Lanzamiento(vel.getValue(), ang.getValue());
-            System.out.println("se recibio "+jugadores.get(1).getName()+": vel="+vel.getValue()+", ang="+ang.getValue());
+            System.out.println(jugadores.get(1).Lanzamiento(vel.getValue(), ang.getValue()) ? "tiro correcto":"tiro fuera limite" );
+            //System.out.println("se recibio jugador2: vel="+vel.getValue()+", ang="+ang.getValue());
             turno--;
+            turnoPanel.setText("Turno: "+jugadores.get(0).getName());
         }
-        /*
-        for (ImageView bala : balasImagen) {
-            bala.setVisible(true);
-        }
-        mover.setNode(balasImagen.get(0)); 
-        mover.setDuration(Duration.millis(1500)); //cuanto se demora en trasladarse
-        mover.setByX(200); //cuanto suma en coordenadas x|
-        mover.setByY(-200);//cuanto suma en coordenadas y
-
-        mover.play();
-        mover.stop();
-        */
-      
-        //balasImagen.get(0).setX((x)*altoScale);
-
-      
-
-        /*for (int i=0;i<200;i=i+20){
-            try {
-                
-                TimeUnit.SECONDS.sleep(1);
-            }
-            catch (Exception e) {
-                    System.out.println("Oops! Something went wrong!");
-            }
-            balasImagen.get(0).setX((jugadores.get(0).getTanque().getBala().getPosBala()[0]+i)*altoScale);
-
-
-        }*/
-            
-
-        
     }
-    public void setMap(int map, ActionEvent event){
->>>>>>> Stashed changes
+    public void setMap(Mapa mapa){
         mapaPanel.getStylesheets().clear();
         mapaPanel.getStylesheets().add("Estilos.css");
         mapaPanel.getStyleClass().add("map"+(mapa.getId()+1));
@@ -136,6 +102,7 @@ public class JuegoController implements Initializable {
                 if(campo[0]==x){
                     tanks.get(i).setY(campo[1]);
                     jugadores.get(i).getTanque().setPos((int)Math.round(x), campo[1]);
+                    System.out.println(jugadores.get(i).getTanque().getPos()[0]+","+jugadores.get(i).getTanque().getPos()[1]);
                     mapa.addTank((int)Math.round(x), campo[1]);
                 }
             }
@@ -192,12 +159,6 @@ public class JuegoController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        ObservableList<String> direcciones = FXCollections.observableArrayList("Izquierda","Derecha");
-        SpinnerValueFactory<Integer> cajaSpinner1 = new SpinnerValueFactory.IntegerSpinnerValueFactory(0,90,60); //(min,max,ejemplo)
-        SpinnerValueFactory<Integer> cajaSpinner3 = new SpinnerValueFactory.IntegerSpinnerValueFactory(0,1000,50); //(min,max,ejemplo)
-        SpinnerValueFactory<String>  cajaSpinner5 = new SpinnerValueFactory.ListSpinnerValueFactory<>(direcciones);
-        cajaSpinner5.setValue("Derecha");dir.setValueFactory(cajaSpinner5);
-        
         ang.setValueFactory(cajaSpinner1);ang.setEditable(true);
         vel.setValueFactory(cajaSpinner3);vel.setEditable(true);
     }
