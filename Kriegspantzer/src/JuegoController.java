@@ -34,6 +34,8 @@ public class JuegoController implements Initializable {
     @FXML private Spinner<Integer> vel = new Spinner<Integer>();
     @FXML private Spinner<String> dir = new Spinner<String>();
     
+    
+    int turno=1;
     private Mapa mapa;
     private ArrayList<Jugador> jugadores = new ArrayList<Jugador>();
     TranslateTransition mover=new TranslateTransition();
@@ -51,12 +53,58 @@ public class JuegoController implements Initializable {
         Stage stage = (Stage) source.getScene().getWindow();
         stage.close();
     }
-    //que este metodo lo vamos a eliminar
-    @FXML private void dispara(ActionEvent event){
-       
-    }
     
+<<<<<<< Updated upstream
     public void setMap(Mapa mapa){
+=======
+    @FXML private void pressShoot(ActionEvent event) {
+        if (turno==1){ //turno jugador 1
+            turnoPanel.setText("Turno: "+jugadores.get(0).getName());
+            //this.jugadores.get(0).Lanzamiento(vel.getValue(), ang.getValue());
+            System.out.println("se recibio "+jugadores.get(0).getName()+": vel="+vel.getValue()+", ang="+ang.getValue());
+            turno++;
+        }
+        else{   //turno jugador 2
+            turnoPanel.setText("Turno: "+jugadores.get(1).getName());
+            //this.jugadores.get(1).Lanzamiento(vel.getValue(), ang.getValue());
+            System.out.println("se recibio "+jugadores.get(1).getName()+": vel="+vel.getValue()+", ang="+ang.getValue());
+            turno--;
+        }
+        /*
+        for (ImageView bala : balasImagen) {
+            bala.setVisible(true);
+        }
+        mover.setNode(balasImagen.get(0)); 
+        mover.setDuration(Duration.millis(1500)); //cuanto se demora en trasladarse
+        mover.setByX(200); //cuanto suma en coordenadas x|
+        mover.setByY(-200);//cuanto suma en coordenadas y
+
+        mover.play();
+        mover.stop();
+        */
+      
+        //balasImagen.get(0).setX((x)*altoScale);
+
+      
+
+        /*for (int i=0;i<200;i=i+20){
+            try {
+                
+                TimeUnit.SECONDS.sleep(1);
+            }
+            catch (Exception e) {
+                    System.out.println("Oops! Something went wrong!");
+            }
+            balasImagen.get(0).setX((jugadores.get(0).getTanque().getBala().getPosBala()[0]+i)*altoScale);
+
+
+        }*/
+            
+
+        
+    }
+    public void setMap(int map, ActionEvent event){
+>>>>>>> Stashed changes
         mapaPanel.getStylesheets().clear();
         mapaPanel.getStylesheets().add("Estilos.css");
         mapaPanel.getStyleClass().add("map"+(mapa.getId()+1));
@@ -139,73 +187,7 @@ public class JuegoController implements Initializable {
         }
     }
 
-    @FXML public void pressShoot  (ActionEvent event) {
-        for (ImageView bala : balasImagen) {
-            bala.setVisible(true);
-        }
-        mover.setNode(balasImagen.get(0)); 
-        mover.setDuration(Duration.millis(1500));
-        mover.setByX(320);
-        mover.setByY(-320);
-        
-        mover.play();
-
-        
-        
-        //falta llamar el metodo de lanzamiento
-        /*
-        if ( "Izquierda".equals(dir.getValue())){
-            this.jugadores.get(0).Lanzamiento(vel.getValue(), ang.getValue(),1);
-        }
-        else{
-            this.jugadores.get(0).Lanzamiento(vel.getValue(), ang.getValue(),2);
-        }*/
-        
-
-        
-       
-
-
-        /*try{
-            balasImagen.get(0).setTranslateX(x);
-
-            Thread.sleep(1000);
-        }
-        catch(InterruptedException e){
-        }
-        Platform.runLater(new Runnable() {
-            @Override public void run() {
-                balasImagen.get(0).setTranslateX(x+10);
-                
-            }
-        });
-
-        
-
-        
-        
-        
-      
-        //balasImagen.get(0).setX((x)*altoScale);
-
-      
-
-        /*for (int i=0;i<200;i=i+20){
-            try {
-                
-                TimeUnit.SECONDS.sleep(1);
-            }
-            catch (Exception e) {
-                    System.out.println("Oops! Something went wrong!");
-            }
-            balasImagen.get(0).setX((jugadores.get(0).getTanque().getBala().getPosBala()[0]+i)*altoScale);
-
-
-        }*/
-            
-
-        
-    }
+    
 
 
     @Override

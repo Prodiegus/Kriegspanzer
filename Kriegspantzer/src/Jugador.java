@@ -8,9 +8,9 @@ public class Jugador{
         this.estado = true;
     }
     
-    public boolean Lanzamiento(double velocidad, double angulo, int sentido){
+    public boolean Lanzamiento(double velocidad, double angulo){
         if ( velocidad>=0 && (angulo>=0 && angulo<=360) ){
-            //tanque.Disparo(velocidad, angulo,sentido);
+            //tanque.disparo(velocidad, angulo);
             System.out.println("funciona tanque de "+this.nombre+" :)");
         }
         return false;

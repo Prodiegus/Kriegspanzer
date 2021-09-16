@@ -11,7 +11,8 @@ public class Tanque implements Monitor {
         this.bala=bala;
     }
 
-    public boolean disparo(double velocidad, double angulo,int sentido){
+    public boolean disparo(double velocidad, double angulo){
+        //bala.
         return false;
     }
 
