@@ -2,6 +2,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
+import java.util.concurrent.TimeUnit;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
@@ -22,6 +23,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import javafx.animation.RotateTransition;
 import javafx.animation.TranslateTransition;
+import javafx.application.Platform;
 import javafx.util.Duration;
 
 
@@ -32,7 +34,6 @@ public class JuegoController implements Initializable {
     @FXML private ArrayList<ImageView> tanks = new ArrayList<ImageView>();
     @FXML private Spinner<Integer> ang = new Spinner<Integer>();
     @FXML private Spinner<Integer> vel = new Spinner<Integer>();
-    @FXML private Spinner<String> dir = new Spinner<String>();
     
     int turno=1;
     private Mapa mapa;
@@ -56,20 +57,65 @@ public class JuegoController implements Initializable {
         Stage stage = (Stage) source.getScene().getWindow();
         stage.close();
     }
-    @FXML private void pressShoot(ActionEvent event) {
+    @FXML private void pressShoot(ActionEvent event) throws InterruptedException {
+        /* Al presionar el botón de disparo lo primero que debemos hacer es verificar
+           qué jugador es, para así poder hacer los lanzamientos por separados
+        */
         if (turno==1){ //turno jugador 1
             System.out.println(jugadores.get(0).Lanzamiento(vel.getValue(), ang.getValue()) ? "tiro correcto":"tiro fuera limite" );
-            //System.out.println("se recibio jugador1: vel="+vel.getValue()+", ang="+ang.getValue());
             turno++;
             turnoPanel.setText("Turno: "+jugadores.get(1).getName());
+            int [] posBala=jugadores.get(0).getTanque().getBala().getPosBala();
+            int auxBalaX=posBala[0],auxBalaY=posBala[1];
+            double tiempo=0;
+            moverBala(posBala[0],posBala[1],auxBalaX,auxBalaY,ang.getValue(),vel.getValue(),tiempo,0);
+            /*
+            while( (posX>=0 &&  posX<=733) && (posY>=0 && posY<=465) ){
+                posX= posBala[0]+vel.getValue()*Math.cos(Math.toRadians(ang.getValue()))*tiempo;
+                posY=posBala[1]+(vel.getValue()*Math.sin(Math.toRadians(ang.getValue()))*tiempo)-( 0.5*9.81*(tiempo)*(tiempo)) ;
+                
+                if ((posX>=0 &&  posX<=733) && (posY>=0 && posY<=465)){
+                    moverBala( auxBalaX,auxBalaY,(int)Math.round(posX),(int)Math.round(posY),0);
+                
+                    auxBalaX=(int)Math.round(posX);
+                    auxBalaY=(int)Math.round(posY);
+                    tiempo+=0.1;
+                }
+            }*/
         }
         else{   //turno jugador 2
             System.out.println(jugadores.get(1).Lanzamiento(vel.getValue(), ang.getValue()) ? "tiro correcto":"tiro fuera limite" );
-            //System.out.println("se recibio jugador2: vel="+vel.getValue()+", ang="+ang.getValue());
             turno--;
             turnoPanel.setText("Turno: "+jugadores.get(0).getName());
+            
         }
     }
+    
+    private boolean moverBala(int xI,double yI,double x,double y,int angulo,double velocidad,double tiempo,int jug)throws InterruptedException {
+        Platform.runLater( ()->{
+            try{
+                TimeUnit.MILLISECONDS.sleep(20);
+            }
+            catch(InterruptedException el){
+                el.printStackTrace();
+            }
+            if ( (x>=0 &&  x<=733) && (y>=0 && y<=465)){
+                balasImagen.get(jug).setX(x);
+                balasImagen.get(jug).setY(465-y);
+                //System.out.println("setea la posicion: ("+x+","+y+")");
+                try{
+                    moverBala(xI,yI,(xI+velocidad*Math.cos(Math.toRadians(angulo))*tiempo),(yI+velocidad*Math.sin(Math.toRadians(angulo))*tiempo-(0.5*9.81*(tiempo*tiempo))),angulo,velocidad,(tiempo+0.1),jug);
+                    
+                }
+                catch(InterruptedException e2){
+                    e2.printStackTrace();
+                }
+            }
+            
+        });
+        return false;
+    }
+    
     public void setMap(Mapa mapa){
         mapaPanel.getStylesheets().clear();
         mapaPanel.getStylesheets().add("Estilos.css");
@@ -106,7 +152,6 @@ public class JuegoController implements Initializable {
                     mapa.addTank((int)Math.round(x), campo[1]);
                 }
             }
-
             mapaPanel.getChildren().add(tanks.get(i));
         }
 
@@ -147,7 +192,6 @@ public class JuegoController implements Initializable {
             balasImagen.get(i).setX(jugadores.get(i).getTanque().getPos()[0]*altoScale);
             balasImagen.get(i).setY(jugadores.get(i).getTanque().getPos()[1]*anchoScale);
             }
-            balasImagen.get(i).setVisible(false);
             mapaPanel.getChildren().add(balasImagen.get(i));
             
         
@@ -159,6 +203,9 @@ public class JuegoController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        /*
+            Se inicializan los spinner con sus respectivos rangos
+        */
         ang.setValueFactory(cajaSpinner1);ang.setEditable(true);
         vel.setValueFactory(cajaSpinner3);vel.setEditable(true);
     }

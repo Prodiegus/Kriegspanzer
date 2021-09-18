@@ -12,7 +12,11 @@ public class Tanque {
     }
 
     public boolean disparo(double velocidad, double angulo){
-        this.bala.setPosBala(posTanque);//setea la posicion de la bala, antiguamente era (x,0)
+        /*
+            Setea la posicion de la bala, antiguamente era (x,0)
+            Luego calcular el lanzamiento con la bala del tanque
+        */
+        this.bala.setPosBala(posTanque);
         return (bala.calcularLanzamiento(bala, velocidad, angulo)==1);
     }
     
