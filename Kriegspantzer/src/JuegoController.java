@@ -61,32 +61,37 @@ public class JuegoController implements Initializable {
         /* Al presionar el botón de disparo lo primero que debemos hacer es verificar
            qué jugador es, para así poder hacer los lanzamientos por separados
         */
+        double tiempo=0;
         if (turno==1){ //turno jugador 1
-            System.out.println(jugadores.get(0).Lanzamiento(vel.getValue(), ang.getValue()) ? "tiro correcto":"tiro fuera limite" );
-            turno++;
-            turnoPanel.setText("Turno: "+jugadores.get(1).getName());
-            int [] posBala=jugadores.get(0).getTanque().getBala().getPosBala();
-            int auxBalaX=posBala[0],auxBalaY=posBala[1];
-            double tiempo=0;
-            moverBala(posBala[0],posBala[1],auxBalaX,auxBalaY,ang.getValue(),vel.getValue(),tiempo,0);
-            /*
-            while( (posX>=0 &&  posX<=733) && (posY>=0 && posY<=465) ){
-                posX= posBala[0]+vel.getValue()*Math.cos(Math.toRadians(ang.getValue()))*tiempo;
-                posY=posBala[1]+(vel.getValue()*Math.sin(Math.toRadians(ang.getValue()))*tiempo)-( 0.5*9.81*(tiempo)*(tiempo)) ;
-                
-                if ((posX>=0 &&  posX<=733) && (posY>=0 && posY<=465)){
-                    moverBala( auxBalaX,auxBalaY,(int)Math.round(posX),(int)Math.round(posY),0);
-                
-                    auxBalaX=(int)Math.round(posX);
-                    auxBalaY=(int)Math.round(posY);
-                    tiempo+=0.1;
-                }
-            }*/
+            if (jugadores.get(0).Lanzamiento(vel.getValue(), ang.getValue())){
+                //las posiciones que se ingresan de "y" están al revés, entonces debemos modificarlas al momento de pasarlas al moverBala
+                int [] posBala=jugadores.get(0).getTanque().getBala().getPosBala();
+
+                balasImagen.get(0).setVisible(true);
+                moverBala(posBala[0],(465-posBala[1]),posBala[0],(465-posBala[1]),ang.getValue(),vel.getValue(),tiempo,0);
+                turno++;
+                turnoPanel.setText("Turno: "+jugadores.get(1).getName());
+            }
+            else{
+                System.out.println("Tiro fuera de límite, intente de nuevo.");
+            }
+                  
+            
         }
         else{   //turno jugador 2
-            System.out.println(jugadores.get(1).Lanzamiento(vel.getValue(), ang.getValue()) ? "tiro correcto":"tiro fuera limite" );
-            turno--;
-            turnoPanel.setText("Turno: "+jugadores.get(0).getName());
+            if (jugadores.get(1).Lanzamiento(vel.getValue(), ang.getValue())){
+                //las posiciones que se ingresan de "y" están al revés, entonces debemos modificarlas al momento de pasarlas al moverBala
+                int [] posBala=jugadores.get(1).getTanque().getBala().getPosBala(); 
+
+                balasImagen.get(1).setVisible(true);
+                //les pasamos las coordenadas verdaderas al método, que representan en el plano XY
+                moverBala(posBala[0],(465-posBala[1]),posBala[0],(465-posBala[1]),ang.getValue(),vel.getValue(),tiempo,1);
+                turno--;
+                turnoPanel.setText("Turno: "+jugadores.get(0).getName());
+            }
+            else{
+                System.out.println("Tiro fuera de límite, intente de nuevo.");
+            }
             
         }
     }
@@ -94,22 +99,36 @@ public class JuegoController implements Initializable {
     private boolean moverBala(int xI,double yI,double x,double y,int angulo,double velocidad,double tiempo,int jug)throws InterruptedException {
         Platform.runLater( ()->{
             try{
-                TimeUnit.MILLISECONDS.sleep(20);
+                TimeUnit.MILLISECONDS.sleep(30);
             }
             catch(InterruptedException el){
                 el.printStackTrace();
             }
-            if ( (x>=0 &&  x<=733) && (y>=0 && y<=465)){
+            /*
+                Antes de inicar el proceso de recursión debemos verificar si las coordenadas que nos están entregando
+                son correctas, es decir que no sobre pasen los límites laterales, y que hasta el momento no pasen más abajo del cuadro.
+                A futuro debemos verificar que llegue al suelo
+            
+            */
+            if ( (x>=0 &&  x<=733) && (y>=0)){
                 balasImagen.get(jug).setX(x);
                 balasImagen.get(jug).setY(465-y);
                 //System.out.println("setea la posicion: ("+x+","+y+")");
                 try{
-                    moverBala(xI,yI,(xI+velocidad*Math.cos(Math.toRadians(angulo))*tiempo),(yI+velocidad*Math.sin(Math.toRadians(angulo))*tiempo-(0.5*9.81*(tiempo*tiempo))),angulo,velocidad,(tiempo+0.1),jug);
+                    if (angulo<=90){
+                        moverBala(xI,yI,(xI+velocidad*Math.cos(Math.toRadians(angulo))*tiempo),(yI+velocidad*Math.sin(Math.toRadians(angulo))*tiempo-(0.5*9.81*(tiempo*tiempo))),angulo,velocidad,(tiempo+0.1),jug);
+                    }
+                    else{
+                        moverBala(xI,yI,(xI+velocidad*Math.cos(Math.toRadians(angulo))*tiempo),(yI+velocidad*Math.sin(Math.toRadians(angulo))*tiempo-(0.5*9.81*(tiempo*tiempo))),angulo,velocidad,(tiempo+0.1),jug);
+                    }
                     
                 }
                 catch(InterruptedException e2){
                     e2.printStackTrace();
                 }
+            }
+            else{
+                balasImagen.get(jug).setVisible(false);
             }
             
         });
@@ -148,7 +167,7 @@ public class JuegoController implements Initializable {
                 if(campo[0]==x){
                     tanks.get(i).setY(campo[1]);
                     jugadores.get(i).getTanque().setPos((int)Math.round(x), campo[1]);
-                    System.out.println(jugadores.get(i).getTanque().getPos()[0]+","+jugadores.get(i).getTanque().getPos()[1]);
+                    //System.out.println(jugadores.get(i).getTanque().getPos()[0]+","+jugadores.get(i).getTanque().getPos()[1]);
                     mapa.addTank((int)Math.round(x), campo[1]);
                 }
             }
@@ -192,6 +211,7 @@ public class JuegoController implements Initializable {
             balasImagen.get(i).setX(jugadores.get(i).getTanque().getPos()[0]*altoScale);
             balasImagen.get(i).setY(jugadores.get(i).getTanque().getPos()[1]*anchoScale);
             }
+            balasImagen.get(i).setVisible(false);
             mapaPanel.getChildren().add(balasImagen.get(i));
             
         
