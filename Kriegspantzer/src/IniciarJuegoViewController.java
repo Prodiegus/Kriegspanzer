@@ -35,7 +35,7 @@ public class IniciarJuegoViewController implements Initializable {
     private int map;
     private Mapa mapa;
     
-
+    //a
     @FXML
     private boolean handlePlay(ActionEvent event) {
         
