@@ -11,6 +11,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.ImageCursor;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -129,7 +130,8 @@ public class IniciarJuegoViewController implements Initializable {
 
             EditorMapaController controller = loader.getController();
 
-
+            Image img = new Image("img/Cursor32x32.png");
+            scene.setCursor(new ImageCursor(img));
             controller.setMap(map+1);
             controller.iniciarMapa();
             stage.initModality(Modality.APPLICATION_MODAL);
