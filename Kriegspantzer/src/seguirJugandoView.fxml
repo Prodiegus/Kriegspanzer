@@ -11,13 +11,19 @@
 <?import javafx.scene.paint.Stop?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane id="AnchorPane" prefHeight="300.0" prefWidth="500.0" style="-fx-background-color: #facdcd;" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="SeguirJugandoViewController">
+<AnchorPane id="AnchorPane" prefHeight="348.0" prefWidth="500.0" style="-fx-background-color: #facdcd;" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="SeguirJugandoViewController">
    <children>
-      <Pane layoutX="12.0" layoutY="213.0" prefHeight="64.0" prefWidth="477.0">
+      <Pane layoutX="12.0" layoutY="206.0" prefHeight="155.0" prefWidth="477.0">
          <children>
-            <Button layoutX="25.0" layoutY="20.0" mnemonicParsing="false" onAction="#handleJugar" text="Seguir Jugando" />
-            <Button layoutX="144.0" layoutY="20.0" mnemonicParsing="false" onAction="#handleSalir" text="Salir Del Juego" />
-            <ImageView fitHeight="89.0" fitWidth="105.0" layoutX="358.0" layoutY="-24.0">
+            <Button layoutX="148.0" layoutY="14.0" mnemonicParsing="false" onAction="#handleJugar" text="Seguir Jugando">
+               <font>
+                  <Font size="22.0" />
+               </font></Button>
+            <Button layoutX="151.0" layoutY="78.0" mnemonicParsing="false" onAction="#handleSalir" text="Salir Del Juego">
+               <font>
+                  <Font size="22.0" />
+               </font></Button>
+            <ImageView fitHeight="89.0" fitWidth="105.0" layoutX="376.0" layoutY="-18.0">
                <image>
                   <Image url="@img/soldier.png" />
                </image>
@@ -26,7 +32,7 @@
       </Pane>
       <Pane layoutX="19.0" layoutY="14.0" prefHeight="192.0" prefWidth="466.0">
          <children>
-            <Label layoutX="14.0" layoutY="139.0" prefHeight="39.0" prefWidth="118.0" text="Ha ganado:">
+            <Label layoutX="179.0" layoutY="113.0" prefHeight="39.0" prefWidth="118.0" text="Gewinner">
                <textFill>
                   <LinearGradient cycleMethod="REFLECT" endY="1.0" startX="1.0">
                      <stops>
@@ -78,7 +84,7 @@
                   </LinearGradient>
                </textFill>
             </Label>
-            <Label fx:id="ganador" layoutX="132.0" layoutY="139.0" prefHeight="39.0" prefWidth="329.0">
+            <Label fx:id="ganador" contentDisplay="CENTER" layoutX="69.0" layoutY="152.0" prefHeight="39.0" prefWidth="329.0" textAlignment="CENTER">
                <textFill>
                   <LinearGradient cycleMethod="REFLECT" endY="1.0" startX="1.0">
                      <stops>
@@ -104,6 +110,11 @@
                   <Font name="Rockwell Bold" size="25.0" />
                </font>
             </Label>
+            <ImageView fitHeight="89.0" fitWidth="105.0" layoutX="-5.0" layoutY="170.0">
+               <image>
+                  <Image url="@img/soldier.png" />
+               </image>
+            </ImageView>
          </children>
       </Pane>
    </children>
