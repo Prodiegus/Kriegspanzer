@@ -1,4 +1,4 @@
-public class Bala implements Monitor {
+public class Bala{
     private int [] posBala;
     private boolean estado_bala;
     private double velocidad;
@@ -7,7 +7,9 @@ public class Bala implements Monitor {
         this.posBala=posBala;
     }
     public int calcularLanzamiento(Bala bala,double velocidad, double angulo){
-        double posX=posBala[0];double tFinal;double posY=0;
+        double posX=posBala[0];
+        double tFinal;
+        double posY=0;
         if (angulo>90){
             tFinal=(-posX)/(velocidad*Math.cos(Math.toRadians(180-angulo)));
             posY=posBala[1]-(velocidad*Math.sin(Math.toRadians(180-angulo))*tFinal)-( 0.5*9.81*(tFinal)*(tFinal)) ;

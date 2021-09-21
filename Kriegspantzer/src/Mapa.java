@@ -3,7 +3,7 @@ import java.util.ArrayList;
 
 public class Mapa implements Serializable{
     private int mapId;
-    private enum Area{AIRE, SOLIDO, CAMPO, TANQUE}
+    public enum Area{AIRE, SOLIDO, CAMPO, TANQUE}
     private Area[][] mapeo =new Area[733][465];
     private ArrayList<int[]> campos = new ArrayList<int[]>();
     Mapa(int mapId){

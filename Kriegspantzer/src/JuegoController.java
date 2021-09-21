@@ -3,6 +3,8 @@ import java.util.ArrayList;
 import java.util.ResourceBundle;
 import java.util.concurrent.TimeUnit;
 
+import javax.swing.JOptionPane;
+
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -67,7 +69,7 @@ public class JuegoController implements Initializable {
                 turnoPanel.setText("Turno: "+jugadores.get(1).getName());
             }
             else{
-                System.out.println("Tiro fuera de límite, intente de nuevo.");
+                JOptionPane.showMessageDialog(null, "Tiro fuera de límite, intente de nuevo.");
             }
                   
             
@@ -84,7 +86,7 @@ public class JuegoController implements Initializable {
                 turnoPanel.setText("Turno: "+jugadores.get(0).getName());
             }
             else{
-                System.out.println("Tiro fuera de límite, intente de nuevo.");
+                JOptionPane.showMessageDialog(null, "Tiro fuera de límite, intente de nuevo.");
             }
             
         }
@@ -109,7 +111,7 @@ public class JuegoController implements Initializable {
                 balasImagen.get(jug).setY(465-y);
                 //System.out.println("setea la posicion: ("+x+","+y+")");
                 try{
-                    if (angulo<=90){
+                    if(angulo<=90){
                         moverBala(xI,yI,(xI+velocidad*Math.cos(Math.toRadians(angulo))*tiempo),(yI+velocidad*Math.sin(Math.toRadians(angulo))*tiempo-(0.5*9.81*(tiempo*tiempo))),angulo,velocidad,(tiempo+0.1),jug);
                     }
                     else{
