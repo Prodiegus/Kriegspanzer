@@ -34,7 +34,7 @@ public class JuegoController implements Initializable {
     @FXML private Spinner<Integer> ang = new Spinner<Integer>();
     @FXML private Spinner<Integer> vel = new Spinner<Integer>();
     
-    int turno=1;
+    int turno=0;
     private Mapa mapa;
     private ArrayList<Jugador> jugadores = new ArrayList<Jugador>();
     private boolean flag=true;
@@ -63,36 +63,18 @@ public class JuegoController implements Initializable {
         double tiempo=0;
         
         if(flag){ //mientras el flag sea verdadero, es decir mientras no exista un ganador, sigue el juego
-            if (turno==1){ //turno jugador 1
-                if (jugadores.get(0).Lanzamiento(vel.getValue(), ang.getValue()) && flag){
-                    //las posiciones que se ingresan de "y" están al revés, entonces debemos modificarlas al momento de pasarlas al moverBala
-                    int [] posBala=jugadores.get(0).getTanque().getBala().getPosBala();
+            if (jugadores.get(turno).Lanzamiento(vel.getValue(), ang.getValue()) && flag){
+                //las posiciones que se ingresan de "y" están al revés, entonces debemos modificarlas al momento de pasarlas al moverBala
+                int [] posBala=jugadores.get(turno).getTanque().getBala().getPosBala();
 
-                    balasImagen.get(0).setVisible(true);
-                    moverBala(posBala[0],(465-posBala[1]),posBala[0],(465-posBala[1]),ang.getValue(),vel.getValue(),tiempo,turno-2, event);
-                    turno++;
-                    turnoPanel.setText("Turno: "+jugadores.get(1).getName());
-                }
-                else{
-                    JOptionPane.showMessageDialog(null, "Tiro fuera de límite, intente de nuevo.");
-                }
+                balasImagen.get(turno).setVisible(true);
+                //les pasamos las coordenadas verdaderas al método, que representan en el plano XY
+                moverBala(posBala[0],(465-posBala[1]),posBala[0],(465-posBala[1]),ang.getValue(),vel.getValue(),tiempo,0);
+                turno++;
+                turnoPanel.setText("Turno: "+jugadores.get(turno).getName());
             }
-            else{   //turno jugador 2
-                if (jugadores.get(1).Lanzamiento(vel.getValue(), ang.getValue()) && flag){
-                    //las posiciones que se ingresan de "y" están al revés, entonces debemos modificarlas al momento de pasarlas al moverBala
-                    int [] posBala=jugadores.get(1).getTanque().getBala().getPosBala(); 
-
-                    balasImagen.get(1).setVisible(true);
-                    //les pasamos las coordenadas verdaderas al método, que representan en el plano XY
-                    moverBala(posBala[0],(465-posBala[1]),posBala[0],(465-posBala[1]),ang.getValue(),vel.getValue(),tiempo,turno-2, event);
-
-                    turno--;
-                    turnoPanel.setText("Turno: "+jugadores.get(0).getName());
-
-                }
-                else{
+            else{
                     JOptionPane.showMessageDialog(null, "Tiro fuera de límite, intente de nuevo.");
-                }
             }
         }
         else{
