@@ -1,3 +1,4 @@
+import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
@@ -7,8 +8,11 @@ import javax.swing.JOptionPane;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -17,9 +21,8 @@ import javafx.scene.control.Spinner;
 import javafx.scene.control.SpinnerValueFactory;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
-import javafx.animation.RotateTransition;
-import javafx.animation.TranslateTransition;
 import javafx.application.Platform;
 
 
@@ -34,8 +37,6 @@ public class JuegoController implements Initializable {
     int turno=1;
     private Mapa mapa;
     private ArrayList<Jugador> jugadores = new ArrayList<Jugador>();
-    TranslateTransition mover=new TranslateTransition();
-    RotateTransition rotar=new RotateTransition();
     private boolean flag=true;
     
     
@@ -68,7 +69,7 @@ public class JuegoController implements Initializable {
                     int [] posBala=jugadores.get(0).getTanque().getBala().getPosBala();
 
                     balasImagen.get(0).setVisible(true);
-                    moverBala(posBala[0],(465-posBala[1]),posBala[0],(465-posBala[1]),ang.getValue(),vel.getValue(),tiempo,0);
+                    moverBala(posBala[0],(465-posBala[1]),posBala[0],(465-posBala[1]),ang.getValue(),vel.getValue(),tiempo,turno-2, event);
                     turno++;
                     turnoPanel.setText("Turno: "+jugadores.get(1).getName());
                 }
@@ -83,7 +84,7 @@ public class JuegoController implements Initializable {
 
                     balasImagen.get(1).setVisible(true);
                     //les pasamos las coordenadas verdaderas al método, que representan en el plano XY
-                    moverBala(posBala[0],(465-posBala[1]),posBala[0],(465-posBala[1]),ang.getValue(),vel.getValue(),tiempo,1);
+                    moverBala(posBala[0],(465-posBala[1]),posBala[0],(465-posBala[1]),ang.getValue(),vel.getValue(),tiempo,turno-2, event);
 
                     turno--;
                     turnoPanel.setText("Turno: "+jugadores.get(0).getName());
@@ -95,12 +96,36 @@ public class JuegoController implements Initializable {
             }
         }
         else{
-            JOptionPane.showMessageDialog(null, "EL JUEGO TERMINÓ.");
+           cargarPantallaFinal(event); 
         }
         
     }
-    
-    private boolean moverBala(int xI,double yI,double x,double y,int angulo,double velocidad,double tiempo,int jug)throws InterruptedException {
+    @FXML
+    private void cargarPantallaFinal(ActionEvent event){
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("seguirJugandoView.fxml"));
+
+            Parent root = loader.load();
+            Scene scene = new Scene(root);
+            Stage stage = new Stage();
+
+            SeguirJugandoViewController controller = loader.getController();
+
+            controller.setGanador(jugadores.get(turno-2).getName());
+            stage.initModality(Modality.APPLICATION_MODAL);
+            stage.setResizable(false);
+            stage.setTitle("Kriegspanzer End Game");
+            stage.getIcons().add(new Image(getClass().getResourceAsStream("img/icon.png")));
+            stage.setScene(scene);
+            stage.show();
+            close(event);
+            
+        } catch (IOException e) {
+            //en caso de que algo salga mal mostraremos el siguiente mensaje
+            JOptionPane.showMessageDialog(null, "Error 011:\nNo ha sido posible cargar el Fanal del juego\n"+e.getCause());
+        }
+    }
+    private boolean moverBala(int xI,double yI,double x,double y,int angulo,double velocidad,double tiempo,int jug, ActionEvent event)throws InterruptedException {
         Platform.runLater( ()->{
             try{
                 TimeUnit.MILLISECONDS.sleep(30);
@@ -120,10 +145,10 @@ public class JuegoController implements Initializable {
                 //System.out.println("setea la posicion: ("+x+","+y+") - es ¿aire?: "+ mapa.comprobarCoordenadaAire((int)Math.round(x),(int)Math.round(465-y)));
                 try{
                     if(angulo<=90){
-                        moverBala(xI,yI,(xI+velocidad*Math.cos(Math.toRadians(angulo))*tiempo),(yI+velocidad*Math.sin(Math.toRadians(angulo))*tiempo-(0.5*9.81*(tiempo*tiempo))),angulo,velocidad,(tiempo+0.1),jug);
+                        moverBala(xI,yI,(xI+velocidad*Math.cos(Math.toRadians(angulo))*tiempo),(yI+velocidad*Math.sin(Math.toRadians(angulo))*tiempo-(0.5*9.81*(tiempo*tiempo))),angulo,velocidad,(tiempo+0.1),jug, event);
                     }
                     else{
-                        moverBala(xI,yI,(xI+velocidad*Math.cos(Math.toRadians(angulo))*tiempo),(yI+velocidad*Math.sin(Math.toRadians(angulo))*tiempo-(0.5*9.81*(tiempo*tiempo))),angulo,velocidad,(tiempo+0.1),jug);
+                        moverBala(xI,yI,(xI+velocidad*Math.cos(Math.toRadians(angulo))*tiempo),(yI+velocidad*Math.sin(Math.toRadians(angulo))*tiempo-(0.5*9.81*(tiempo*tiempo))),angulo,velocidad,(tiempo+0.1),jug, event);
                     }
                     
                 }
@@ -134,8 +159,8 @@ public class JuegoController implements Initializable {
             else{
                 //toca tanque
                 if (mapa.comprobarCoordenadaTanque((int)Math.round(x),(int)Math.round(464-y))){
-                    this.flag=false;System.out.println("cambia el flag");
-                    JOptionPane.showMessageDialog(null, "Impacta al tanque del otro jugador.");
+                    this.flag=false;
+                    cargarPantallaFinal(event);
                    
                 }
                 balasImagen.get(jug).setVisible(false);
