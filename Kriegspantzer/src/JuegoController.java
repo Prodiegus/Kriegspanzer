@@ -69,7 +69,7 @@ public class JuegoController implements Initializable {
 
                 balasImagen.get(turno).setVisible(true);
                 //les pasamos las coordenadas verdaderas al método, que representan en el plano XY
-                moverBala(posBala[0],(465-posBala[1]),posBala[0],(465-posBala[1]),ang.getValue(),vel.getValue(),tiempo,0);
+                moverBala(posBala[0],(465-posBala[1]),posBala[0],(465-posBala[1]),ang.getValue(),vel.getValue(),tiempo, turno, event);
                 turno++;
                 turnoPanel.setText("Turno: "+jugadores.get(turno).getName());
             }
@@ -93,7 +93,7 @@ public class JuegoController implements Initializable {
 
             SeguirJugandoViewController controller = loader.getController();
 
-            controller.setGanador(jugadores.get(turno-2).getName());
+            controller.setGanador(jugadores.get(turno).getName());
             stage.initModality(Modality.APPLICATION_MODAL);
             stage.setResizable(false);
             stage.setTitle("Kriegspanzer End Game");
