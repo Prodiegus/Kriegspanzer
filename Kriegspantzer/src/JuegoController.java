@@ -2,6 +2,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
+import java.util.concurrent.TimeUnit;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
@@ -22,6 +23,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import javafx.animation.RotateTransition;
 import javafx.animation.TranslateTransition;
+import javafx.application.Platform;
 import javafx.util.Duration;
 
 
@@ -35,12 +37,16 @@ public class JuegoController implements Initializable {
     @FXML private ArrayList<ImageView> tanks = new ArrayList<ImageView>();
     @FXML private Spinner<Integer> ang = new Spinner<Integer>();
     @FXML private Spinner<Integer> vel = new Spinner<Integer>();
-    @FXML private Spinner<String> dir = new Spinner<String>();
     
+    int turno=1;
     private Mapa mapa;
     private ArrayList<Jugador> jugadores = new ArrayList<Jugador>();
     TranslateTransition mover=new TranslateTransition();
     RotateTransition rotar=new RotateTransition();
+    
+    SpinnerValueFactory<Integer> cajaSpinner1 = new SpinnerValueFactory.IntegerSpinnerValueFactory(0,180,60); //(min,max,ejemplo)
+    SpinnerValueFactory<Integer> cajaSpinner3 = new SpinnerValueFactory.IntegerSpinnerValueFactory(0,300,50); //(min,max,ejemplo)
+
     
     @FXML public void scale(KeyEvent event){
         if(event.getCode().equals(KeyCode.R)){
@@ -54,12 +60,85 @@ public class JuegoController implements Initializable {
         Stage stage = (Stage) source.getScene().getWindow();
         stage.close();
     }
-    //que este metodo lo vamos a eliminar
-    @FXML private void dispara(ActionEvent event){
-       
+    @FXML private void pressShoot(ActionEvent event) throws InterruptedException {
+        /* Al presionar el botón de disparo lo primero que debemos hacer es verificar
+           qué jugador es, para así poder hacer los lanzamientos por separados
+        */
+        double tiempo=0;
+        if (turno==1){ //turno jugador 1
+            if (jugadores.get(0).Lanzamiento(vel.getValue(), ang.getValue())){
+                //las posiciones que se ingresan de "y" están al revés, entonces debemos modificarlas al momento de pasarlas al moverBala
+                int [] posBala=jugadores.get(0).getTanque().getBala().getPosBala();
+
+                balasImagen.get(0).setVisible(true);
+                moverBala(posBala[0],(465-posBala[1]),posBala[0],(465-posBala[1]),ang.getValue(),vel.getValue(),tiempo,0);
+                turno++;
+                turnoPanel.setText("Turno: "+jugadores.get(1).getName());
+            }
+            else{
+                System.out.println("Tiro fuera de límite, intente de nuevo.");
+            }
+                  
+            
+        }
+        else{   //turno jugador 2
+            if (jugadores.get(1).Lanzamiento(vel.getValue(), ang.getValue())){
+                //las posiciones que se ingresan de "y" están al revés, entonces debemos modificarlas al momento de pasarlas al moverBala
+                int [] posBala=jugadores.get(1).getTanque().getBala().getPosBala(); 
+
+                balasImagen.get(1).setVisible(true);
+                //les pasamos las coordenadas verdaderas al método, que representan en el plano XY
+                moverBala(posBala[0],(465-posBala[1]),posBala[0],(465-posBala[1]),ang.getValue(),vel.getValue(),tiempo,1);
+                turno--;
+                turnoPanel.setText("Turno: "+jugadores.get(0).getName());
+            }
+            else{
+                System.out.println("Tiro fuera de límite, intente de nuevo.");
+            }
+            
+        }
     }
     
-    public void setMap(int map, ActionEvent event){
+    private boolean moverBala(int xI,double yI,double x,double y,int angulo,double velocidad,double tiempo,int jug)throws InterruptedException {
+        Platform.runLater( ()->{
+            try{
+                TimeUnit.MILLISECONDS.sleep(30);
+            }
+            catch(InterruptedException el){
+                el.printStackTrace();
+            }
+            /*
+                Antes de inicar el proceso de recursión debemos verificar si las coordenadas que nos están entregando
+                son correctas, es decir que no sobre pasen los límites laterales, y que hasta el momento no pasen más abajo del cuadro.
+                A futuro debemos verificar que llegue al suelo
+            
+            */
+            if ( (x>=0 &&  x<=733) && (y>=0)){
+                balasImagen.get(jug).setX(x);
+                balasImagen.get(jug).setY(465-y);
+                //System.out.println("setea la posicion: ("+x+","+y+")");
+                try{
+                    if (angulo<=90){
+                        moverBala(xI,yI,(xI+velocidad*Math.cos(Math.toRadians(angulo))*tiempo),(yI+velocidad*Math.sin(Math.toRadians(angulo))*tiempo-(0.5*9.81*(tiempo*tiempo))),angulo,velocidad,(tiempo+0.1),jug);
+                    }
+                    else{
+                        moverBala(xI,yI,(xI+velocidad*Math.cos(Math.toRadians(angulo))*tiempo),(yI+velocidad*Math.sin(Math.toRadians(angulo))*tiempo-(0.5*9.81*(tiempo*tiempo))),angulo,velocidad,(tiempo+0.1),jug);
+                    }
+                    
+                }
+                catch(InterruptedException e2){
+                    e2.printStackTrace();
+                }
+            }
+            else{
+                balasImagen.get(jug).setVisible(false);
+            }
+            
+        });
+        return false;
+    }
+    
+    public void setMap(Mapa mapa){
         mapaPanel.getStylesheets().clear();
         mapaPanel.getStylesheets().add("Estilos.css");
         mapaPanel.getStyleClass().add("map"+(map+1));
@@ -96,10 +175,10 @@ public class JuegoController implements Initializable {
                 if(campo[0]==x){
                     tanks.get(i).setY(campo[1]);
                     jugadores.get(i).getTanque().setPos((int)Math.round(x), campo[1]);
+                    //System.out.println(jugadores.get(i).getTanque().getPos()[0]+","+jugadores.get(i).getTanque().getPos()[1]);
+                    mapa.addTank((int)Math.round(x), campo[1]);
                 }
             }
-            
-                
             mapaPanel.getChildren().add(tanks.get(i));
         }
 
@@ -147,83 +226,14 @@ public class JuegoController implements Initializable {
         }
     }
 
-    @FXML public void pressShoot  (ActionEvent event) {
-        for (ImageView bala : balasImagen) {
-            bala.setVisible(true);
-        }
-        mover.setNode(balasImagen.get(0)); 
-        mover.setDuration(Duration.millis(1500));
-        mover.setByX(320);
-        mover.setByY(-320);
-        
-        mover.play();
-
-        
-        
-        //falta llamar el metodo de lanzamiento
-        /*
-        if ( "Izquierda".equals(dir.getValue())){
-            this.jugadores.get(0).Lanzamiento(vel.getValue(), ang.getValue(),1);
-        }
-        else{
-            this.jugadores.get(0).Lanzamiento(vel.getValue(), ang.getValue(),2);
-        }*/
-        
-
-        
-       
-
-
-        /*try{
-            balasImagen.get(0).setTranslateX(x);
-
-            Thread.sleep(1000);
-        }
-        catch(InterruptedException e){
-        }
-        Platform.runLater(new Runnable() {
-            @Override public void run() {
-                balasImagen.get(0).setTranslateX(x+10);
-                
-            }
-        });
-
-        
-
-        
-        
-        
-      
-        //balasImagen.get(0).setX((x)*altoScale);
-
-      
-
-        /*for (int i=0;i<200;i=i+20){
-            try {
-                
-                TimeUnit.SECONDS.sleep(1);
-            }
-            catch (Exception e) {
-                    System.out.println("Oops! Something went wrong!");
-            }
-            balasImagen.get(0).setX((jugadores.get(0).getTanque().getBala().getPosBala()[0]+i)*altoScale);
-
-
-        }*/
-            
-
-        
-    }
+    
 
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        ObservableList<String> direcciones = FXCollections.observableArrayList("Izquierda","Derecha");
-        SpinnerValueFactory<Integer> cajaSpinner1 = new SpinnerValueFactory.IntegerSpinnerValueFactory(0,90,60); //(min,max,ejemplo)
-        SpinnerValueFactory<Integer> cajaSpinner3 = new SpinnerValueFactory.IntegerSpinnerValueFactory(0,1000,50); //(min,max,ejemplo)
-        SpinnerValueFactory<String>  cajaSpinner5 = new SpinnerValueFactory.ListSpinnerValueFactory<>(direcciones);
-        cajaSpinner5.setValue("Derecha");dir.setValueFactory(cajaSpinner5);
-        
+        /*
+            Se inicializan los spinner con sus respectivos rangos
+        */
         ang.setValueFactory(cajaSpinner1);ang.setEditable(true);
         vel.setValueFactory(cajaSpinner3);vel.setEditable(true);
     }
