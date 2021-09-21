@@ -68,8 +68,13 @@ public class JuegoController implements Initializable {
 
                 balasImagen.get(turno).setVisible(true);
                 //les pasamos las coordenadas verdaderas al método, que representan en el plano XY
-                moverBala(posBala[0],(465-posBala[1]),posBala[0],(465-posBala[1]),ang.getValue(),vel.getValue(),tiempo,0);
-                turno++;
+                moverBala(posBala[0],(465-posBala[1]),posBala[0],(465-posBala[1]),ang.getValue(),vel.getValue(),tiempo,turno);
+                if (turno==1){
+                    turno--;
+                }
+                else{
+                    turno++;
+                }
                 turnoPanel.setText("Turno: "+jugadores.get(turno).getName());
             }
             else{
