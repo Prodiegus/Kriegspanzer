@@ -9,6 +9,7 @@ public class Mapa implements Serializable{
     Mapa(int mapId){
         this.mapId = mapId;
     }
+
     public void fillAire() {
         for(int i=0; i<733;i++){
             for(int j=0; j<465;j++){
@@ -16,6 +17,19 @@ public class Mapa implements Serializable{
             }
         }
     }
+
+    public boolean comprobarCoordenadaSolido(int x, int y) {
+        return mapeo[x][y] == Area.SOLIDO;
+    }
+
+    public boolean comprobarCoordenadaTanque(int x, int y) {
+        return mapeo[x][y] == Area.TANQUE;
+    }
+
+    public boolean comprobarCoordenadaAire(int x, int y) {
+        return mapeo[x][y] == Area.TANQUE;
+    }
+
     public void setAreas(int x, int y) {
         for(int i=y; i<465; i++){
             this.mapeo[x][i] = Area.SOLIDO;
