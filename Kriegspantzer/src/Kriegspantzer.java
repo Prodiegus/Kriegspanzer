@@ -16,7 +16,7 @@ public class Kriegspantzer extends Application {
 
         IniciarJuegoViewController controller = loader.getController();
 
-        String[] colors = {"Azul", "Verde", "Amarillo", "Rojo", "Morado", "Naranja"};
+        String[] colors = {"Azul", "Verde", "Amarillo", "Rojo", "Morado", "Naranja", "Negro"};
 
         controller.setBoxes(colors);
         controller.setMap();
