@@ -36,9 +36,11 @@ public class JuegoController implements Initializable {
     private ArrayList<Jugador> jugadores = new ArrayList<Jugador>();
     TranslateTransition mover=new TranslateTransition();
     RotateTransition rotar=new RotateTransition();
+    private boolean flag=true;
+    
     
     SpinnerValueFactory<Integer> cajaSpinner1 = new SpinnerValueFactory.IntegerSpinnerValueFactory(0,180,60); //(min,max,ejemplo)
-    SpinnerValueFactory<Integer> cajaSpinner3 = new SpinnerValueFactory.IntegerSpinnerValueFactory(0,300,50); //(min,max,ejemplo)
+    SpinnerValueFactory<Integer> cajaSpinner3 = new SpinnerValueFactory.IntegerSpinnerValueFactory(0,300,68); //(min,max,ejemplo)
 
     
     @FXML public void scale(KeyEvent event){
@@ -58,38 +60,44 @@ public class JuegoController implements Initializable {
            qué jugador es, para así poder hacer los lanzamientos por separados
         */
         double tiempo=0;
-        if (turno==1){ //turno jugador 1
-            if (jugadores.get(0).Lanzamiento(vel.getValue(), ang.getValue())){
-                //las posiciones que se ingresan de "y" están al revés, entonces debemos modificarlas al momento de pasarlas al moverBala
-                int [] posBala=jugadores.get(0).getTanque().getBala().getPosBala();
+        
+        if(flag){ //mientras el flag sea verdadero, es decir mientras no exista un ganador, sigue el juego
+            if (turno==1){ //turno jugador 1
+                if (jugadores.get(0).Lanzamiento(vel.getValue(), ang.getValue()) && flag){
+                    //las posiciones que se ingresan de "y" están al revés, entonces debemos modificarlas al momento de pasarlas al moverBala
+                    int [] posBala=jugadores.get(0).getTanque().getBala().getPosBala();
 
-                balasImagen.get(0).setVisible(true);
-                moverBala(posBala[0],(465-posBala[1]),posBala[0],(465-posBala[1]),ang.getValue(),vel.getValue(),tiempo,0);
-                turno++;
-                turnoPanel.setText("Turno: "+jugadores.get(1).getName());
+                    balasImagen.get(0).setVisible(true);
+                    moverBala(posBala[0],(465-posBala[1]),posBala[0],(465-posBala[1]),ang.getValue(),vel.getValue(),tiempo,0);
+                    turno++;
+                    turnoPanel.setText("Turno: "+jugadores.get(1).getName());
+                }
+                else{
+                    JOptionPane.showMessageDialog(null, "Tiro fuera de límite, intente de nuevo.");
+                }
             }
-            else{
-                JOptionPane.showMessageDialog(null, "Tiro fuera de límite, intente de nuevo.");
-            }
-                  
-            
-        }
-        else{   //turno jugador 2
-            if (jugadores.get(1).Lanzamiento(vel.getValue(), ang.getValue())){
-                //las posiciones que se ingresan de "y" están al revés, entonces debemos modificarlas al momento de pasarlas al moverBala
-                int [] posBala=jugadores.get(1).getTanque().getBala().getPosBala(); 
+            else{   //turno jugador 2
+                if (jugadores.get(1).Lanzamiento(vel.getValue(), ang.getValue()) && flag){
+                    //las posiciones que se ingresan de "y" están al revés, entonces debemos modificarlas al momento de pasarlas al moverBala
+                    int [] posBala=jugadores.get(1).getTanque().getBala().getPosBala(); 
 
-                balasImagen.get(1).setVisible(true);
-                //les pasamos las coordenadas verdaderas al método, que representan en el plano XY
-                moverBala(posBala[0],(465-posBala[1]),posBala[0],(465-posBala[1]),ang.getValue(),vel.getValue(),tiempo,1);
-                turno--;
-                turnoPanel.setText("Turno: "+jugadores.get(0).getName());
+                    balasImagen.get(1).setVisible(true);
+                    //les pasamos las coordenadas verdaderas al método, que representan en el plano XY
+                    moverBala(posBala[0],(465-posBala[1]),posBala[0],(465-posBala[1]),ang.getValue(),vel.getValue(),tiempo,1);
+
+                    turno--;
+                    turnoPanel.setText("Turno: "+jugadores.get(0).getName());
+
+                }
+                else{
+                    JOptionPane.showMessageDialog(null, "Tiro fuera de límite, intente de nuevo.");
+                }
             }
-            else{
-                JOptionPane.showMessageDialog(null, "Tiro fuera de límite, intente de nuevo.");
-            }
-            
         }
+        else{
+            JOptionPane.showMessageDialog(null, "EL JUEGO TERMINÓ.");
+        }
+        
     }
     
     private boolean moverBala(int xI,double yI,double x,double y,int angulo,double velocidad,double tiempo,int jug)throws InterruptedException {
@@ -106,10 +114,10 @@ public class JuegoController implements Initializable {
                 A futuro debemos verificar que llegue al suelo
             
             */
-            if ( (x>=0 &&  x<=733) && (y>=0)){
+            if ( (x>=0 &&  x<=733) && (y>=0) && mapa.comprobarCoordenadaAire((int)Math.round(x),(int)Math.round(464-y))){
                 balasImagen.get(jug).setX(x);
                 balasImagen.get(jug).setY(465-y);
-                //System.out.println("setea la posicion: ("+x+","+y+")");
+                //System.out.println("setea la posicion: ("+x+","+y+") - es ¿aire?: "+ mapa.comprobarCoordenadaAire((int)Math.round(x),(int)Math.round(465-y)));
                 try{
                     if(angulo<=90){
                         moverBala(xI,yI,(xI+velocidad*Math.cos(Math.toRadians(angulo))*tiempo),(yI+velocidad*Math.sin(Math.toRadians(angulo))*tiempo-(0.5*9.81*(tiempo*tiempo))),angulo,velocidad,(tiempo+0.1),jug);
@@ -124,6 +132,12 @@ public class JuegoController implements Initializable {
                 }
             }
             else{
+                //toca tanque
+                if (mapa.comprobarCoordenadaTanque((int)Math.round(x),(int)Math.round(464-y))){
+                    this.flag=false;System.out.println("cambia el flag");
+                    JOptionPane.showMessageDialog(null, "Impacta al tanque del otro jugador.");
+                   
+                }
                 balasImagen.get(jug).setVisible(false);
             }
             
