@@ -27,7 +27,7 @@ public class Mapa implements Serializable{
     }
 
     public boolean comprobarCoordenadaAire(int x, int y) {
-        return mapeo[x][y] == Area.TANQUE;
+        return mapeo[x][y] == Area.AIRE;
     }
 
     public void setAreas(int x, int y) {
