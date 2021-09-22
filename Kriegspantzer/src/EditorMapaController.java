@@ -8,6 +8,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.Cursor;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
@@ -19,8 +20,18 @@ public class EditorMapaController implements Initializable{
     @FXML private Label mouseLb;    
 
     private int map;
+    private boolean editarCampos = false;
 
     private Mapa mapa = new Mapa(map);
+
+    @FXML
+    private void handleCampos(ActionEvent event){
+        this.editarCampos = true;
+    }
+    @FXML
+    private void handleAreas(ActionEvent event){
+        this.editarCampos = false;
+    }
 
     @FXML
     private void handleMouseMove(MouseEvent event){
@@ -36,7 +47,11 @@ public class EditorMapaController implements Initializable{
         mouseLb.setText("Mouse pos: ("+mouseX+"<-->"+mouseY+
                         ")\nPanel size: "+ancho+"X"+alto+
                         "\nPanel Scale: "+altoScale+"X"+anchoScale);
-        mapa.setMapeado(mouseX, mouseY);
+        if(editarCampos){
+            mapa.setCampos(mouseX, mouseY);
+        }else{
+            mapa.setAreas(mouseX, mouseY);
+        }
     }
     public void iniciarMapa() {
         mapa.fillAire();

@@ -1,4 +1,4 @@
-public class Tanque implements Monitor {
+public class Tanque {
     private String color;
     private int [] posTanque;
     private int barraVida;
@@ -12,9 +12,14 @@ public class Tanque implements Monitor {
     }
 
     public boolean disparo(double velocidad, double angulo){
-        //bala.
-        return false;
+        /*
+            Setea la posicion de la bala, antiguamente era (x,0)
+            Luego calcular el lanzamiento con la bala del tanque
+        */
+        this.bala.setPosBala(posTanque);
+        return (bala.calcularLanzamiento(bala, velocidad, angulo)==1);
     }
+    
 
     public int[] getPos(){
         return posTanque;
