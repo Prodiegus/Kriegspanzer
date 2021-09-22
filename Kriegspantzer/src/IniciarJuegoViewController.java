@@ -162,8 +162,8 @@ public class IniciarJuegoViewController implements Initializable {
                         ")\nPanel size: "+ancho+"X"+alto+
                         "\nPanel Scale: "+altoScale+"X"+anchoScale);
     }
-     //closer
-     @FXML private void close(ActionEvent event) {
+    //closer
+    @FXML private void close(ActionEvent event) {
         Node source = (Node) event.getSource();
         Stage stage = (Stage) source.getScene().getWindow();
         stage.close();

@@ -1,3 +1,4 @@
+import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
@@ -7,8 +8,11 @@ import javax.swing.JOptionPane;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -17,10 +21,10 @@ import javafx.scene.control.Spinner;
 import javafx.scene.control.SpinnerValueFactory;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
-import javafx.animation.RotateTransition;
-import javafx.animation.TranslateTransition;
 import javafx.application.Platform;
+import javafx.scene.control.TextField;
 
 
 public class JuegoController implements Initializable {
@@ -28,20 +32,14 @@ public class JuegoController implements Initializable {
     @FXML private Label turnoPanel;
     @FXML private ArrayList<ImageView> balasImagen = new ArrayList<ImageView>();
     @FXML private ArrayList<ImageView> tanks = new ArrayList<ImageView>();
-    @FXML private Spinner<Integer> ang = new Spinner<Integer>();
-    @FXML private Spinner<Integer> vel = new Spinner<Integer>();
+    @FXML private TextField ang;
+    @FXML private TextField vel;
     
     int turno=0;
     private Mapa mapa;
     private ArrayList<Jugador> jugadores = new ArrayList<Jugador>();
-    TranslateTransition mover=new TranslateTransition();
-    RotateTransition rotar=new RotateTransition();
     private boolean flag=true;
     
-    
-    SpinnerValueFactory<Integer> cajaSpinner1 = new SpinnerValueFactory.IntegerSpinnerValueFactory(0,180,60); //(min,max,ejemplo)
-    SpinnerValueFactory<Integer> cajaSpinner3 = new SpinnerValueFactory.IntegerSpinnerValueFactory(0,300,68); //(min,max,ejemplo)
-
     
     @FXML public void scale(KeyEvent event){
         if(event.getCode().equals(KeyCode.R)){
@@ -60,34 +58,60 @@ public class JuegoController implements Initializable {
            qué jugador es, para así poder hacer los lanzamientos por separados
         */
         double tiempo=0;
-        
+        int tGanador=turno;
         if(flag){ //mientras el flag sea verdadero, es decir mientras no exista un ganador, sigue el juego
-            if (jugadores.get(turno).Lanzamiento(vel.getValue(), ang.getValue()) && flag){
+            if (jugadores.get(turno).Lanzamiento(Integer.parseInt(vel.getText()), Integer.parseInt(ang.getText()), this.mapa) && flag){
                 //las posiciones que se ingresan de "y" están al revés, entonces debemos modificarlas al momento de pasarlas al moverBala
                 int [] posBala=jugadores.get(turno).getTanque().getBala().getPosBala();
 
                 balasImagen.get(turno).setVisible(true);
                 //les pasamos las coordenadas verdaderas al método, que representan en el plano XY
-                moverBala(posBala[0],(465-posBala[1]),posBala[0],(465-posBala[1]),ang.getValue(),vel.getValue(),tiempo,turno);
+                moverBala(posBala[0],(465-posBala[1]),posBala[0],(465-posBala[1]),Integer.parseInt(ang.getText()),Integer.parseInt(vel.getText()),tiempo,turno,tGanador, event);
+                turnoPanel.setText("Turno: "+jugadores.get(turno).getName());
                 if (turno==1){
                     turno--;
+                    setJugadores(jugadores);
                 }
                 else{
                     turno++;
+                    setJugadores(jugadores);
                 }
-                turnoPanel.setText("Turno: "+jugadores.get(turno).getName());
             }
             else{
-                    JOptionPane.showMessageDialog(null, "Tiro fuera de límite, intente de nuevo.");
+                JOptionPane.showMessageDialog(null, "Tiro fuera de límite, intente de nuevo.");
             }
         }
         else{
-            JOptionPane.showMessageDialog(null, "EL JUEGO TERMINÓ.");
+           cargarPantallaFinal(tGanador,event); 
         }
         
     }
-    
-    private boolean moverBala(int xI,double yI,double x,double y,int angulo,double velocidad,double tiempo,int jug)throws InterruptedException {
+    @FXML
+    private void cargarPantallaFinal(int tGanador,ActionEvent event){
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("seguirJugandoView.fxml"));
+
+            Parent root = loader.load();
+            Scene scene = new Scene(root);
+            Stage stage = new Stage();
+
+            SeguirJugandoViewController controller = loader.getController();
+
+            controller.setGanador(jugadores.get(tGanador).getName());
+            stage.initModality(Modality.APPLICATION_MODAL);
+            stage.setResizable(false);
+            stage.setTitle("Kriegspanzer End Game");
+            stage.getIcons().add(new Image(getClass().getResourceAsStream("img/icon.png")));
+            stage.setScene(scene);
+            stage.show();
+            close(event);
+            
+        } catch (IOException e) {
+            //en caso de que algo salga mal mostraremos el siguiente mensaje
+            JOptionPane.showMessageDialog(null, "Error 011:\nNo ha sido posible cargar el Fanal del juego\n"+e.getCause());
+        }
+    }
+    private boolean moverBala(int xI,double yI,double x,double y,int angulo,double velocidad,double tiempo,int jug,int tGanador, ActionEvent event)throws InterruptedException {
         Platform.runLater( ()->{
             try{
                 TimeUnit.MILLISECONDS.sleep(30);
@@ -101,18 +125,12 @@ public class JuegoController implements Initializable {
                 A futuro debemos verificar que llegue al suelo
             
             */
-            if ( (x>=0 &&  x<=733) && (y>=0) && mapa.comprobarCoordenadaAire((int)Math.round(x),(int)Math.round(464-y))){
+            if ( (x>=0 &&  x<=733) && (y>=0) && (y>464 || mapa.comprobarCoordenadaAire((int)Math.round(x),(int)Math.round(464-y)) )){
                 balasImagen.get(jug).setX(x);
                 balasImagen.get(jug).setY(465-y);
                 //System.out.println("setea la posicion: ("+x+","+y+") - es ¿aire?: "+ mapa.comprobarCoordenadaAire((int)Math.round(x),(int)Math.round(465-y)));
                 try{
-                    if(angulo<=90){
-                        moverBala(xI,yI,(xI+velocidad*Math.cos(Math.toRadians(angulo))*tiempo),(yI+velocidad*Math.sin(Math.toRadians(angulo))*tiempo-(0.5*9.81*(tiempo*tiempo))),angulo,velocidad,(tiempo+0.1),jug);
-                    }
-                    else{
-                        moverBala(xI,yI,(xI+velocidad*Math.cos(Math.toRadians(angulo))*tiempo),(yI+velocidad*Math.sin(Math.toRadians(angulo))*tiempo-(0.5*9.81*(tiempo*tiempo))),angulo,velocidad,(tiempo+0.1),jug);
-                    }
-                    
+                    moverBala(xI,yI,(xI+velocidad*Math.cos(Math.toRadians(angulo))*tiempo),(yI+velocidad*Math.sin(Math.toRadians(angulo))*tiempo-(0.5*9.81*(tiempo*tiempo))),angulo,velocidad,(tiempo+0.1),jug,tGanador, event);      
                 }
                 catch(InterruptedException e2){
                     e2.printStackTrace();
@@ -121,8 +139,9 @@ public class JuegoController implements Initializable {
             else{
                 //toca tanque
                 if (mapa.comprobarCoordenadaTanque((int)Math.round(x),(int)Math.round(464-y))){
-                    this.flag=false;System.out.println("cambia el flag");
-                    JOptionPane.showMessageDialog(null, "Impacta al tanque del otro jugador.");
+                    //System.out.println(jugadores.get(tGanador).getName());
+                    this.flag=false;
+                    cargarPantallaFinal(tGanador,event);
                    
                 }
                 balasImagen.get(jug).setVisible(false);
@@ -141,7 +160,7 @@ public class JuegoController implements Initializable {
     
     public void setJugadores(ArrayList<Jugador> jugadores){
         this.jugadores = jugadores;
-        turnoPanel.setText("Turno: "+jugadores.get(0).getName());
+        turnoPanel.setText("Turno: "+jugadores.get(turno).getName());
     }
     public void addViews(){
         for (int i = 0; i<jugadores.size(); i++) {
@@ -215,16 +234,9 @@ public class JuegoController implements Initializable {
         }
     }
  
-    
-
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        /*
-            Se inicializan los spinner con sus respectivos rangos
-        */
-        ang.setValueFactory(cajaSpinner1);ang.setEditable(true);
-        vel.setValueFactory(cajaSpinner3);vel.setEditable(true);
     }
     
 }
