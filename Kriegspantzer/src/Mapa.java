@@ -3,12 +3,13 @@ import java.util.ArrayList;
 
 public class Mapa implements Serializable{
     private int mapId;
-    public enum Area{AIRE, SOLIDO, CAMPO, TANQUE}
+    public enum Area{AIRE, SOLIDO, TANQUE}
     private Area[][] mapeo =new Area[733][465];
     private ArrayList<int[]> campos = new ArrayList<int[]>();
     Mapa(int mapId){
         this.mapId = mapId;
     }
+
     public void fillAire() {
         for(int i=0; i<733;i++){
             for(int j=0; j<465;j++){
@@ -16,16 +17,27 @@ public class Mapa implements Serializable{
             }
         }
     }
-    public void setMapeado(int x, int y) {
+
+    public boolean comprobarCoordenadaSolido(int x, int y) {
+        return mapeo[x][y] == Area.SOLIDO;
+    }
+
+    public boolean comprobarCoordenadaTanque(int x, int y) {
+        return mapeo[x][y] == Area.TANQUE;
+    }
+
+    public boolean comprobarCoordenadaAire(int x, int y) {
+        return mapeo[x][y] == Area.AIRE;
+    }
+
+    public void setAreas(int x, int y) {
         for(int i=y; i<465; i++){
             this.mapeo[x][i] = Area.SOLIDO;
         }
-        for(int i=y; i>=0; i--){
-            this.mapeo[x][i] = Area.AIRE;
-        }
+    }
+    public void setCampos(int x, int y) {
         int[] campo =  {x,y};
         campos.add(campo);
-        this.mapeo[x][y] = Area.CAMPO;
     }
     public void addTank(int x, int y){
         for(int i=x; i<x+20;i++){
@@ -34,6 +46,7 @@ public class Mapa implements Serializable{
             }
         }
     }
+   
     public Area[][] getMapeo(){
         return mapeo;
     }
