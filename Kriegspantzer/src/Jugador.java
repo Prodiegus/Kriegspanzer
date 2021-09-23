@@ -7,11 +7,11 @@ public class Jugador{
         this.nombre = nombre;
         this.estado = true;
     }
-    
-    public boolean Lanzamiento(double velocidad, double angulo, int sentido){
+    //metodo que hará el lanzamiento de la bala en la clase Bala
+    public boolean Lanzamiento(double velocidad, double angulo, Mapa mapa){
         if ( velocidad>=0 && (angulo>=0 && angulo<=360) ){
-            //tanque.Disparo(velocidad, angulo,sentido);
-            System.out.println("funciona tanque de "+this.nombre+" :)");
+            //se trabaja con el tanque del jugador
+            return(tanque.disparo(velocidad, angulo,mapa));
         }
         return false;
     }

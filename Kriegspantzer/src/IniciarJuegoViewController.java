@@ -1,3 +1,4 @@
+import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
@@ -15,11 +16,12 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.ComboBox;
-import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
+import javafx.scene.media.MediaView;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 public class IniciarJuegoViewController implements Initializable {
@@ -31,11 +33,10 @@ public class IniciarJuegoViewController implements Initializable {
     @FXML private TextField nJugador2;
 
     //label de testeo
-    @FXML private Label mouseLb;
     private int map;
     private Mapa mapa;
     
-
+    //a
     @FXML
     private boolean handlePlay(ActionEvent event) {
         
@@ -105,7 +106,7 @@ public class IniciarJuegoViewController implements Initializable {
             controller.posBala();
 
             stage.initModality(Modality.WINDOW_MODAL);
-            stage.setResizable(true);
+            stage.setResizable(false);
             stage.setTitle("Kiegspanzer Game");
             stage.getIcons().add(new Image(getClass().getResourceAsStream("img/icon.png")));
             stage.setScene(scene);
@@ -116,52 +117,8 @@ public class IniciarJuegoViewController implements Initializable {
         }
         return true;
     }
-    
-    @FXML
-    private void handleEdMap(ActionEvent event){
-        //la instruccion esta dentro de un try catch debido a que se podrian presentar errores en la ejecucion 
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("EditorMapa.fxml"));
-
-            Parent root = loader.load();
-            Scene scene = new Scene(root);
-            Stage stage = new Stage();
-
-            EditorMapaController controller = loader.getController();
-
-
-            controller.setMap(map+1);
-            controller.iniciarMapa();
-            stage.initModality(Modality.APPLICATION_MODAL);
-            stage.setResizable(false);
-            stage.setTitle("Kriegspanzer Map Editor");
-            stage.getIcons().add(new Image(getClass().getResourceAsStream("img/icon.png")));
-            stage.setScene(scene);
-            stage.show();
-
-        } catch (IOException e) {
-            //en caso de que algo salga mal mostraremos el siguiente mensaje
-            JOptionPane.showMessageDialog(null, "Error 001:\nNo ha sido posible cargar el editor\n"+e.getCause());
-        }
-        
-    }
-
-    //metodo de testeo
-    @FXML
-    private void handleMouseMove(MouseEvent event){
-        //mapaPanel.autosize();
-        double alto = mapaPanel.getHeight();
-        double ancho = mapaPanel.getWidth();
-        double altoI = mapaPanel.getPrefHeight();
-        double anchoI = mapaPanel.getPrefWidth();
-        double altoScale = ancho/anchoI;
-        double anchoScale = alto/altoI;
-        mouseLb.setText("Mouse pos: ("+(int)(event.getX()/altoScale)+"<-->"+(int)(event.getY()/anchoScale)+
-                        ")\nPanel size: "+ancho+"X"+alto+
-                        "\nPanel Scale: "+altoScale+"X"+anchoScale);
-    }
-     //closer
-     @FXML private void close(ActionEvent event) {
+    //closer
+    @FXML private void close(ActionEvent event) {
         Node source = (Node) event.getSource();
         Stage stage = (Stage) source.getScene().getWindow();
         stage.close();
@@ -182,6 +139,12 @@ public class IniciarJuegoViewController implements Initializable {
         return 200;
     }
     public void setBoxes(String[] colors){
+        String path = "audio/7.mp3";
+        Media media = new Media(new File(path).toURI().toString());
+        MediaPlayer mediaPlayer = new MediaPlayer(media);
+        mediaPlayer.setAutoPlay(true);
+        MediaView mediaView = new MediaView(mediaPlayer);
+        mediaView.getClip();
         this.cJugador1.getItems().removeAll(this.cJugador1.getItems());
         this.cJugador2.getItems().removeAll(this.cJugador1.getItems());
         this.cJugador1.getItems().addAll(colors);

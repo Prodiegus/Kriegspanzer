@@ -16,11 +16,11 @@ public class Kriegspantzer extends Application {
 
         IniciarJuegoViewController controller = loader.getController();
 
-        String[] colors = {"Azul", "Verde", "Amarillo", "Rojo", "Morado", "Naranja"};
+        String[] colors = {"Azul", "Verde", "Amarillo", "Rojo", "Morado", "Naranja", "Negro"};
 
         controller.setBoxes(colors);
         controller.setMap();
-        stage.setResizable(true);
+        stage.setResizable(false);
         stage.setTitle("Kriegspanzer Game");
         stage.getIcons().add(new Image(getClass().getResourceAsStream("img/icon.png")));
         stage.setScene(scene);

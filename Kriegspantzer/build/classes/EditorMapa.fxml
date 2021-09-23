@@ -22,6 +22,8 @@
       <Pane layoutX="14.0" layoutY="479.0" prefHeight="97.0" prefWidth="748.0">
          <children>
             <Button fx:id="Serializarr" layoutX="621.0" layoutY="58.0" mnemonicParsing="false" onAction="#handleSerializar" text="Serializar Mapa" />
+            <Button layoutX="14.0" layoutY="14.0" mnemonicParsing="false" onAction="#handleCampos" text="Campos" />
+            <Button layoutX="119.0" layoutY="14.0" mnemonicParsing="false" onAction="#handleAreas" text="Areas" />
          </children>
       </Pane>
    </children>
