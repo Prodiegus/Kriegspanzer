@@ -106,7 +106,7 @@ public class IniciarJuegoViewController implements Initializable {
             controller.posBala();
 
             stage.initModality(Modality.WINDOW_MODAL);
-            stage.setResizable(true);
+            stage.setResizable(false);
             stage.setTitle("Kiegspanzer Game");
             stage.getIcons().add(new Image(getClass().getResourceAsStream("img/icon.png")));
             stage.setScene(scene);
@@ -139,11 +139,12 @@ public class IniciarJuegoViewController implements Initializable {
         return 200;
     }
     public void setBoxes(String[] colors){
-        String path = "audio/1.mp3";
+        String path = "audio/7.mp3";
         Media media = new Media(new File(path).toURI().toString());
         MediaPlayer mediaPlayer = new MediaPlayer(media);
         mediaPlayer.setAutoPlay(true);
         MediaView mediaView = new MediaView(mediaPlayer);
+        mediaView.getClip();
         this.cJugador1.getItems().removeAll(this.cJugador1.getItems());
         this.cJugador2.getItems().removeAll(this.cJugador1.getItems());
         this.cJugador1.getItems().addAll(colors);

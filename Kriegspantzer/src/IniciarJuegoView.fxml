@@ -11,7 +11,7 @@
 
 <AnchorPane id="AnchorPane" fx:id="ventana" cache="true" cacheHint="SCALE_AND_ROTATE" focusTraversable="true" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="614.0" prefWidth="801.0" style="-fx-background-color: #c3c3c3;" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="IniciarJuegoViewController">
     <children>
-      <AnchorPane fx:id="mapaPanel" layoutX="23.0" layoutY="14.0" prefHeight="465.0" prefWidth="747.0" snapToPixel="false" AnchorPane.bottomAnchor="135.0" AnchorPane.leftAnchor="23.0" AnchorPane.rightAnchor="31.0" AnchorPane.topAnchor="14.0">
+      <AnchorPane fx:id="mapaPanel" layoutX="27.0" layoutY="14.0" prefHeight="465.0" prefWidth="747.0" snapToPixel="false" AnchorPane.bottomAnchor="135.0" AnchorPane.leftAnchor="27.0" AnchorPane.rightAnchor="27.0" AnchorPane.topAnchor="14.0">
          <effect>
             <InnerShadow choke="1.0" height="6.17" radius="2.585" width="6.17" />
          </effect>
@@ -19,7 +19,7 @@
             <Point3D />
          </rotationAxis>
          <children>
-            <ImageView fitHeight="465.0" fitWidth="747.0">
+            <ImageView fitHeight="465.0" fitWidth="772.0" layoutY="-1.0">
                <image>
                   <Image url="@img/fondo1" />
                </image>
