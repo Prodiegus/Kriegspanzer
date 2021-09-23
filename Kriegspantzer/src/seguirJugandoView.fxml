@@ -15,11 +15,11 @@
    <children>
       <Pane layoutX="12.0" layoutY="206.0" prefHeight="155.0" prefWidth="477.0">
          <children>
-            <Button layoutX="148.0" layoutY="14.0" mnemonicParsing="false" onAction="#handleJugar" opacity="0.5" text="Seguir Jugando">
+            <Button layoutX="148.0" layoutY="14.0" mnemonicParsing="false" onAction="#handleJugar" opacity="0.87" styleClass="backButton2" stylesheets="@Estilos.css" text="Seguir Jugando" textFill="WHITE">
                <font>
                   <Font size="22.0" />
                </font></Button>
-            <Button layoutX="151.0" layoutY="78.0" mnemonicParsing="false" onAction="#handleSalir" opacity="0.5" text="Salir Del Juego">
+            <Button layoutX="151.0" layoutY="78.0" mnemonicParsing="false" onAction="#handleSalir" opacity="0.87" styleClass="backButton2" stylesheets="@Estilos.css" text="Salir Del Juego" textFill="WHITE">
                <font>
                   <Font size="22.0" />
                </font></Button>

@@ -8,14 +8,16 @@ public class Bala{
         double tiempo=0;
         double posX=posBala[0];
         double tFinal;
-        double posY= 465 - posBala[1];
+        double posY= (double)465 - posBala[1];
         double pActX=posX;
         double pActY=posY;
         double limIzq=0;
         double limDer=0;
         boolean flagI=true;
         boolean flagD=true;
-        
+        /*
+            el primer while sirve para recorrer las columnas que están en la esquina y ver en que coordenada empieza la parte sólida 
+        */
         while(i<465 && (flagI || flagD)){
             if (mapa.comprobarCoordenadaSolido(2, i)){
                 limIzq=i;
@@ -27,13 +29,16 @@ public class Bala{
             }
             i++;
         }
+        /*
+            El segundo while sirve para hacer una simulación del disparo el cual me dirá si impacta al sólido antes de llegar al límite
+        */
         while((pActX<732 && pActX>1)){
             pActX=(posX+velocidad*Math.cos(Math.toRadians(angulo))*tiempo);
             pActY=(posY+velocidad*Math.sin(Math.toRadians(angulo))*tiempo-(0.5*9.81*(tiempo*tiempo)));
             if (pActY<464 && pActX<732 && pActX>0 && pActY>0 && (posX!=pActX && posY!=pActY)){
-                if (!mapa.comprobarCoordenadaAire( (int)Math.round(pActX), (int)Math.round(467-pActY) )){
+                if (!mapa.comprobarCoordenadaAire( (int)Math.round(pActX), (int)Math.round(467-pActY) )){ //mientras el recorrido sea aire no entrará aquí
                     //System.out.println("solido en la coordenada: "+(int)Math.round(pActX)+","+(int)Math.round(467-pActY));
-                    return 1;
+                    return 1;   //si choca el suelo es un tiro válido
                 }
             }
             tiempo=tiempo+0.1;
