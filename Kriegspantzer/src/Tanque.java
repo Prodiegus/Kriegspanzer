@@ -1,8 +1,6 @@
 public class Tanque {
     private String color;
     private int [] posTanque;
-    private int barraVida;
-    private boolean estadoTanque;
     private Bala bala;
         
     public Tanque (String color, int[] posTanque, Bala bala){

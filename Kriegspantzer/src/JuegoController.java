@@ -169,6 +169,7 @@ public class JuegoController implements Initializable {
                     cargarPantallaFinal(tGanador,event);
                    
                 }
+                altMax=0;
                 balasImagen.get(jug).setVisible(false);
             }
             

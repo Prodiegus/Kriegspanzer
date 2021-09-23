@@ -1,8 +1,5 @@
 public class Bala{
     private int [] posBala;
-    private boolean estado_bala;
-    private double velocidad;
-    private double angulo;
     public Bala(int [] posBala){
         this.posBala=posBala;
     }
@@ -11,7 +8,7 @@ public class Bala{
         double tiempo=0;
         double posX=posBala[0];
         double tFinal;
-        double posY=465-posBala[1];
+        double posY= 465 - posBala[1];
         double pActX=posX;
         double pActY=posY;
         double limIzq=0;
