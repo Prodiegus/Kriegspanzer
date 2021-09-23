@@ -1,3 +1,4 @@
+import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
@@ -18,6 +19,9 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
+import javafx.scene.media.MediaView;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 public class IniciarJuegoViewController implements Initializable {
@@ -135,6 +139,11 @@ public class IniciarJuegoViewController implements Initializable {
         return 200;
     }
     public void setBoxes(String[] colors){
+        String path = "audio/1.mp3";
+        Media media = new Media(new File(path).toURI().toString());
+        MediaPlayer mediaPlayer = new MediaPlayer(media);
+        mediaPlayer.setAutoPlay(true);
+        MediaView mediaView = new MediaView(mediaPlayer);
         this.cJugador1.getItems().removeAll(this.cJugador1.getItems());
         this.cJugador2.getItems().removeAll(this.cJugador1.getItems());
         this.cJugador1.getItems().addAll(colors);
