@@ -8,10 +8,10 @@ public class Jugador{
         this.estado = true;
     }
     
-    public boolean Lanzamiento(double velocidad, double angulo){
+    public boolean Lanzamiento(double velocidad, double angulo, Mapa mapa){
         if ( velocidad>=0 && (angulo>=0 && angulo<=360) ){
             //se trabaja con el tanque del jugador
-            return(tanque.disparo(velocidad, angulo));
+            return(tanque.disparo(velocidad, angulo,mapa));
         }
         return false;
     }

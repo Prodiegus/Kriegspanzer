@@ -17,13 +17,12 @@ import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
-import javafx.scene.control.Spinner;
-import javafx.scene.control.SpinnerValueFactory;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.application.Platform;
+import javafx.scene.control.TextField;
 
 
 public class JuegoController implements Initializable {
@@ -31,18 +30,14 @@ public class JuegoController implements Initializable {
     @FXML private Label turnoPanel;
     @FXML private ArrayList<ImageView> balasImagen = new ArrayList<ImageView>();
     @FXML private ArrayList<ImageView> tanks = new ArrayList<ImageView>();
-    @FXML private Spinner<Integer> ang = new Spinner<Integer>();
-    @FXML private Spinner<Integer> vel = new Spinner<Integer>();
+    @FXML private TextField ang;
+    @FXML private TextField vel;
     
     int turno=0;
     private Mapa mapa;
     private ArrayList<Jugador> jugadores = new ArrayList<Jugador>();
     private boolean flag=true;
     
-    
-    SpinnerValueFactory<Integer> cajaSpinner1 = new SpinnerValueFactory.IntegerSpinnerValueFactory(0,180,60); //(min,max,ejemplo)
-    SpinnerValueFactory<Integer> cajaSpinner3 = new SpinnerValueFactory.IntegerSpinnerValueFactory(0,300,68); //(min,max,ejemplo)
-
     
     @FXML public void scale(KeyEvent event){
         if(event.getCode().equals(KeyCode.R)){
@@ -63,13 +58,13 @@ public class JuegoController implements Initializable {
         double tiempo=0;
         int tGanador=turno;
         if(flag){ //mientras el flag sea verdadero, es decir mientras no exista un ganador, sigue el juego
-            if (jugadores.get(turno).Lanzamiento(vel.getValue(), ang.getValue()) && flag){
+            if (jugadores.get(turno).Lanzamiento(Integer.parseInt(vel.getText()), Integer.parseInt(ang.getText()), this.mapa) && flag){
                 //las posiciones que se ingresan de "y" están al revés, entonces debemos modificarlas al momento de pasarlas al moverBala
                 int [] posBala=jugadores.get(turno).getTanque().getBala().getPosBala();
 
                 balasImagen.get(turno).setVisible(true);
                 //les pasamos las coordenadas verdaderas al método, que representan en el plano XY
-                moverBala(posBala[0],(465-posBala[1]),posBala[0],(465-posBala[1]),ang.getValue(),vel.getValue(),tiempo,turno,tGanador, event);
+                moverBala(posBala[0],(465-posBala[1]),posBala[0],(465-posBala[1]),Integer.parseInt(ang.getText()),Integer.parseInt(vel.getText()),tiempo,turno,tGanador, event);
                 turnoPanel.setText("Turno: "+jugadores.get(turno).getName());
                 if (turno==1){
                     turno--;
@@ -128,18 +123,12 @@ public class JuegoController implements Initializable {
                 A futuro debemos verificar que llegue al suelo
             
             */
-            if ( (x>=0 &&  x<=733) && (y>=0) && mapa.comprobarCoordenadaAire((int)Math.round(x),(int)Math.round(464-y))){
+            if ( (x>=0 &&  x<=733) && (y>=0) && (y>464 || mapa.comprobarCoordenadaAire((int)Math.round(x),(int)Math.round(464-y)) )){
                 balasImagen.get(jug).setX(x);
                 balasImagen.get(jug).setY(465-y);
                 //System.out.println("setea la posicion: ("+x+","+y+") - es ¿aire?: "+ mapa.comprobarCoordenadaAire((int)Math.round(x),(int)Math.round(465-y)));
                 try{
-                    if(angulo<=90){
-                        moverBala(xI,yI,(xI+velocidad*Math.cos(Math.toRadians(angulo))*tiempo),(yI+velocidad*Math.sin(Math.toRadians(angulo))*tiempo-(0.5*9.81*(tiempo*tiempo))),angulo,velocidad,(tiempo+0.1),jug,tGanador, event);
-                    }
-                    else{
-                        moverBala(xI,yI,(xI+velocidad*Math.cos(Math.toRadians(angulo))*tiempo),(yI+velocidad*Math.sin(Math.toRadians(angulo))*tiempo-(0.5*9.81*(tiempo*tiempo))),angulo,velocidad,(tiempo+0.1),jug,tGanador, event);
-                    }
-                    
+                    moverBala(xI,yI,(xI+velocidad*Math.cos(Math.toRadians(angulo))*tiempo),(yI+velocidad*Math.sin(Math.toRadians(angulo))*tiempo-(0.5*9.81*(tiempo*tiempo))),angulo,velocidad,(tiempo+0.1),jug,tGanador, event);      
                 }
                 catch(InterruptedException e2){
                     e2.printStackTrace();
@@ -148,7 +137,7 @@ public class JuegoController implements Initializable {
             else{
                 //toca tanque
                 if (mapa.comprobarCoordenadaTanque((int)Math.round(x),(int)Math.round(464-y))){
-                    System.out.println(jugadores.get(tGanador).getName());
+                    //System.out.println(jugadores.get(tGanador).getName());
                     this.flag=false;
                     cargarPantallaFinal(tGanador,event);
                    
@@ -243,16 +232,9 @@ public class JuegoController implements Initializable {
         }
     }
  
-    
-
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        /*
-            Se inicializan los spinner con sus respectivos rangos
-        */
-        ang.setValueFactory(cajaSpinner1);ang.setEditable(true);
-        vel.setValueFactory(cajaSpinner3);vel.setEditable(true);
     }
     
 }
