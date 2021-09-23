@@ -28,6 +28,8 @@ import javafx.scene.control.TextField;
 public class JuegoController implements Initializable {
     @FXML private AnchorPane mapaPanel;
     @FXML private Label turnoPanel;
+    @FXML private Label alturaPanel;
+    @FXML private Label distanciaPanel;
     @FXML private ArrayList<ImageView> balasImagen = new ArrayList<ImageView>();
     @FXML private ArrayList<ImageView> tanks = new ArrayList<ImageView>();
     @FXML private TextField ang;
@@ -37,6 +39,8 @@ public class JuegoController implements Initializable {
     private Mapa mapa;
     private ArrayList<Jugador> jugadores = new ArrayList<Jugador>();
     private boolean flag=true;
+    double altMax=0;
+    double disMax=0;
     
     
     @FXML public void scale(KeyEvent event){
@@ -109,7 +113,7 @@ public class JuegoController implements Initializable {
             JOptionPane.showMessageDialog(null, "Error 011:\nNo ha sido posible cargar el Fanal del juego\n"+e.getCause());
         }
     }
-    private boolean moverBala(int xI,double yI,double x,double y,int angulo,double velocidad,double tiempo,int jug,int tGanador, ActionEvent event)throws InterruptedException {
+    private boolean moverBala(double xI,double yI,double x,double y,int angulo,double velocidad,double tiempo,int jug,int tGanador, ActionEvent event)throws InterruptedException {
         Platform.runLater( ()->{
             try{
                 TimeUnit.MILLISECONDS.sleep(30);
@@ -123,6 +127,16 @@ public class JuegoController implements Initializable {
                 A futuro debemos verificar que llegue al suelo
             
             */
+            if (x-xI >=0 ){
+                distanciaPanel.setText("Distancia máxima: "+ Math.round( (x-xI)*100.0)/100.0);
+            }
+            else{
+                distanciaPanel.setText("Distancia máxima: "+ Math.round( (xI-x)*100.0)/100.0);
+            }
+            if (altMax<y){
+                altMax=y;
+                alturaPanel.setText("Altura máxima: "+Math.round( altMax*100.0)/100.0);
+            }    
             if ( (x>=0 &&  x<=733) && (y>=0) && (y>464 || mapa.comprobarCoordenadaAire((int)Math.round(x),(int)Math.round(464-y)) )){
                 balasImagen.get(jug).setX(x);
                 balasImagen.get(jug).setY(465-y);
@@ -235,6 +249,7 @@ public class JuegoController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        
     }
     
 }
