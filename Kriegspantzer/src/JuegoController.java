@@ -155,8 +155,11 @@ public class JuegoController implements Initializable {
             */   
             if ( (x>=0 &&  x<=733) && (y>=0) && (y>464 || mapa.comprobarCoordenadaAire((int)Math.round(x),(int)Math.round(464-y)) )){
                 //se setean las imagenes en pantalla
-                balasImagen.get(jug).setX(x);
-                balasImagen.get(jug).setY(465-y);
+                if (xI!=x){
+                    balasImagen.get(jug).setX(x);
+                    balasImagen.get(jug).setY(465-y);
+                }
+               
                
                 try{//Se realiza la recursión hasta llegar al caso base
                     moverBala(xI,yI,(xI+velocidad*Math.cos(Math.toRadians(angulo))*tiempo),(yI+velocidad*Math.sin(Math.toRadians(angulo))*tiempo-(0.5*9.81*(tiempo*tiempo))),angulo,velocidad,(tiempo+0.1),jug,tGanador, event);      
