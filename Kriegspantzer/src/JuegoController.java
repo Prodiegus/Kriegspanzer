@@ -65,12 +65,12 @@ public class JuegoController implements Initializable {
         */
 
         //musica de disparo
-        String path = "audio/5.mp3";
+       /* String path = "audio/5.mp3";
         Media media = new Media(new File(path).toURI().toString());
         MediaPlayer mediaPlayer = new MediaPlayer(media);
         mediaPlayer.play();
         MediaView mediaView = new MediaView(mediaPlayer);
-        mediaView.getClip();
+        mediaView.getClip();*/
         
         double tiempo=0;
         int tGanador=turno;
