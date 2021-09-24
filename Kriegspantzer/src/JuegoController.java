@@ -75,7 +75,7 @@ public class JuegoController implements Initializable {
         double tiempo=0;
         int tGanador=turno;
         if(flag){ //mientras el flag sea verdadero, es decir mientras no exista un ganador, sigue el juego
-            if (jugadores.get(turno).Lanzamiento(Integer.parseInt(vel.getText()), Integer.parseInt(ang.getText()), this.mapa) && flag){
+            if (jugadores.get(turno).lanzamiento(Integer.parseInt(vel.getText()), Integer.parseInt(ang.getText()), this.mapa) && flag){
                 //las posiciones que se ingresan de "y" están al revés, entonces debemos modificarlas al momento de pasarlas al moverBala
                 int [] posBala=jugadores.get(turno).getTanque().getBala().getPosBala();
                 //hacemos visible la bala del jugador del turno actual
@@ -181,6 +181,8 @@ public class JuegoController implements Initializable {
         return false;
     }
     
+
+    //le asigna la hoja de estilos al fondo del panel y la da la clase con la imagen del mapa
     public void setMap(Mapa mapa){
         mapaPanel.getStylesheets().clear();
         mapaPanel.getStylesheets().add("Estilos.css");
