@@ -6,7 +6,7 @@
 <?import javafx.scene.effect.InnerShadow?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onKeyPressed="#scale" prefHeight="614.0" prefWidth="801.0" style="-fx-background-color: #c3c3c3;" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="JuegoController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onKeyPressed="#scale" prefHeight="614.0" prefWidth="801.0" styleClass="Game" stylesheets="@Estilos.css" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="JuegoController">
    <children>
       <AnchorPane fx:id="mapaPanel" layoutX="34.0" layoutY="14.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="465.0" prefWidth="733.0" AnchorPane.bottomAnchor="135.0" AnchorPane.leftAnchor="34.0" AnchorPane.rightAnchor="34.0" AnchorPane.topAnchor="14.0">
          <effect>
@@ -18,13 +18,13 @@
          </children></AnchorPane>
       <AnchorPane layoutX="34.0" layoutY="471.0" prefHeight="129.0" prefWidth="733.0" AnchorPane.bottomAnchor="14.0" AnchorPane.leftAnchor="34.0" AnchorPane.rightAnchor="34.0" AnchorPane.topAnchor="471.0">
          <children>
-            <Button fx:id="disparar" layoutX="590.0" layoutY="52.0" mnemonicParsing="false" onAction="#pressShoot" text="Disparar" AnchorPane.bottomAnchor="52.0" AnchorPane.rightAnchor="82.0" />
-            <Label fx:id="turnoPanel" layoutX="14.0" layoutY="14.0" prefHeight="17.0" prefWidth="453.0" text="Turno:" AnchorPane.bottomAnchor="98.0" AnchorPane.leftAnchor="14.0" />
-            <Label layoutX="141.0" layoutY="44.0" text="[Grados°]" AnchorPane.bottomAnchor="68.0" AnchorPane.leftAnchor="141.0" />
-            <Label layoutX="150.0" layoutY="85.0" text="[mt/s]" AnchorPane.bottomAnchor="27.0" AnchorPane.leftAnchor="150.0" />
-            <Label layoutX="539.0" layoutY="85.0" text="Precione &quot;R&quot; para Reposicionar" AnchorPane.bottomAnchor="27.0" AnchorPane.rightAnchor="30.0" />
-            <TextField fx:id="ang" layoutX="54.0" layoutY="40.0" prefHeight="25.0" prefWidth="70.0" promptText="60" AnchorPane.leftAnchor="54.0" />
-            <TextField fx:id="vel" layoutX="54.0" layoutY="80.0" prefHeight="25.0" prefWidth="70.0" promptText="60" AnchorPane.leftAnchor="54.0" />
+            <Button fx:id="disparar" layoutX="590.0" layoutY="52.0" mnemonicParsing="false" onAction="#pressShoot" styleClass="backButton" stylesheets="@Estilos.css" text="Disparar" textFill="WHITE" AnchorPane.bottomAnchor="52.0" AnchorPane.rightAnchor="82.0" />
+            <Label fx:id="turnoPanel" layoutX="14.0" layoutY="14.0" prefHeight="17.0" prefWidth="453.0" text="Turno:" textFill="WHITE" AnchorPane.bottomAnchor="98.0" AnchorPane.leftAnchor="14.0" />
+            <Label layoutX="141.0" layoutY="44.0" text="[Grados°]" textFill="#e8e8e8" AnchorPane.bottomAnchor="68.0" AnchorPane.leftAnchor="141.0" />
+            <Label layoutX="150.0" layoutY="85.0" text="[mt/s]" textFill="WHITE" AnchorPane.bottomAnchor="27.0" AnchorPane.leftAnchor="150.0" />
+            <Label layoutX="539.0" layoutY="85.0" text="Precione &quot;R&quot; para Reposicionar" textFill="WHITE" AnchorPane.bottomAnchor="27.0" AnchorPane.rightAnchor="30.0" />
+            <TextField fx:id="ang" layoutX="54.0" layoutY="40.0" opacity="0.77" prefHeight="25.0" prefWidth="70.0" promptText="60" styleClass="backButton2" stylesheets="@Estilos.css" AnchorPane.leftAnchor="54.0" />
+            <TextField fx:id="vel" layoutX="54.0" layoutY="81.0" opacity="0.77" prefHeight="25.0" prefWidth="70.0" promptText="60" styleClass="backButton2" stylesheets="@Estilos.css" AnchorPane.leftAnchor="54.0" />
          </children>
       </AnchorPane>
    </children>

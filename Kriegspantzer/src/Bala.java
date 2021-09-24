@@ -63,7 +63,7 @@ public class Bala{
     public void setPosBala(int[] posBala) {
         this.posBala = posBala;
     }
-
+    
     public int[] getPosBala() {
         return posBala;
     }

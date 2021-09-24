@@ -65,17 +65,17 @@ public class JuegoController implements Initializable {
         */
 
         //musica de disparo
-        String path = "audio/5.mp3";
+       /* String path = "audio/5.mp3";
         Media media = new Media(new File(path).toURI().toString());
         MediaPlayer mediaPlayer = new MediaPlayer(media);
         mediaPlayer.play();
         MediaView mediaView = new MediaView(mediaPlayer);
-        mediaView.getClip();
+        mediaView.getClip();*/
         
         double tiempo=0;
         int tGanador=turno;
         if(flag){ //mientras el flag sea verdadero, es decir mientras no exista un ganador, sigue el juego
-            if (jugadores.get(turno).Lanzamiento(Integer.parseInt(vel.getText()), Integer.parseInt(ang.getText()), this.mapa) && flag){
+            if (jugadores.get(turno).lanzamiento(Integer.parseInt(vel.getText()), Integer.parseInt(ang.getText()), this.mapa) && flag){
                 //las posiciones que se ingresan de "y" están al revés, entonces debemos modificarlas al momento de pasarlas al moverBala
                 int [] posBala=jugadores.get(turno).getTanque().getBala().getPosBala();
                 //hacemos visible la bala del jugador del turno actual
@@ -155,8 +155,11 @@ public class JuegoController implements Initializable {
             */   
             if ( (x>=0 &&  x<=733) && (y>=0) && (y>464 || mapa.comprobarCoordenadaAire((int)Math.round(x),(int)Math.round(464-y)) )){
                 //se setean las imagenes en pantalla
-                balasImagen.get(jug).setX(x);
-                balasImagen.get(jug).setY(465-y);
+                if (xI!=x){
+                    balasImagen.get(jug).setX(x);
+                    balasImagen.get(jug).setY(465-y);
+                }
+               
                
                 try{//Se realiza la recursión hasta llegar al caso base
                     moverBala(xI,yI,(xI+velocidad*Math.cos(Math.toRadians(angulo))*tiempo),(yI+velocidad*Math.sin(Math.toRadians(angulo))*tiempo-(0.5*9.81*(tiempo*tiempo))),angulo,velocidad,(tiempo+0.1),jug,tGanador, event);      
@@ -181,6 +184,8 @@ public class JuegoController implements Initializable {
         return false;
     }
     
+
+    //le asigna la hoja de estilos al fondo del panel y la da la clase con la imagen del mapa
     public void setMap(Mapa mapa){
         mapaPanel.getStylesheets().clear();
         mapaPanel.getStylesheets().add("Estilos.css");
