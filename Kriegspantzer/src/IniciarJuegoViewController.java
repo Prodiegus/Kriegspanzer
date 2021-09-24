@@ -139,10 +139,12 @@ public class IniciarJuegoViewController implements Initializable {
         return 200;
     }
     public void setBoxes(String[] colors){
+
+        //Aqui agregamos un track de musica para escuchar durante el juego
         String path = "audio/7.mp3";
         Media media = new Media(new File(path).toURI().toString());
         MediaPlayer mediaPlayer = new MediaPlayer(media);
-        mediaPlayer.setAutoPlay(true);
+        mediaPlayer.play();
         MediaView mediaView = new MediaView(mediaPlayer);
         mediaView.getClip();
         this.cJugador1.getItems().removeAll(this.cJugador1.getItems());
