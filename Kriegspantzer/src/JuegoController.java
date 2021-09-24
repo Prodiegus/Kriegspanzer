@@ -75,15 +75,16 @@ public class JuegoController implements Initializable {
         double tiempo=0;
         int tGanador=turno;
         if(flag){ //mientras el flag sea verdadero, es decir mientras no exista un ganador, sigue el juego
-            if (jugadores.get(turno).Lanzamiento(Integer.parseInt(vel.getText()), Integer.parseInt(ang.getText()), this.mapa) && flag){
+            if (jugadores.get(turno).lanzamiento(Integer.parseInt(vel.getText()), Integer.parseInt(ang.getText()), this.mapa) && flag){
                 //las posiciones que se ingresan de "y" están al revés, entonces debemos modificarlas al momento de pasarlas al moverBala
                 int [] posBala=jugadores.get(turno).getTanque().getBala().getPosBala();
-
+                //hacemos visible la bala del jugador del turno actual
                 balasImagen.get(turno).setVisible(true);
                 //les pasamos las coordenadas verdaderas al método, que representan en el plano XY
                 moverBala(posBala[0],(465-posBala[1]),posBala[0],(465-posBala[1]),Integer.parseInt(ang.getText()),Integer.parseInt(vel.getText()),tiempo,turno,tGanador, event);
-                turnoPanel.setText("Turno: "+jugadores.get(turno).getName());
-                if (turno==1){
+                turnoPanel.setText("Turno: "+jugadores.get(turno).getName()); 
+                //actualizamos los turnos
+                if (turno==1){ 
                     turno--;
                     setJugadores(jugadores);
                 }
@@ -129,16 +130,13 @@ public class JuegoController implements Initializable {
     private boolean moverBala(double xI,double yI,double x,double y,int angulo,double velocidad,double tiempo,int jug,int tGanador, ActionEvent event)throws InterruptedException {
         Platform.runLater( ()->{
             try{
-                TimeUnit.MILLISECONDS.sleep(30);
+                TimeUnit.MILLISECONDS.sleep(30);    
             }
             catch(InterruptedException el){
                 el.printStackTrace();
             }
             /*
-                Antes de inicar el proceso de recursión debemos verificar si las coordenadas que nos están entregando
-                son correctas, es decir que no sobre pasen los límites laterales, y que hasta el momento no pasen más abajo del cuadro.
-                A futuro debemos verificar que llegue al suelo
-            
+                Se setea los labels que van mostrando la distancia y altura máxima en cada instante
             */
             if (x-xI >=0 ){
                 distanciaPanel.setText("Distancia máxima: "+ Math.round( (x-xI)*100.0)/100.0);
@@ -149,12 +147,18 @@ public class JuegoController implements Initializable {
             if (altMax<y){
                 altMax=y;
                 alturaPanel.setText("Altura máxima: "+Math.round( altMax*100.0)/100.0);
-            }    
+            } 
+            /*
+                Antes de inicar el proceso de recursión debemos verificar si las coordenadas que nos están entregando
+                son correctas, es decir que no sobre pasen los límites laterales, y que no pasen más abajo del solido.
+            
+            */   
             if ( (x>=0 &&  x<=733) && (y>=0) && (y>464 || mapa.comprobarCoordenadaAire((int)Math.round(x),(int)Math.round(464-y)) )){
+                //se setean las imagenes en pantalla
                 balasImagen.get(jug).setX(x);
                 balasImagen.get(jug).setY(465-y);
-                //System.out.println("setea la posicion: ("+x+","+y+") - es ¿aire?: "+ mapa.comprobarCoordenadaAire((int)Math.round(x),(int)Math.round(465-y)));
-                try{
+               
+                try{//Se realiza la recursión hasta llegar al caso base
                     moverBala(xI,yI,(xI+velocidad*Math.cos(Math.toRadians(angulo))*tiempo),(yI+velocidad*Math.sin(Math.toRadians(angulo))*tiempo-(0.5*9.81*(tiempo*tiempo))),angulo,velocidad,(tiempo+0.1),jug,tGanador, event);      
                 }
                 catch(InterruptedException e2){
@@ -162,13 +166,14 @@ public class JuegoController implements Initializable {
                 }
             }
             else{
-                //toca tanque
+                //entra al if si es que toca tanque
                 if (mapa.comprobarCoordenadaTanque((int)Math.round(x),(int)Math.round(464-y))){
-                    //System.out.println(jugadores.get(tGanador).getName());
+                    //nuestro flag pasa a ser falso, osea termina el juego ya que impacta el tanque
                     this.flag=false;
                     cargarPantallaFinal(tGanador,event);
                    
                 }
+                altMax=0;//se reinicia la altura máxima para el siguiente jugador
                 balasImagen.get(jug).setVisible(false);
             }
             
@@ -176,17 +181,20 @@ public class JuegoController implements Initializable {
         return false;
     }
     
+
+    //le asigna la hoja de estilos al fondo del panel y la da la clase con la imagen del mapa
     public void setMap(Mapa mapa){
         mapaPanel.getStylesheets().clear();
         mapaPanel.getStylesheets().add("Estilos.css");
         mapaPanel.getStyleClass().add("map"+(mapa.getId()+1));
         this.mapa = mapa;
     }
-    
+    //setea el label al principio del juego
     public void setJugadores(ArrayList<Jugador> jugadores){
         this.jugadores = jugadores;
         turnoPanel.setText("Turno: "+jugadores.get(turno).getName());
     }
+    //se añade las imagenes a nuestro cuadro
     public void addViews(){
         for (int i = 0; i<jugadores.size(); i++) {
             tanks.add(new ImageView(
@@ -216,32 +224,31 @@ public class JuegoController implements Initializable {
         }
 
     }
-    public void posTank(){
-        double alto = mapaPanel.getHeight();
-        double ancho = mapaPanel.getWidth();
-        double altoI = mapaPanel.getPrefHeight();
-        double anchoI = mapaPanel.getPrefWidth();
-        double altoScale = ancho/anchoI;
-        double anchoScale = alto/altoI;
-        for (int i = 0; i<jugadores.size(); i++) {
+    public void posTank(){//El metodo "posTank" posicionara los tanques en "mapaPanel"
+        double alto = mapaPanel.getHeight();//se toma la cantidad de pixeles en alto que hay de la ventana original.
+        double ancho = mapaPanel.getWidth();//se toma la cantidad de pixeles en ancho que hay de la ventana original.
+        double altoI = mapaPanel.getPrefHeight();//se toma la cantidad de pixeles en alto que hay de la ventana actual (rescalada).
+        double anchoI = mapaPanel.getPrefWidth();//se toma la cantidad de pixeles en ancho que hay de la ventana actual (rescalada).
+        double altoScale = ancho/anchoI;//la division de ambos anchos de una proporcion de la ventana actual.
+        double anchoScale = alto/altoI;//la division de ambas alturas de una proporcion de la ventana actual.
+        for (int i = 0; i<jugadores.size(); i++) {// se recorre el arraylist "jugadores", para proporcionarle cada tanque a su jugador.
             tanks.get(i).setX(jugadores.get(i).getTanque().getPos()[0]*altoScale);
             tanks.get(i).setY(jugadores.get(i).getTanque().getPos()[1]*anchoScale);
-            balasImagen.get(i).setX(jugadores.get(i).getTanque().getPos()[0]*altoScale);
-            balasImagen.get(i).setY(jugadores.get(i).getTanque().getPos()[1]*anchoScale);
+            //se setean los tanques con el pocisionamiento respectivo y se multiplica con su reescalado.
             
         }
 
     }
     
 
-    public void posBala(){
+    public void posBala(){//El metodo "posBala" posicionara las balas en "mapaPanel"
         double alto = 465;
         double ancho = 733;
         double altoI = mapaPanel.getPrefHeight();
         double anchoI = mapaPanel.getPrefWidth();
         double altoScale = ancho/anchoI;
         double anchoScale = alto/altoI;
-        for (int i=0; i<jugadores.size();i++){
+        for (int i=0; i<jugadores.size();i++){//Se utiliza el mismo metodo anterior para posicionar las balas.
             if (i==1){
                 balasImagen.get(i).setX(jugadores.get(i).getTanque().getPos()[0]*altoScale);
                 balasImagen.get(i).setY(jugadores.get(i).getTanque().getPos()[1]*anchoScale);
@@ -252,8 +259,8 @@ public class JuegoController implements Initializable {
             balasImagen.get(i).setX(jugadores.get(i).getTanque().getPos()[0]*altoScale);
             balasImagen.get(i).setY(jugadores.get(i).getTanque().getPos()[1]*anchoScale);
             }
-            balasImagen.get(i).setVisible(false);
-            mapaPanel.getChildren().add(balasImagen.get(i));
+            balasImagen.get(i).setVisible(false);//Se vuelve invisble la bala para que no se vea al estar en estado de reposo.
+            mapaPanel.getChildren().add(balasImagen.get(i));//se agregan las balas al mapaPanel.
             
         
         }

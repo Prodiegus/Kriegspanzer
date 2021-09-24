@@ -21,6 +21,7 @@ public class SeguirJugandoViewController implements Initializable {
 
     @FXML
     private void handleJugar(ActionEvent event) {
+        //al apretar el boton seguir jugando se volvera a ejecutar el juego
         try {
             FXMLLoader loader =new FXMLLoader(getClass().getResource("IniciarJuegoView.fxml"));
 
@@ -47,6 +48,7 @@ public class SeguirJugandoViewController implements Initializable {
 
     @FXML
     private void handleSalir(ActionEvent event) {
+        //al presionar salir se cerrara el programa
         close(event);
     }
     
@@ -57,6 +59,7 @@ public class SeguirJugandoViewController implements Initializable {
         stage.close();
     }
     public void setGanador(String ganador) {
+        //de esta manera pasaremos el nombre del ganador a la nueva instancia
         this.ganador.setText(ganador);
     }
     @Override

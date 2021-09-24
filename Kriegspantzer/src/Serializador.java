@@ -23,7 +23,7 @@ public class Serializador implements Serializable{
         file.close();
         return mapa;
     }
-    //clase para recuperar objetos serializados
+    /**(@return Mapa mapa) para recuperar objetos serializados*/
     public Mapa cargarDataBase(int id) throws IOException{
         FileInputStream file;
         ObjectInputStream input;
@@ -42,7 +42,7 @@ public class Serializador implements Serializable{
 
     //este metodo simplemente borra
     public void borrar(String id) {
-        File cliente = new File("Mapas/"+id);
+        File cliente = new File("Mapas/mapa"+id);
         if(!cliente.exists() || !cliente.delete()){
             System.err.println("Error al borrar de DataBase");
         }

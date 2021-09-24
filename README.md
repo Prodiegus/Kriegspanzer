@@ -30,3 +30,28 @@ Mapa:
     finales del proyecto estas estaran sin la opcion de editar el mapa
     y vendran con un mapa ya serializado por defecto.
 
+Mensaje de Errores:
+
+    - Error 011:
+
+        Se produce por la complicacion al cargar la ventana del final
+        del juego una causa mas comun a este error es que el archivo
+        fxml este dañado o no exista, de todas maneras tambien se 
+        puede deber a que el icono del juego fuera borrado o que algun
+        dato multimedia se extravie.
+    
+    - Error 013:
+
+        Se produce por la complicacion al cargar la ventana del juego
+        una causa mas comun a este error es que el archivo fxml este
+        dañado o no exista, de todas maneras tambien se puede deber a que
+        el icono del juego fuera borrado o que algun dato multimedia se
+        extravie.
+
+    - Error 001:
+
+        Se produce al momento de leer un mapa desde la memoria del 
+        computador este error se puede producir debido a que la carpeta
+        con mapa esta en una ubicacion erronea o a que el mapa no exista.
+
+    
