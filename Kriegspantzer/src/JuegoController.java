@@ -189,7 +189,8 @@ public class JuegoController implements Initializable {
     public void setMap(Mapa mapa){
         mapaPanel.getStylesheets().clear();
         mapaPanel.getStylesheets().add("Estilos.css");
-        mapaPanel.getStyleClass().add("map"+(mapa.getId()+1));
+        System.out.println("ID: "+mapa.getId());
+        mapaPanel.getStyleClass().add("map"+(mapa.getId()));
         this.mapa = mapa;
     }
     //setea el label al principio del juego
