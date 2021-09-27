@@ -102,6 +102,33 @@ public class JuegoController implements Initializable {
         }
         
     }
+
+    @FXML
+    private void reset(ActionEvent event) {
+        try {
+            FXMLLoader loader =new FXMLLoader(getClass().getResource("IniciarJuegoView.fxml"));
+
+            Parent root = loader.load();
+            Scene scene = new Scene(root);
+            Stage stage = new Stage();
+
+            IniciarJuegoViewController controller = loader.getController();
+
+            String[] colors = {"Azul", "Verde", "Amarillo", "Rojo", "Morado", "Naranja", "Negro"};
+
+            controller.setBoxes(colors);
+            controller.setMap();
+            stage.setResizable(true);
+            stage.setTitle("Kriegspanzer Game");
+            stage.getIcons().add(new Image(getClass().getResourceAsStream("img/icon.png")));
+            stage.setScene(scene);
+            stage.show();
+            close(event);
+        } catch (IOException e) {
+            JOptionPane.showMessageDialog(null, "Error: 013\nNo se a podido cargar una nueva partida");
+        }
+    }
+
     @FXML
     private void cargarPantallaFinal(int tGanador,ActionEvent event){
         try {
