@@ -54,4 +54,21 @@ Mensaje de Errores:
         computador este error se puede producir debido a que la carpeta
         con mapa esta en una ubicacion erronea o a que el mapa no exista.
 
-    
+Compilacion:
+
+    - Desde un ide:
+    La manera mas facil de ejecutar el programa es con una jdk-11+ desde un IDE
+    IDE testeados son Eclipse y Netbeans aunque tambien se puede usar vs-code
+    Clase Main: 'Kriegspantzer.java'
+
+     -Ejecutable .jar
+	A la  hora de crear el .jar del programa el cual se guardara en 
+	la direccion "Kriegspanzer\Kriegspantzer\dist", se deben introducir 
+	la carpeta de "audio" que se encuentra (Kriegspanzer\Kriegspantzer) 
+	y la carpeta de "Mapas"que se encuentra en (Kriegspanzer\Kriegspantzer).
+
+     - Error "no se ha podido encontrar el mapa":
+	Si a la hora de ejecutar el programa aparece este error se debe copiar 
+	la carpeta "Mapas" encontrada en (Kriegspanzer) y se debe pegar en la capeta
+	(Kriegspanzer\Kriegspantzer).
+	
