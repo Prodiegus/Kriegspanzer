@@ -157,8 +157,9 @@ public class IniciarJuegoViewController implements Initializable {
     public void setMap(){
         //se crea un random con la idea de generar un mapa random a futuro
         Random index = new Random();
-        this.map = index.nextInt(1);
-        this.map = 0;
+        this.map = index.nextInt(2)*1;
+        System.out.println("Id de mapa: Mapa"+this.map);
+        //this.map = 0;
         //ese valor dentro del nextint es la cantidad de mapas creados en existencia
         mapaPanel.getStylesheets().clear();
         mapaPanel.getStylesheets().add("Estilos.css");
