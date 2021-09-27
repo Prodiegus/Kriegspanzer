@@ -1,8 +1,5 @@
 public class Bala{
     private int [] posBala;
-    private boolean estado_bala;
-    private double velocidad;
-    private double angulo;
     public Bala(int [] posBala){
         this.posBala=posBala;
     }
@@ -11,15 +8,16 @@ public class Bala{
         double tiempo=0;
         double posX=posBala[0];
         double tFinal;
-        double posY=posBala[1];
+        double posY= (double)465 - posBala[1];
         double pActX=posX;
         double pActY=posY;
         double limIzq=0;
         double limDer=0;
         boolean flagI=true;
         boolean flagD=true;
-        boolean flag=true;
-        
+        /*
+            el primer while sirve para recorrer las columnas que están en la esquina y ver en que coordenada empieza la parte sólida 
+        */
         while(i<465 && (flagI || flagD)){
             if (mapa.comprobarCoordenadaSolido(2, i)){
                 limIzq=i;
@@ -31,13 +29,16 @@ public class Bala{
             }
             i++;
         }
+        /*
+            El segundo while sirve para hacer una simulación del disparo el cual me dirá si impacta al sólido antes de llegar al límite
+        */
         while((pActX<732 && pActX>1)){
             pActX=(posX+velocidad*Math.cos(Math.toRadians(angulo))*tiempo);
             pActY=(posY+velocidad*Math.sin(Math.toRadians(angulo))*tiempo-(0.5*9.81*(tiempo*tiempo)));
-            if (pActY<464 && pActX<732 && pActX>0 && pActY>0){
-                if (!mapa.comprobarCoordenadaAire( (int)Math.round(pActX), (int)Math.round(465-pActY) )){
-                    //System.out.println("solido en la coordenada: "+(int)Math.round(pActX)+","+(int)Math.round(465-pActY));
-                    return 1;
+            if (pActY<464 && pActX<732 && pActX>0 && pActY>0 && (posX!=pActX && posY!=pActY)){
+                if (!mapa.comprobarCoordenadaAire( (int)Math.round(pActX), (int)Math.round(467-pActY) )){ //mientras el recorrido sea aire no entrará aquí
+                    //System.out.println("solido en la coordenada: "+(int)Math.round(pActX)+","+(int)Math.round(467-pActY));
+                    return 1;   //si choca el suelo es un tiro válido
                 }
             }
             tiempo=tiempo+0.1;
@@ -48,13 +49,12 @@ public class Bala{
         */
         if (angulo>90){
             tFinal=(posX)/(velocidad*Math.cos(Math.toRadians(180-angulo)));
-            posY=posBala[1]+(velocidad*Math.sin(Math.toRadians(180-angulo))*tFinal)-( 0.5*9.81*(tFinal)*(tFinal));
-            
+            posY=465-posBala[1]+(velocidad*Math.sin(Math.toRadians(180-angulo))*tFinal)-( 0.5*9.81*(tFinal)*(tFinal));
             return (posY>(465-limIzq))?0:1;//si la altura pasa del limite retorna 0
         }
         else{
             tFinal=(733-posX)/(velocidad*Math.cos(Math.toRadians(angulo)));
-            posY=posBala[1]+(velocidad*Math.sin(Math.toRadians(angulo))*tFinal)-( 0.5*9.81*(tFinal)*(tFinal)) ;
+            posY=465-posBala[1]+(velocidad*Math.sin(Math.toRadians(angulo))*tFinal)-( 0.5*9.81*(tFinal)*(tFinal)) ;
             return (posY>(433-limDer)? 0:1);//si la altura pasa del limite retorna 0
         }
         
@@ -63,7 +63,7 @@ public class Bala{
     public void setPosBala(int[] posBala) {
         this.posBala = posBala;
     }
-
+    
     public int[] getPosBala() {
         return posBala;
     }
