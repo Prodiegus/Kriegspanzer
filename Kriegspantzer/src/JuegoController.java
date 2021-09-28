@@ -26,6 +26,8 @@ import javafx.scene.media.MediaView;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.application.Platform;
+import javafx.scene.control.ComboBox;
+import javafx.scene.control.ProgressBar;
 import javafx.scene.control.TextField;
 
 
@@ -38,6 +40,9 @@ public class JuegoController implements Initializable {
     @FXML private ArrayList<ImageView> tanks = new ArrayList<ImageView>();
     @FXML private TextField ang;
     @FXML private TextField vel;
+    @FXML private ComboBox<String> tBalas;
+    @FXML private ProgressBar barraJ1=new ProgressBar();
+    @FXML private ProgressBar barraJ2=new ProgressBar();
     
     int turno=0;
     private Mapa mapa;
@@ -45,6 +50,7 @@ public class JuegoController implements Initializable {
     private boolean flag=true;
     double altMax=0;
     double disMax=0;
+    String[] tiposBalas = {"Proyectil 105mm", "Proyectil Perforador", "Proyectil 60mm"};
     
     
     @FXML public void scale(KeyEvent event){
@@ -299,7 +305,10 @@ public class JuegoController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        
+        this.tBalas.getItems().removeAll(this.tBalas.getItems());
+        this.tBalas.getItems().addAll(tiposBalas);
+        barraJ1.setStyle("-fx-accent:#5faf5f");//barraJ1.setProgress(0.8);
+        barraJ2.setStyle("-fx-accent:#5faf5f");//barraJ1.setProgress(0.8);
     }
     
 }
