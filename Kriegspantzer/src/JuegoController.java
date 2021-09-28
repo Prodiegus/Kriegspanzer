@@ -36,7 +36,10 @@ public class JuegoController implements Initializable {
     @FXML private Label turnoPanel;
     @FXML private Label alturaPanel;
     @FXML private Label distanciaPanel;
-    @FXML private ArrayList<ImageView> balasImagen = new ArrayList<ImageView>();
+    @FXML private ArrayList<ArrayList<ImageView> > arrayBalasImagen = new ArrayList<ArrayList<ImageView> >();
+    @FXML private ArrayList<ImageView> balasPredImagen = new ArrayList<ImageView>();
+    @FXML private ArrayList<ImageView> balasGImagen = new ArrayList<ImageView>();
+    @FXML private ArrayList<ImageView> balasPImagen = new ArrayList<ImageView>();
     @FXML private ArrayList<ImageView> tanks = new ArrayList<ImageView>();
     @FXML private TextField ang;
     @FXML private TextField vel;
@@ -81,14 +84,30 @@ public class JuegoController implements Initializable {
         double tiempo=0;
         int tGanador=turno;
         if(flag){ //mientras el flag sea verdadero, es decir mientras no exista un ganador, sigue el juego
+            
             if (jugadores.get(turno).lanzamiento(Integer.parseInt(vel.getText()), Integer.parseInt(ang.getText()), this.mapa) && flag){
+                
                 //las posiciones que se ingresan de "y" están al revés, entonces debemos modificarlas al momento de pasarlas al moverBala
                 int [] posBala=jugadores.get(turno).getTanque().getBala().getPosBala();
+                
                 //hacemos visible la bala del jugador del turno actual
-                balasImagen.get(turno).setVisible(true);
+                if ("Proyectil 60mm".equals(tBalas.getValue()) ){ //60mm
+                    arrayBalasImagen.get(0).get(turno).setVisible(true);
+                    moverBala(posBala[0],(465-posBala[1]),posBala[0],(465-posBala[1]),Integer.parseInt(ang.getText()),Integer.parseInt(vel.getText()),tiempo,turno,tGanador, event,0);
+                }
+                if ("Proyectil 105mm".equals(tBalas.getValue()) ){
+                    arrayBalasImagen.get(1).get(turno).setVisible(true);
+                    moverBala(posBala[0],(465-posBala[1]),posBala[0],(465-posBala[1]),Integer.parseInt(ang.getText()),Integer.parseInt(vel.getText()),tiempo,turno,tGanador, event,1);
+                }
+                if ("Proyectil Perforador".equals(tBalas.getValue()) ){
+                    arrayBalasImagen.get(2).get(turno).setVisible(true);
+                    moverBala(posBala[0],(465-posBala[1]),posBala[0],(465-posBala[1]),Integer.parseInt(ang.getText()),Integer.parseInt(vel.getText()),tiempo,turno,tGanador, event,2);
+                }
+                
                 //les pasamos las coordenadas verdaderas al método, que representan en el plano XY
-                moverBala(posBala[0],(465-posBala[1]),posBala[0],(465-posBala[1]),Integer.parseInt(ang.getText()),Integer.parseInt(vel.getText()),tiempo,turno,tGanador, event);
+                
                 turnoPanel.setText("Turno: "+jugadores.get(turno).getName()); 
+                
                 //actualizamos los turnos
                 if (turno==1){ 
                     turno--;
@@ -160,7 +179,7 @@ public class JuegoController implements Initializable {
             JOptionPane.showMessageDialog(null, "Error 011:\nNo ha sido posible cargar el Fanal del juego\n"+e.getCause());
         }
     }
-    private boolean moverBala(double xI,double yI,double x,double y,int angulo,double velocidad,double tiempo,int jug,int tGanador, ActionEvent event)throws InterruptedException {
+    private boolean moverBala(double xI,double yI,double x,double y,int angulo,double velocidad,double tiempo,int jug,int tGanador, ActionEvent event,int tipBala)throws InterruptedException {
         Platform.runLater( ()->{
             try{
                 TimeUnit.MILLISECONDS.sleep(30);    
@@ -189,13 +208,13 @@ public class JuegoController implements Initializable {
             if ( (x>=0 &&  x<=733) && (y>=0) && (y>464 || mapa.comprobarCoordenadaAire((int)Math.round(x),(int)Math.round(464-y)) )){
                 //se setean las imagenes en pantalla
                 if (xI!=x){
-                    balasImagen.get(jug).setX(x);
-                    balasImagen.get(jug).setY(465-y);
+                    arrayBalasImagen.get(tipBala).get(jug).setX(x);
+                    arrayBalasImagen.get(tipBala).get(jug).setY(465-y);
                 }
                
                
                 try{//Se realiza la recursión hasta llegar al caso base
-                    moverBala(xI,yI,(xI+velocidad*Math.cos(Math.toRadians(angulo))*tiempo),(yI+velocidad*Math.sin(Math.toRadians(angulo))*tiempo-(0.5*9.81*(tiempo*tiempo))),angulo,velocidad,(tiempo+0.1),jug,tGanador, event);      
+                    moverBala(xI,yI,(xI+velocidad*Math.cos(Math.toRadians(angulo))*tiempo),(yI+velocidad*Math.sin(Math.toRadians(angulo))*tiempo-(0.5*9.81*(tiempo*tiempo))),angulo,velocidad,(tiempo+0.1),jug,tGanador, event,tipBala);      
                 }
                 catch(InterruptedException e2){
                     e2.printStackTrace();
@@ -210,7 +229,7 @@ public class JuegoController implements Initializable {
                    
                 }
                 altMax=0;//se reinicia la altura máxima para el siguiente jugador
-                balasImagen.get(jug).setVisible(false);
+                arrayBalasImagen.get(tipBala).get(jug).setVisible(false);
             }
             
         });
@@ -236,8 +255,13 @@ public class JuegoController implements Initializable {
             tanks.add(new ImageView(
                 new Image(getClass()
                 .getResourceAsStream("img/Tanque_"+jugadores.get(i).getTanque().getColor()+".png"))));
-            balasImagen.add(new ImageView(new Image(getClass().getResourceAsStream("img/bala.png"))));
+            balasPredImagen.add(new ImageView(new Image(getClass().getResourceAsStream("img/bala.png"))));
+            balasGImagen.add(new ImageView(new Image(getClass().getResourceAsStream("img/balaG.png"))));
+            balasPImagen.add(new ImageView(new Image(getClass().getResourceAsStream("img/balaP.png"))));
         }
+        arrayBalasImagen.add(balasPredImagen);
+        arrayBalasImagen.add(balasGImagen);
+        arrayBalasImagen.add(balasPImagen);
     }
 
     public void posTank(ArrayList<int[]> campos){
@@ -285,20 +309,19 @@ public class JuegoController implements Initializable {
         double altoScale = ancho/anchoI;
         double anchoScale = alto/altoI;
         for (int i=0; i<jugadores.size();i++){//Se utiliza el mismo metodo anterior para posicionar las balas.
-            if (i==1){
-                balasImagen.get(i).setX(jugadores.get(i).getTanque().getPos()[0]*altoScale);
-                balasImagen.get(i).setY(jugadores.get(i).getTanque().getPos()[1]*anchoScale);
-                balasImagen.get(i).setRotate(180);
-
+            for (int j=0 ; j<arrayBalasImagen.size();j++){
+                if (i==1){
+                    arrayBalasImagen.get(j).get(i).setX(jugadores.get(i).getTanque().getPos()[0]*altoScale);
+                    arrayBalasImagen.get(j).get(i).setY(jugadores.get(i).getTanque().getPos()[1]*anchoScale);
+                    arrayBalasImagen.get(j).get(i).setRotate(180);
+                }
+                else{
+                    arrayBalasImagen.get(j).get(i).setX(jugadores.get(i).getTanque().getPos()[0]*altoScale);
+                    arrayBalasImagen.get(j).get(i).setY(jugadores.get(i).getTanque().getPos()[1]*anchoScale);
+                }
+                arrayBalasImagen.get(j).get(i).setVisible(false);//Se vuelve invisble la bala para que no se vea al estar en estado de reposo.
+                mapaPanel.getChildren().add(arrayBalasImagen.get(j).get(i));//se agregan las balas al mapaPanel.
             }
-            else{
-            balasImagen.get(i).setX(jugadores.get(i).getTanque().getPos()[0]*altoScale);
-            balasImagen.get(i).setY(jugadores.get(i).getTanque().getPos()[1]*anchoScale);
-            }
-            balasImagen.get(i).setVisible(false);//Se vuelve invisble la bala para que no se vea al estar en estado de reposo.
-            mapaPanel.getChildren().add(balasImagen.get(i));//se agregan las balas al mapaPanel.
-            
-        
         }
     }
  
