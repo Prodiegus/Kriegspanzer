@@ -12,6 +12,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.ImageCursor;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -31,6 +32,7 @@ public class IniciarJuegoViewController implements Initializable {
     @FXML private AnchorPane mapaPanel;
     @FXML private TextField nJugador1;
     @FXML private TextField nJugador2;
+    @FXML private TextField nMap;
 
     //label de testeo
     private int map;
@@ -117,6 +119,35 @@ public class IniciarJuegoViewController implements Initializable {
         }
         return true;
     }
+    @FXML
+    private void handleEdMap(ActionEvent event){
+        //la instruccion esta dentro de un try catch debido a que se podrian presentar errores en la ejecucion 
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("EditorMapa.fxml"));
+
+            Parent root = loader.load();
+            Scene scene = new Scene(root);
+            Stage stage = new Stage();
+
+            EditorMapaController controller = loader.getController();
+
+            Image img = new Image("img/Cursor32x32.png");
+            scene.setCursor(new ImageCursor(img));
+            controller.setMap(Integer.parseInt(nMap.getText().trim()));
+            controller.iniciarMapa();
+            stage.initModality(Modality.APPLICATION_MODAL);
+            stage.setResizable(false);
+            stage.setTitle("Kriegspanzer Map Editor");
+            stage.getIcons().add(new Image(getClass().getResourceAsStream("img/icon.png")));
+            stage.setScene(scene);
+            stage.show();
+
+        } catch (IOException e) {
+            //en caso de que algo salga mal mostraremos el siguiente mensaje
+            JOptionPane.showMessageDialog(null, "Error 001:\nNo ha sido posible cargar el editor\n"+e.getCause());
+        }
+        
+    }
     //closer
     @FXML private void close(ActionEvent event) {
         Node source = (Node) event.getSource();
@@ -157,12 +188,14 @@ public class IniciarJuegoViewController implements Initializable {
     public void setMap(){
         //se crea un random con la idea de generar un mapa random a futuro
         Random index = new Random();
-        this.map = index.nextInt(1);
-        this.map = 0;
+        this.map = index.nextInt(2);
+        //this.map = 2;
+        //System.out.println("Id de mapa: Mapa"+this.map);
+        
         //ese valor dentro del nextint es la cantidad de mapas creados en existencia
         mapaPanel.getStylesheets().clear();
         mapaPanel.getStylesheets().add("Estilos.css");
-        mapaPanel.getStyleClass().add("map"+(map+1));
+        mapaPanel.getStyleClass().add("map"+(map));
     }
 
     @Override

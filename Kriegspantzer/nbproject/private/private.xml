@@ -1,24 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project-private xmlns="http://www.netbeans.org/ns/project-private/1">
-    <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="1">
-        <file>
-            <url>src/Kriegspantzer.java</url>
-            <bookmark id="1">
-                <name/>
-                <line>15</line>
-                <key/>
-            </bookmark>
-        </file>
-    </editor-bookmarks>
+    <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-<<<<<<< Updated upstream
-            <file>file:/C:/Users/diego/Documents/Codigos%20en%20java/Kriegspanzer/Kriegspantzer/src/SeguirJugandoViewController.java</file>
-            <file>file:/C:/Users/diego/Documents/Codigos%20en%20java/Kriegspanzer/Kriegspantzer/src/Kriegspantzer.java</file>
-            <file>file:/C:/Users/diego/Documents/Codigos%20en%20java/Kriegspanzer/Kriegspantzer/src/seguirJugandoView.fxml</file>
-=======
-            <file>file:/C:/Users/omaii/Documents/Proyecto%20Git/Kriegspanzer/Kriegspantzer/src/Kriegspantzer.java</file>
->>>>>>> Stashed changes
+            <file>file:/C:/Users/Cjara/Documents/Kriegspanzer/Kriegspanzer/Kriegspantzer/src/Serializador.java</file>
+            <file>file:/C:/Users/Cjara/Documents/Kriegspanzer/Kriegspanzer/Kriegspantzer/src/SeguirJugandoViewController.java</file>
+            <file>file:/C:/Users/Cjara/Documents/Kriegspanzer/Kriegspanzer/Kriegspantzer/src/JuegoController.java</file>
+            <file>file:/C:/Users/Cjara/Documents/Kriegspanzer/Kriegspanzer/Kriegspantzer/src/Tanque.java</file>
+            <file>file:/C:/Users/Cjara/Documents/Kriegspanzer/Kriegspanzer/Kriegspantzer/src/Mapa.java</file>
+            <file>file:/C:/Users/Cjara/Documents/Kriegspanzer/Kriegspanzer/Kriegspantzer/src/IniciarJuegoViewController.java</file>
+            <file>file:/C:/Users/Cjara/Documents/Kriegspanzer/Kriegspanzer/Kriegspantzer/src/Jugador.java</file>
+            <file>file:/C:/Users/Cjara/Documents/Kriegspanzer/Kriegspanzer/Kriegspantzer/src/Bala.java</file>
         </group>
     </open-files>
 </project-private>

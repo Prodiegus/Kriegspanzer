@@ -1,3 +1,10 @@
+.map0{
+    -fx-background-image: url("img/Mapa0");
+    -fx-background-size: contain;
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: center;
+    -fx-background-size: 100% 100%;
+}
 .map1{
     -fx-background-image: url("img/Mapa1");
     -fx-background-size: contain;
@@ -6,7 +13,7 @@
     -fx-background-size: 100% 100%;
 }
 .map2{
-    -fx-background-image: url("img/icon.png");
+    -fx-background-image: url("img/Mapa2.png");
     -fx-background-size: contain;
     -fx-background-repeat: no-repeat;
     -fx-background-position: center;
@@ -18,4 +25,34 @@
     -fx-background-repeat: no-repeat;
     -fx-background-position: center;
     -fx-background-size: 100% 100%;
+}
+.fondo1{
+    -fx-background-image: url("img/fondo1");
+    -fx-background-size: contain;
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: center;
+    -fx-background-size: 100% 100%;
+}
+.fondo2{
+    -fx-background-image: url("img/fondoMenu");
+    -fx-background-size: contain;
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: center;
+    -fx-background-size: 100% 100%;
+}
+.Game{
+    -fx-background-image: url("img/fondoGame");
+    -fx-background-size: contain;
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: center;
+    -fx-background-size: 100% 100%;
+}
+.backButton{
+    -fx-text-inner-color: #EEEEEE;
+    -fx-background-color: #008080;
+}
+.backButton2{
+    -fx-text-decoration-color: #EEEEEE;
+    -fx-text-inner-color: #EEEEEE;
+    -fx-background-color: #384e64;
 }

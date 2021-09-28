@@ -1,7 +1,7 @@
 public class Bala{
     private int [] posBala;
-    private int [] damageBala={50,40,30};
-    private int [] cantBalas={3,10,3};//(0)Proyectil 105mm; (1)Proyectil perforante; (2)Proyectil 60mm.
+    private int [] damageBala={50,40,30};   //(0)Proyectil 105mm; (1)Proyectil perforante; (2)Proyectil 60mm.
+    private int [] cantBalas={3,10,3};      //(0)Proyectil 105mm; (1)Proyectil perforante; (2)Proyectil 60mm.
     public Bala(int [] posBala){
         this.posBala=posBala;
     }
@@ -76,6 +76,9 @@ public class Bala{
 
     public int[] getCantBalas() {
         return cantBalas;
+    }
+    public int[] getDamageBala() {
+        return damageBala;
     }
     
 }
