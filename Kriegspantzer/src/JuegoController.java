@@ -35,6 +35,8 @@ public class JuegoController implements Initializable {
     @FXML private Label alturaPanel;
     @FXML private Label distanciaPanel;
     @FXML private ArrayList<ImageView> balasImagen = new ArrayList<ImageView>();
+    @FXML private ArrayList<ImageView> balasGImagen = new ArrayList<ImageView>();
+    @FXML private ArrayList<ImageView> balasPImagen = new ArrayList<ImageView>();
     @FXML private ArrayList<ImageView> tanks = new ArrayList<ImageView>();
     @FXML private TextField ang;
     @FXML private TextField vel;
@@ -155,8 +157,11 @@ public class JuegoController implements Initializable {
             */   
             if ( (x>=0 &&  x<=733) && (y>=0) && (y>464 || mapa.comprobarCoordenadaAire((int)Math.round(x),(int)Math.round(464-y)) )){
                 //se setean las imagenes en pantalla
-                balasImagen.get(jug).setX(x);
-                balasImagen.get(jug).setY(465-y);
+                if (xI!=x){
+                    balasImagen.get(jug).setX(x);
+                    balasImagen.get(jug).setY(465-y);
+                }
+               
                
                 try{//Se realiza la recursión hasta llegar al caso base
                     moverBala(xI,yI,(xI+velocidad*Math.cos(Math.toRadians(angulo))*tiempo),(yI+velocidad*Math.sin(Math.toRadians(angulo))*tiempo-(0.5*9.81*(tiempo*tiempo))),angulo,velocidad,(tiempo+0.1),jug,tGanador, event);      
@@ -201,6 +206,8 @@ public class JuegoController implements Initializable {
                 new Image(getClass()
                 .getResourceAsStream("img/Tanque_"+jugadores.get(i).getTanque().getColor()+".png"))));
             balasImagen.add(new ImageView(new Image(getClass().getResourceAsStream("img/bala.png"))));
+            balasGImagen.add(new ImageView(new Image(getClass().getResourceAsStream("img/balaG.png"))));
+            balasPImagen.add(new ImageView(new Image(getClass().getResourceAsStream("img/balaG.png"))));
         }
     }
 
@@ -252,16 +259,29 @@ public class JuegoController implements Initializable {
             if (i==1){
                 balasImagen.get(i).setX(jugadores.get(i).getTanque().getPos()[0]*altoScale);
                 balasImagen.get(i).setY(jugadores.get(i).getTanque().getPos()[1]*anchoScale);
+                balasGImagen.get(i).setX(jugadores.get(i).getTanque().getPos()[0]*altoScale);
+                balasGImagen.get(i).setY(jugadores.get(i).getTanque().getPos()[1]*anchoScale);
+                balasPImagen.get(i).setX(jugadores.get(i).getTanque().getPos()[0]*altoScale);
+                balasPImagen.get(i).setY(jugadores.get(i).getTanque().getPos()[1]*anchoScale);
                 balasImagen.get(i).setRotate(180);
+                balasGImagen.get(i).setRotate(180);
+                balasPImagen.get(i).setRotate(180);
 
             }
             else{
-            balasImagen.get(i).setX(jugadores.get(i).getTanque().getPos()[0]*altoScale);
-            balasImagen.get(i).setY(jugadores.get(i).getTanque().getPos()[1]*anchoScale);
+                balasImagen.get(i).setX(jugadores.get(i).getTanque().getPos()[0]*altoScale);
+                balasImagen.get(i).setY(jugadores.get(i).getTanque().getPos()[1]*anchoScale);
+                balasGImagen.get(i).setX(jugadores.get(i).getTanque().getPos()[0]*altoScale);
+                balasGImagen.get(i).setY(jugadores.get(i).getTanque().getPos()[1]*anchoScale);
+                balasPImagen.get(i).setX(jugadores.get(i).getTanque().getPos()[0]*altoScale);
+                balasPImagen.get(i).setY(jugadores.get(i).getTanque().getPos()[1]*anchoScale);
             }
             balasImagen.get(i).setVisible(false);//Se vuelve invisble la bala para que no se vea al estar en estado de reposo.
+            balasGImagen.get(i).setVisible(false);
+            balasPImagen.get(i).setVisible(false);
             mapaPanel.getChildren().add(balasImagen.get(i));//se agregan las balas al mapaPanel.
-            
+            mapaPanel.getChildren().add(balasGImagen.get(i));
+            mapaPanel.getChildren().add(balasPImagen.get(i));
         
         }
     }
