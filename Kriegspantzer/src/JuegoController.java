@@ -92,14 +92,17 @@ public class JuegoController implements Initializable {
                 
                 //hacemos visible la bala del jugador del turno actual
                 if ("Proyectil 60mm".equals(tBalas.getValue()) ){ //60mm
+                    jugadores.get(turno).getTanque().getBala().setCantBalas(0);
                     arrayBalasImagen.get(0).get(turno).setVisible(true);
                     moverBala(posBala[0],(465-posBala[1]),posBala[0],(465-posBala[1]),Integer.parseInt(ang.getText()),Integer.parseInt(vel.getText()),tiempo,turno,tGanador, event,0);
                 }
                 if ("Proyectil 105mm".equals(tBalas.getValue()) ){
+                    jugadores.get(turno).getTanque().getBala().setCantBalas(1);
                     arrayBalasImagen.get(1).get(turno).setVisible(true);
                     moverBala(posBala[0],(465-posBala[1]),posBala[0],(465-posBala[1]),Integer.parseInt(ang.getText()),Integer.parseInt(vel.getText()),tiempo,turno,tGanador, event,1);
                 }
                 if ("Proyectil Perforador".equals(tBalas.getValue()) ){
+                    jugadores.get(turno).getTanque().getBala().setCantBalas(2);
                     arrayBalasImagen.get(2).get(turno).setVisible(true);
                     moverBala(posBala[0],(465-posBala[1]),posBala[0],(465-posBala[1]),Integer.parseInt(ang.getText()),Integer.parseInt(vel.getText()),tiempo,turno,tGanador, event,2);
                 }
