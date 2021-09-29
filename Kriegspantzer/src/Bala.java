@@ -75,7 +75,7 @@ public class Bala{
         this.cantBalas[posicion] = cantBalas[posicion]-1;
     }
 
-    public int[] getCantBalas() {
+    public int[] getTipoBalas() {
         return cantBalas;
     }
     public int[] getDamageBala() {
