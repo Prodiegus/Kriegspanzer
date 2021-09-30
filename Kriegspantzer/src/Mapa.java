@@ -49,7 +49,7 @@ public class Mapa implements Serializable{
     //le da el valor de TANQUE a la posicion entregada
     public void addTank(int x, int y){
         for(int i=x; i<x+20;i++){
-            for(int j=y; j<y+10;j++){
+            for(int j=y; j<y+11;j++){
                 mapeo[i][j] = Area.TANQUE;
             }
         }
