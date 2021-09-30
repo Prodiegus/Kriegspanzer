@@ -225,7 +225,7 @@ public class JuegoController implements Initializable {
     private boolean moverBala(double xI,double yI,double x,double y,int angulo,double velocidad,double tiempo,int jug,int tGanador, ActionEvent event,int tipBala)throws InterruptedException {
         Platform.runLater( ()->{
             try{
-                TimeUnit.MILLISECONDS.sleep(30);    
+                TimeUnit.MILLISECONDS.sleep(20);    
             }
             catch(InterruptedException el){
                 el.printStackTrace();
@@ -319,7 +319,7 @@ public class JuegoController implements Initializable {
                 if(campo[0]==x){
                     tanks.get(i).setY(campo[1]);
                     jugadores.get(i).getTanque().setPos((int)Math.round(x), campo[1]);
-                    //System.out.println(jugadores.get(i).getTanque().getPos()[0]+","+jugadores.get(i).getTanque().getPos()[1]);
+                    System.out.println("tanque:"+jugadores.get(i).getTanque().getPos()[0]+","+jugadores.get(i).getTanque().getPos()[1]);
                     mapa.addTank((int)Math.round(x), campo[1]);
                 }
             }
@@ -337,16 +337,23 @@ public class JuegoController implements Initializable {
         for (int i = 0; i<jugadores.size(); i++) {// se recorre el arraylist "jugadores", para proporcionarle cada tanque a su jugador.
             tanks.get(i).setX(jugadores.get(i).getTanque().getPos()[0]*altoScale);
             tanks.get(i).setY(jugadores.get(i).getTanque().getPos()[1]*anchoScale);
+            
             //se setean los tanques con el pocisionamiento respectivo y se multiplica con su reescalado.
             
         }
-
+        for (int i=0; i<jugadores.size();i++){//Se utiliza el mismo metodo anterior para posicionar las balas.
+            for (int j=0 ; j<arrayBalasImagen.size();j++){
+                    arrayBalasImagen.get(j).get(i).setX(jugadores.get(i).getTanque().getPos()[0]*altoScale);
+                    arrayBalasImagen.get(j).get(i).setY(jugadores.get(i).getTanque().getPos()[1]*anchoScale);
+                
+            }
+        }    
     }
     
 
     public void posBala(){//El metodo "posBala" posicionara las balas en "mapaPanel"
-        double alto = 465;
-        double ancho = 733;
+        double alto =465;
+        double ancho =733;
         double altoI = mapaPanel.getPrefHeight();
         double anchoI = mapaPanel.getPrefWidth();
         double altoScale = ancho/anchoI;
@@ -362,7 +369,7 @@ public class JuegoController implements Initializable {
                     arrayBalasImagen.get(j).get(i).setX(jugadores.get(i).getTanque().getPos()[0]*altoScale);
                     arrayBalasImagen.get(j).get(i).setY(jugadores.get(i).getTanque().getPos()[1]*anchoScale);
                 }
-                arrayBalasImagen.get(j).get(i).setVisible(false);//Se vuelve invisble la bala para que no se vea al estar en estado de reposo.
+                //arrayBalasImagen.get(j).get(i).setVisible(false);//Se vuelve invisble la bala para que no se vea al estar en estado de reposo.
                 mapaPanel.getChildren().add(arrayBalasImagen.get(j).get(i));//se agregan las balas al mapaPanel.
             }
         }
