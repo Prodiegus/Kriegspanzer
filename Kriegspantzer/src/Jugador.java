@@ -9,7 +9,7 @@ public class Jugador{
     }
     //metodo que hará el lanzamiento de la bala en la clase Bala
     public boolean lanzamiento(double velocidad, double angulo, Mapa mapa){
-        if ( velocidad>=0 && (angulo>=0 && angulo<=360) ){
+        if ( (velocidad>=0 && velocidad<150) && (angulo>=0 && angulo<=360) ){
             //se trabaja con el tanque del jugador
             return(tanque.disparo(velocidad, angulo,mapa));
         }
