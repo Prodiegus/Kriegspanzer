@@ -1,7 +1,10 @@
 public class Bala{
     private int [] posBala;
+    private int [] damageBala={30,50,40};     //(0)Proyectil 60mm;(1)Proyectil 105mm; (2)Proyectil perforante; 
+    private int [] cantBalas={3,3,10};      //(0)Proyectil 60mm;(1)Proyectil 105mm; (2)Proyectil perforante; 
     public Bala(int [] posBala){
         this.posBala=posBala;
+        this.cantBalas=cantBalas;
     }
     public int calcularLanzamiento(Bala bala,double velocidad, double angulo,Mapa mapa){
         int i=0;
@@ -68,7 +71,22 @@ public class Bala{
         return posBala;
     }
     
+    public void setCantBalas( int posicion) {
+        this.cantBalas[posicion] = cantBalas[posicion]-1;
+    }
+
+    public int[] getTipoBalas() {
+        return cantBalas;
+    }
+    public int[] getDamageBala() {
+        return damageBala;
+    }
     
 }
+
+
+    
+    
+
 
 
