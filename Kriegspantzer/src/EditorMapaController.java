@@ -8,7 +8,6 @@ import javafx.scene.input.MouseEvent;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.Cursor;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
@@ -17,19 +16,23 @@ import javafx.stage.Stage;
 public class EditorMapaController implements Initializable{
 
     @FXML private AnchorPane mapaPanel;
-    @FXML private Label mouseLb;    
+    @FXML private Label mouseLb;  
+    @FXML private Label mNum;  
+    @FXML private Label tEd;
 
     private int map;
     private boolean editarCampos = false;
 
-    private Mapa mapa = new Mapa(map);
+    private Mapa mapa;
 
     @FXML
     private void handleCampos(ActionEvent event){
+        tEd.setText("Campos");
         this.editarCampos = true;
     }
     @FXML
     private void handleAreas(ActionEvent event){
+        tEd.setText("Areas");
         this.editarCampos = false;
     }
 
@@ -74,7 +77,9 @@ public class EditorMapaController implements Initializable{
     public void setMap(int map){
         mapaPanel.getStylesheets().clear();
         mapaPanel.getStylesheets().add("Estilos.css");
-        mapaPanel.getStyleClass().add("map"+(map-1));
+        mapaPanel.getStyleClass().add("map"+(map));
+        mapa = new Mapa(map);
+        mNum.setText(Integer.toString(map));
         this.map = map;
         
     }
