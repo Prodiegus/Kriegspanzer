@@ -75,7 +75,12 @@ public class JuegoController implements Initializable {
         /* Al presionar el botón de disparo lo primero que debemos hacer es verificar
            qué jugador es, para así poder hacer los lanzamientos por separados
         */
-
+        double alto = mapaPanel.getHeight();//se toma la cantidad de pixeles en alto que hay de la ventana original.
+        double ancho = mapaPanel.getWidth();//se toma la cantidad de pixeles en ancho que hay de la ventana original.
+        double altoI = mapaPanel.getPrefHeight();//se toma la cantidad de pixeles en alto que hay de la ventana actual (rescalada).
+        double anchoI = mapaPanel.getPrefWidth();//se toma la cantidad de pixeles en ancho que hay de la ventana actual (rescalada).
+        double altoScale = ancho/anchoI;//la division de ambos anchos de una proporcion de la ventana actual.
+        double anchoScale = alto/altoI;//la division de ambas alturas de una proporcion de la ventana actual
         //musica de disparo
         String path = "audio/5.mp3";
         Media media = new Media(new File(path).toURI().toString());
@@ -86,25 +91,30 @@ public class JuegoController implements Initializable {
         
         double tiempo=0;
         int tGanador=turno;
-        if (jugadores.get(turno).lanzamiento(Integer.parseInt(vel.getText()), Integer.parseInt(ang.getText()), this.mapa)){
-            //las posiciones que se ingresan de "y" están al revés, entonces debemos modificarlas al momento de pasarlas al moverBala
-            int [] posBala=jugadores.get(turno).getTanque().getBala().getPosBala();
-            int valid=0;
-            //hacemos visible la bala del jugador del turno actual
-            if (boxBalas.get(turno)[0].equals(tBalas.getValue()) ){ //60mm
-                valid++;
-                if(jugadores.get(turno).getTanque().getBala().getTipoBalas()[0] != 0){
-                    jugadores.get(turno).getTanque().getBala().setCantBalas(0);
-                    
-                    boxBalas.get(turno)[0]="Proyectil 60mm: "+jugadores.get(turno).getTanque().getBala().getTipoBalas()[0]+ "balas";
-                    
-                    arrayBalasImagen.get(0).get(turno).setVisible(true);
-                    moverBala(posBala[0]+10,(470-posBala[1]),posBala[0]+10,(470-posBala[1]),Integer.parseInt(ang.getText()),Integer.parseInt(vel.getText()),tiempo,turno,tGanador, event,0);
-                    turnoPanel.setText("Turno: "+jugadores.get(turno).getName()); 
-                 //actualizamos los turnos
-                    if (turno==1){ 
-                        turno--;
-                        setJugadores(jugadores);
+        if(flag){ //mientras el flag sea verdadero, es decir mientras no exista un ganador, sigue el juego
+            
+            if (jugadores.get(turno).lanzamiento(Integer.parseInt(vel.getText()), Integer.parseInt(ang.getText()), this.mapa) && flag){
+                
+                //las posiciones que se ingresan de "y" están al revés, entonces debemos modificarlas al momento de pasarlas al moverBala
+                int [] posBala=jugadores.get(turno).getTanque().getBala().getPosBala();
+                int valid=0;
+                //hacemos visible la bala del jugador del turno actual
+                if ("Proyectil 60mm".equals(tBalas.getValue()) ){ //60mm
+                    valid++;
+                    if(jugadores.get(turno).getTanque().getBala().getTipoBalas()[0] != 0){
+                        jugadores.get(turno).getTanque().getBala().setCantBalas(0);
+                        arrayBalasImagen.get(0).get(turno).setVisible(true);
+                        moverBala((posBala[0]+10)*altoScale,(470-posBala[1])*anchoScale,(posBala[0]+10)*altoScale,(470-posBala[1])*anchoScale,Integer.parseInt(ang.getText()),Integer.parseInt(vel.getText()),tiempo,turno,tGanador, event,0);
+                        turnoPanel.setText("Turno: "+jugadores.get(turno).getName()); 
+                     //actualizamos los turnos
+                        if (turno==1){ 
+                            turno--;
+                            setJugadores(jugadores);
+                        }
+                        else{
+                            turno++;
+                            setJugadores(jugadores);
+                        }
                     }
                     else{
                         turno++;
@@ -113,24 +123,22 @@ public class JuegoController implements Initializable {
                     this.tBalas.getItems().removeAll(this.tBalas.getItems());
                     this.tBalas.getItems().addAll(boxBalas.get(turno));
                 }
-                else{
-                    JOptionPane.showMessageDialog(null, "No queda de este tipo de munición");
-                }
-            }
-            if (boxBalas.get(turno)[1].equals(tBalas.getValue()) ){
-                valid++;
-                if(jugadores.get(turno).getTanque().getBala().getTipoBalas()[1] != 0){
-                    jugadores.get(turno).getTanque().getBala().setCantBalas(1);
-                    
-                    boxBalas.get(turno)[1]="Proyectil 105mm: "+jugadores.get(turno).getTanque().getBala().getTipoBalas()[1]+ "balas";
-                    
-                    arrayBalasImagen.get(1).get(turno).setVisible(true);
-                    moverBala(posBala[0]+10,(470-posBala[1]),posBala[0]+10,(470-posBala[1]),Integer.parseInt(ang.getText()),Integer.parseInt(vel.getText()),tiempo,turno,tGanador, event,1);
-                    turnoPanel.setText("Turno: "+jugadores.get(turno).getName()); 
-                    //actualizamos los turnos
-                    if (turno==1){ 
-                        turno--;
-                        setJugadores(jugadores);
+                if ("Proyectil 105mm".equals(tBalas.getValue()) ){
+                    valid++;
+                    if(jugadores.get(turno).getTanque().getBala().getTipoBalas()[1] != 0){
+                        jugadores.get(turno).getTanque().getBala().setCantBalas(1);
+                        arrayBalasImagen.get(1).get(turno).setVisible(true);
+                        moverBala((posBala[0]+10)*altoScale,(470-posBala[1])*anchoScale,(posBala[0]+10)*altoScale,(470-posBala[1])*anchoScale,Integer.parseInt(ang.getText()),Integer.parseInt(vel.getText()),tiempo,turno,tGanador, event,1);
+                        turnoPanel.setText("Turno: "+jugadores.get(turno).getName()); 
+                        //actualizamos los turnos
+                        if (turno==1){ 
+                            turno--;
+                            setJugadores(jugadores);
+                        }
+                        else{
+                            turno++;
+                            setJugadores(jugadores);
+                        }
                     }
                     else{
                         turno++;
@@ -139,24 +147,23 @@ public class JuegoController implements Initializable {
                     this.tBalas.getItems().removeAll(this.tBalas.getItems());
                     this.tBalas.getItems().addAll(boxBalas.get(turno));
                 }
-                else{
-                    JOptionPane.showMessageDialog(null, "No queda de este tipo de munición");
-                }
-            }
-            if (boxBalas.get(turno)[2].equals(tBalas.getValue()) ){
-                valid++;
-                if(jugadores.get(turno).getTanque().getBala().getTipoBalas()[2] != 0){
-                    jugadores.get(turno).getTanque().getBala().setCantBalas(2);
-                    
-                    boxBalas.get(turno)[2]="Proyectil Perforador: "+jugadores.get(turno).getTanque().getBala().getTipoBalas()[2]+ "balas";
-                    
-                    arrayBalasImagen.get(2).get(turno).setVisible(true);
-                    moverBala(posBala[0]+10,(470-posBala[1]),posBala[0]+10,(470-posBala[1]),Integer.parseInt(ang.getText()),Integer.parseInt(vel.getText()),tiempo,turno,tGanador, event,2);
-                    turnoPanel.setText("Turno: "+jugadores.get(turno).getName()); 
-                    //actualizamos los turnos
-                    if (turno==1){ 
-                        turno--;
-                        setJugadores(jugadores);
+                if ("Proyectil Perforador".equals(tBalas.getValue()) ){
+                    valid++;
+                    if(jugadores.get(turno).getTanque().getBala().getTipoBalas()[2] != 0){
+                        jugadores.get(turno).getTanque().getBala().setCantBalas(2);
+                        arrayBalasImagen.get(2).get(turno).setVisible(true);
+                        moverBala((posBala[0]+10)*altoScale,(470-posBala[1])*anchoScale,(posBala[0]+10)*altoScale,(470-posBala[1])*anchoScale,Integer.parseInt(ang.getText()),Integer.parseInt(vel.getText()),tiempo,turno,tGanador, event,2);
+                        turnoPanel.setText("Turno: "+jugadores.get(turno).getName()); 
+
+                        //actualizamos los turnos
+                        if (turno==1){ 
+                            turno--;
+                            setJugadores(jugadores);
+                        }
+                        else{
+                            turno++;
+                            setJugadores(jugadores);
+                        }
                     }
                     else{
                         turno++;
