@@ -90,7 +90,7 @@ public class Mapa implements Serializable{
     public void verMapa(){
         for(int i=0; i<733;i++){
             for(int j=0; j<465;j++){
-                System.out.println(mapeo[i][j]);
+                System.out.print(mapeo[i][j]);
             }
         }
         
