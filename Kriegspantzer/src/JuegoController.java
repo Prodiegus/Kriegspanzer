@@ -280,22 +280,28 @@ public class JuegoController implements Initializable {
             }
             else{
                 //entra al if si es que toca tanque
-                if (mapa.comprobarCoordenadaTanque((int)Math.round(x),(int)Math.round(464-y))){
+                if (mapa.comprobarCoordenadaTanque( (int)Math.round(x),(int)Math.round(464-y)) ){
                     //debo ver a cuál tanque es el que le pega
-                    if (mapa.comprobarCoordenadaTanque(jugadores.get(jug).getTanque().getPos()[0],jugadores.get(jug).getTanque().getPos()[1])){ //en caso de que se pegue a sí mismo
+                    
+                    if( ( (int)Math.round(x)<=jugadores.get(jug).getTanque().getPos()[0] + 10 ) && ((int)Math.round(x)>=jugadores.get(jug).getTanque().getPos()[0] - 10) ){
+                        System.out.println("se pega a si mismo");
                         jugadores.get(jug).getTanque().setVida(jugadores.get(jug).getTanque().getVida()-jugadores.get(jug).getTanque().getBala().getDamageBala()[tipBala] );
                         barras.get(jug).setProgress(jugadores.get(jug).getTanque().getVida()/100);
                         if (jugadores.get(jug).getTanque().getVida() <=0 ){ //corresponderia al turno del otro tanque
                             cargarPantallaFinal(turno,event);
                         }
-                    }
+                    } 
                     else{
-                        jugadores.get(turno).getTanque().setVida(jugadores.get(turno).getTanque().getVida()-jugadores.get(turno).getTanque().getBala().getDamageBala()[tipBala] );
-                        barras.get(turno).setProgress(jugadores.get(turno).getTanque().getVida()/100);
-                        if (jugadores.get(turno).getTanque().getVida() <=0 ){ //corresponderia al turno del otro tanque
-                            cargarPantallaFinal(tGanador,event);
-                        }
+                        //if (mapa.comprobarCoordenadaTanque(jugadores.get(jug).getTanque().getPos()[0],jugadores.get(jug).getTanque().getPos()[1]) ){ 
+                            jugadores.get(turno).getTanque().setVida(jugadores.get(turno).getTanque().getVida()-jugadores.get(turno).getTanque().getBala().getDamageBala()[tipBala] );
+                            barras.get(turno).setProgress(jugadores.get(turno).getTanque().getVida()/100);
+                            if (jugadores.get(turno).getTanque().getVida() <=0 ){ //corresponderia al turno del otro tanque
+                                cargarPantallaFinal(tGanador,event);
+                            }
+                        //}
                     }
+                    
+                    
                     
                     
                 }
