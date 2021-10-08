@@ -186,7 +186,7 @@ public class IniciarJuegoViewController implements Initializable {
 
     // Esta funcion agrega un fondo al anchorPane del mapa
     public void setMap(){
-        //se crea un random con la idea de generar un mapa random a futuro
+        //se crea un random con la idea de generar un mapa random
         Random index = new Random();
         this.map = index.nextInt(2);
         //this.map = 2;

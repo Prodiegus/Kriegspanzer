@@ -33,6 +33,24 @@ public class Mapa implements Serializable{
         return mapeo[x][y] == Area.AIRE;
     }
 
+    /* x = pos x disparo
+     * y = pos y disparo
+     * i, j = son contadores cuando se llama tienen que ser 0
+     * d = es el daño a realizar al mapa
+     * En este metodo se hace un damange triangular al mapa*/
+    public void destruir(int x, int y, int i, int j, int d) {
+        if(i<d/2){
+           for (int k = y; k <= y+j; k++) {
+                mapeo[x][k] = Area.AIRE;
+           }
+           destruir(x+1, y, i+1, j+1, d);
+        }else if(i<+d){
+            for (int k = y; k <= y+j; k++) {
+                mapeo[x][k] = Area.AIRE;
+           }
+           destruir(x+1, y, i+1, j-1, d);
+        }
+    }
 
     //ubica las posciones de los solidos
     public void setAreas(int x, int y) {
@@ -72,7 +90,7 @@ public class Mapa implements Serializable{
     public void verMapa(){
         for(int i=0; i<733;i++){
             for(int j=0; j<465;j++){
-                System.out.println(mapeo[i][j]);
+                System.out.print(mapeo[i][j]);
             }
         }
         
