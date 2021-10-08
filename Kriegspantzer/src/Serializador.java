@@ -1,5 +1,6 @@
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -7,6 +8,8 @@ import java.io.ObjectOutputStream;
 import java.io.Serializable;
 
 import javax.swing.JOptionPane;
+
+import javafx.scene.canvas.Canvas;
 
 public class Serializador implements Serializable{
 
@@ -23,6 +26,7 @@ public class Serializador implements Serializable{
         file.close();
         return mapa;
     }
+
     /**(@return Mapa mapa) para recuperar objetos serializados*/
     public Mapa cargarDataBase(int id) throws IOException{
         FileInputStream file;
@@ -38,6 +42,11 @@ public class Serializador implements Serializable{
         input.close();
         file.close();
         return mapa;
+    }
+    public int getAmountMaps() throws IOException{
+        File mapas = new File("Mapas"); 
+        File[] maps = mapas.listFiles();
+        return maps.length-1;
     }
 
     //este metodo simplemente borra

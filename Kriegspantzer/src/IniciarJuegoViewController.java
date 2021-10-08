@@ -186,10 +186,17 @@ public class IniciarJuegoViewController implements Initializable {
 
     // Esta funcion agrega un fondo al anchorPane del mapa
     public void setMap(){
+        //Creamos un sb para saber cuantos mapas hay serializados
+        Serializador sb = new Serializador();
         //se crea un random con la idea de generar un mapa random
         Random index = new Random();
-        this.map = index.nextInt(2);
-        //this.map = 2;
+        try {
+            this.map = index.nextInt(sb.getAmountMaps());
+        } catch (IOException e) {
+            JOptionPane.showMessageDialog(null, "Mapas no encontrados");
+            this.map = 0;
+        }
+        //this.map = 3;
         //System.out.println("Id de mapa: Mapa"+this.map);
         
         //ese valor dentro del nextint es la cantidad de mapas creados en existencia
