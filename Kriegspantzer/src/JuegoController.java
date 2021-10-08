@@ -11,9 +11,12 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.print.PrintColor;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.canvas.Canvas;
+import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -33,6 +36,7 @@ import javafx.scene.control.TextField;
 
 public class JuegoController implements Initializable {
     @FXML private AnchorPane mapaPanel;
+    @FXML private Canvas board;
     @FXML private Label turnoPanel;
     @FXML private Label alturaPanel;
     @FXML private Label distanciaPanel;
@@ -232,6 +236,7 @@ public class JuegoController implements Initializable {
             JOptionPane.showMessageDialog(null, "Error 011:\nNo ha sido posible cargar el Fanal del juego\n"+e.getCause());
         }
     }
+    @FXML
     private boolean moverBala(double xI,double yI,double x,double y,int angulo,double velocidad,double tiempo,int jug,int tGanador, ActionEvent event,int tipBala)throws InterruptedException {
         Platform.runLater( ()->{
             try{
@@ -271,7 +276,7 @@ public class JuegoController implements Initializable {
                     e2.printStackTrace();
                 }
             }
-            else{
+            else if(mapa.comprobarCoordenadaTanque((int)Math.round(x),(int)Math.round(464-y))){
                 //entra al if si es que toca tanque
                 if (mapa.comprobarCoordenadaTanque( (int)Math.round(x),(int)Math.round(464-y)) ){
                     //debo ver a cuál tanque es el que le pega
@@ -292,20 +297,23 @@ public class JuegoController implements Initializable {
                                 cargarPantallaFinal(tGanador,event);
                             }
                         //}
-                    }
-                    
-                    
-                    
-                    
+                    }           
                 }
                 altMax=0;//se reinicia la altura máxima para el siguiente jugador
                 arrayBalasImagen.get(tipBala).get(jug).setVisible(false);
-            }
+            }/*else{
+                altMax=0;//se reinicia la altura máxima para el siguiente jugador
+                arrayBalasImagen.get(tipBala).get(jug).setVisible(false);
+
+                System.out.println("toque suelo");
+                GraphicsContext gc = board.getGraphicsContext2D();
+                gc.drawImage(new Image(getClass().getResourceAsStream("img/triangle.png")), x, 464-y);
+
+            }*/
             
         });
         return false;
     }
-    
 
     //le asigna la hoja de estilos al fondo del panel y la da la clase con la imagen del mapa
     public void setMap(Mapa mapa){

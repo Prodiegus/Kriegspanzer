@@ -8,6 +8,8 @@ import java.io.Serializable;
 
 import javax.swing.JOptionPane;
 
+import javafx.scene.canvas.Canvas;
+
 public class Serializador implements Serializable{
 
     //para serializar el objeto 
@@ -23,6 +25,20 @@ public class Serializador implements Serializable{
         file.close();
         return mapa;
     }
+    //serializa un canvas
+    public Canvas ingresarABD(Canvas board, int id) throws IOException{
+        FileOutputStream file = new FileOutputStream("Mapas/Boards/Mapa"+id);
+        ObjectOutputStream output = new ObjectOutputStream(file);
+        if(output != null){
+            output.writeObject(board);
+
+            output.close();
+
+        }  
+        file.close();
+        return board;
+    }
+
     /**(@return Mapa mapa) para recuperar objetos serializados*/
     public Mapa cargarDataBase(int id) throws IOException{
         FileInputStream file;
@@ -38,6 +54,23 @@ public class Serializador implements Serializable{
         input.close();
         file.close();
         return mapa;
+    }
+
+    /**(@return Canvas board) para recuperar objetos serializados*/
+    public Canvas cargarBoards(int id) throws IOException{
+        FileInputStream file;
+        ObjectInputStream input;
+        Canvas board = null;
+        file = new FileInputStream("Mapas/Boards/Mapa"+id);
+        input = new ObjectInputStream(file);
+        try {
+            board = (Canvas)input.readObject();
+        } catch (ClassNotFoundException e) {
+            JOptionPane.showMessageDialog(null, "Error: 001\nMapa no encontrado");
+        }
+        input.close();
+        file.close();
+        return board;
     }
 
     //este metodo simplemente borra
