@@ -43,6 +43,11 @@ public class Serializador implements Serializable{
         file.close();
         return mapa;
     }
+    public int getAmountMaps() throws IOException{
+        File mapas = new File("Mapas"); 
+        File[] maps = mapas.listFiles();
+        return maps.length-1;
+    }
 
     //este metodo simplemente borra
     public void borrar(String id) {
