@@ -61,7 +61,7 @@ public class EditorMapaController implements Initializable{
             GraphicsContext gc = board.getGraphicsContext2D();
             gc.setStroke(Color.AQUAMARINE);
             gc.setFill(Color.valueOf("#008080"));
-            gc.fillRect(mouseX, mouseY, 10, 1000);
+            gc.fillRect(mouseX, mouseY, 1, 1000);
             mapa.setAreas(mouseX, mouseY);
         }
     }

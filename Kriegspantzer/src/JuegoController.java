@@ -26,6 +26,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.scene.media.MediaView;
+import javafx.scene.paint.Color;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.application.Platform;
@@ -282,7 +283,6 @@ public class JuegoController implements Initializable {
                     //debo ver a cuál tanque es el que le pega
                     
                     if( ( (int)Math.round(x)<=jugadores.get(jug).getTanque().getPos()[0] + 10 ) && ((int)Math.round(x)>=jugadores.get(jug).getTanque().getPos()[0] - 10) ){
-                        System.out.println("se pega a si mismo");
                         jugadores.get(jug).getTanque().setVida(jugadores.get(jug).getTanque().getVida()-jugadores.get(jug).getTanque().getBala().getDamageBala()[tipBala] );
                         barras.get(jug).setProgress(jugadores.get(jug).getTanque().getVida()/100);
                         if (jugadores.get(jug).getTanque().getVida() <=0 ){ //corresponderia al turno del otro tanque
@@ -301,15 +301,12 @@ public class JuegoController implements Initializable {
                 }
                 altMax=0;//se reinicia la altura máxima para el siguiente jugador
                 arrayBalasImagen.get(tipBala).get(jug).setVisible(false);
-            }/*else{
+            }else{
                 altMax=0;//se reinicia la altura máxima para el siguiente jugador
                 arrayBalasImagen.get(tipBala).get(jug).setVisible(false);
-
-                System.out.println("toque suelo");
-                GraphicsContext gc = board.getGraphicsContext2D();
-                gc.drawImage(new Image(getClass().getResourceAsStream("img/triangle.png")), x, 464-y);
-
-            }*/
+                mapa.destruir((int)Math.round(x),(int)Math.round(464-y), (int)Math.round(jugadores.get(turno).getTanque().getBala().getDamageBala()[tipBala]/6));
+                setBoard();
+            }
             
         });
         return false;
@@ -317,10 +314,31 @@ public class JuegoController implements Initializable {
 
     //le asigna la hoja de estilos al fondo del panel y la da la clase con la imagen del mapa
     public void setMap(Mapa mapa){
-        mapaPanel.getStylesheets().clear();
-        mapaPanel.getStylesheets().add("Estilos.css");
-        mapaPanel.getStyleClass().add("map"+(mapa.getId()));
+        //mapaPanel.getStylesheets().clear();
+        //mapaPanel.getStylesheets().add("Estilos.css");
+       // mapaPanel.getStyleClass().add("map"+(mapa.getId()));
         this.mapa = mapa;
+        setBoard();
+    }
+    public void setBoard(){
+        GraphicsContext gc = board.getGraphicsContext2D();
+        gc.setFill(Color.valueOf("#008080"));
+        int x = 0;
+        for (Mapa.Area[] i : mapa.getMapeo()) {
+            int y = 0;
+            for (Mapa.Area j : i) {
+                if(j.equals(Mapa.Area.SOLIDO)){
+                    gc.setFill(Color.valueOf("#008080"));
+                    gc.fillRect(x, y, 1, 1);
+                }else if(j.equals(Mapa.Area.AIRE)){
+                    gc.setFill(Color.WHITE);
+                    gc.fillRect(x, y, 1, 1);
+                }
+                y++;
+            }
+            x++;
+            
+        }  
     }
     //setea el label al principio del juego
     public void setJugadores(ArrayList<Jugador> jugadores){
@@ -354,7 +372,6 @@ public class JuegoController implements Initializable {
                 if(campo[0]==x){
                     tanks.get(i).setY(campo[1]);
                     jugadores.get(i).getTanque().setPos((int)Math.round(x), campo[1]);
-                    System.out.println("tanque:"+jugadores.get(i).getTanque().getPos()[0]+","+jugadores.get(i).getTanque().getPos()[1]);
                     mapa.addTank((int)Math.round(x), campo[1]);
                 }
             }
