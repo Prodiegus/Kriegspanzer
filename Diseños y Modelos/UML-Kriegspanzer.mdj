@@ -409,13 +409,30 @@
 											"height": 13,
 											"text": "+void verMapa()",
 											"horizontalAlignment": 0
+										},
+										{
+											"_type": "UMLOperationView",
+											"_id": "AAAAAAF8XYBFf+9v9B8=",
+											"_parent": {
+												"$ref": "AAAAAAF7amvi0WUc4KA="
+											},
+											"model": {
+												"$ref": "AAAAAAF8XYBFZu9sh8w="
+											},
+											"font": "Arial;13;0",
+											"left": 205,
+											"top": 1198,
+											"width": 303,
+											"height": 13,
+											"text": "+void destruir()",
+											"horizontalAlignment": 0
 										}
 									],
 									"font": "Arial;13;0",
 									"left": 200,
 									"top": 1013,
 									"width": 313,
-									"height": 188
+									"height": 203
 								},
 								{
 									"_type": "UMLReceptionCompartmentView",
@@ -455,7 +472,7 @@
 							"left": 200,
 							"top": 920,
 							"width": 313,
-							"height": 281,
+							"height": 296,
 							"nameCompartment": {
 								"$ref": "AAAAAAF7amvi0WUWJto="
 							},
@@ -1847,7 +1864,7 @@
 											"top": 289,
 											"width": 842.0673828125,
 											"height": 13,
-											"text": "+String[] tiposBalas",
+											"text": "+String[] tiposBalas1",
 											"horizontalAlignment": 0
 										},
 										{
@@ -1932,7 +1949,7 @@
 											"top": 364,
 											"width": 842.0673828125,
 											"height": 13,
-											"text": "+String {} tiposbalas",
+											"text": "+String {} tiposbalas2",
 											"horizontalAlignment": 0
 										}
 									],
@@ -5130,7 +5147,7 @@
 									"visible": false,
 									"font": "Arial;13;0",
 									"left": 173,
-									"top": 1035,
+									"top": 1037,
 									"height": 13,
 									"alpha": -0.5235987755982988,
 									"distance": 30,
@@ -5149,8 +5166,8 @@
 									},
 									"visible": false,
 									"font": "Arial;13;0",
-									"left": 171,
-									"top": 1022,
+									"left": 172,
+									"top": 1024,
 									"height": 13,
 									"alpha": -0.7853981633974483,
 									"distance": 40,
@@ -5169,8 +5186,8 @@
 									},
 									"visible": false,
 									"font": "Arial;13;0",
-									"left": 177,
-									"top": 1063,
+									"left": 176,
+									"top": 1065,
 									"height": 13,
 									"alpha": 0.5235987755982988,
 									"distance": 25,
@@ -5215,7 +5232,7 @@
 								"$ref": "AAAAAAF7qQ8CNb8Pxxs="
 							},
 							"lineStyle": 1,
-							"points": "191:258;120:256;120:1056;199:1057",
+							"points": "191:258;120:256;120:1056;199:1060",
 							"showVisibility": true,
 							"nameLabel": {
 								"$ref": "AAAAAAF8FCrmujsPKQs="
@@ -6104,7 +6121,7 @@
 									},
 									"visible": null,
 									"font": "Arial;13;0",
-									"left": 1128,
+									"left": 1129,
 									"top": 1063,
 									"height": 13,
 									"alpha": 1.5707963267948966,
@@ -6210,7 +6227,7 @@
 									"visible": false,
 									"font": "Arial;13;0",
 									"left": 539,
-									"top": 1064,
+									"top": 1070,
 									"height": 13,
 									"alpha": -0.5235987755982988,
 									"distance": 30,
@@ -6230,7 +6247,7 @@
 									"visible": false,
 									"font": "Arial;13;0",
 									"left": 542,
-									"top": 1077,
+									"top": 1083,
 									"height": 13,
 									"alpha": -0.7853981633974483,
 									"distance": 40,
@@ -6250,7 +6267,7 @@
 									"visible": false,
 									"font": "Arial;13;0",
 									"left": 534,
-									"top": 1036,
+									"top": 1042,
 									"height": 13,
 									"alpha": 0.5235987755982988,
 									"distance": 25,
@@ -6299,7 +6316,7 @@
 								"$ref": "AAAAAAF7qSLf1cAAd5w="
 							},
 							"lineStyle": 1,
-							"points": "1123:570;1128:1040;513:1056",
+							"points": "1123:570;1128:1040;513:1062",
 							"showVisibility": true,
 							"nameLabel": {
 								"$ref": "AAAAAAF8FDKGgmDLUXs="
@@ -7153,6 +7170,14 @@
 								"$ref": "AAAAAAF7amvi0GUT0yI="
 							},
 							"name": "void verMapa"
+						},
+						{
+							"_type": "UMLOperation",
+							"_id": "AAAAAAF8XYBFZu9sh8w=",
+							"_parent": {
+								"$ref": "AAAAAAF7amvi0GUT0yI="
+							},
+							"name": "void destruir"
 						}
 					]
 				},
@@ -8464,7 +8489,8 @@
 									"_parent": {
 										"$ref": "AAAAAAF8OSmeTnBvnU0="
 									},
-									"name": "ActionEvent event"
+									"name": "ActionEvent event",
+									"type": ""
 								}
 							]
 						}
@@ -8877,7 +8903,7 @@
 							"_parent": {
 								"$ref": "AAAAAAF7qSLf1L/+PAM="
 							},
-							"name": "String[] tiposBalas"
+							"name": "String[] tiposBalas1"
 						},
 						{
 							"_type": "UMLAttribute",
@@ -8886,7 +8912,8 @@
 								"$ref": "AAAAAAF7qSLf1L/+PAM="
 							},
 							"name": "ComboBox{String}",
-							"visibility": "private"
+							"visibility": "private",
+							"type": ""
 						},
 						{
 							"_type": "UMLAttribute",
@@ -8896,6 +8923,7 @@
 							},
 							"name": "ProgressBar barraJ1",
 							"visibility": "private",
+							"type": "",
 							"defaultValue": "new ProgressBar{}"
 						},
 						{
@@ -8906,6 +8934,7 @@
 							},
 							"name": "ProgressBar barraJ2",
 							"visibility": "private",
+							"type": "",
 							"defaultValue": "new ProgressBar{}"
 						},
 						{
@@ -8915,6 +8944,7 @@
 								"$ref": "AAAAAAF7qSLf1L/+PAM="
 							},
 							"name": "ArrayList{ProgressBar} barras",
+							"type": "",
 							"defaultValue": "new ArrayList{ProgressBar}{}"
 						},
 						{
@@ -8923,7 +8953,7 @@
 							"_parent": {
 								"$ref": "AAAAAAF7qSLf1L/+PAM="
 							},
-							"name": "String {} tiposbalas"
+							"name": "String {} tiposbalas2"
 						}
 					],
 					"operations": [
@@ -9715,7 +9745,8 @@
 								"$ref": "AAAAAAF8E7+VtyfSnEw="
 							},
 							"name": "double {} damageBala {30 50 40}",
-							"visibility": "private"
+							"visibility": "private",
+							"type": ""
 						},
 						{
 							"_type": "UMLAttribute",
@@ -9724,7 +9755,8 @@
 								"$ref": "AAAAAAF8E7+VtyfSnEw="
 							},
 							"name": "int {} cantBalas {3 3 10}",
-							"visibility": "private"
+							"visibility": "private",
+							"type": ""
 						},
 						{
 							"_type": "UMLAttribute",
@@ -9900,7 +9932,8 @@
 								"$ref": "AAAAAAF8E8D8DigwiZw="
 							},
 							"name": "double vida",
-							"visibility": "private"
+							"visibility": "private",
+							"type": ""
 						}
 					],
 					"operations": [
