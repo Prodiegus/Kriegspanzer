@@ -11,9 +11,12 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.print.PrintColor;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.canvas.Canvas;
+import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -23,6 +26,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.scene.media.MediaView;
+import javafx.scene.paint.Color;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.application.Platform;
@@ -33,6 +37,7 @@ import javafx.scene.control.TextField;
 
 public class JuegoController implements Initializable {
     @FXML private AnchorPane mapaPanel;
+    @FXML private Canvas board;
     @FXML private Label turnoPanel;
     @FXML private Label alturaPanel;
     @FXML private Label distanciaPanel;
@@ -232,6 +237,7 @@ public class JuegoController implements Initializable {
             JOptionPane.showMessageDialog(null, "Error 011:\nNo ha sido posible cargar el Fanal del juego\n"+e.getCause());
         }
     }
+    @FXML
     private boolean moverBala(double xI,double yI,double x,double y,int angulo,double velocidad,double tiempo,int jug,int tGanador, ActionEvent event,int tipBala)throws InterruptedException {
         Platform.runLater( ()->{
             try{
@@ -271,13 +277,12 @@ public class JuegoController implements Initializable {
                     e2.printStackTrace();
                 }
             }
-            else{
+            else if(mapa.comprobarCoordenadaTanque((int)Math.round(x),(int)Math.round(464-y))){
                 //entra al if si es que toca tanque
                 if (mapa.comprobarCoordenadaTanque( (int)Math.round(x),(int)Math.round(464-y)) ){
                     //debo ver a cuál tanque es el que le pega
                     
                     if( ( (int)Math.round(x)<=jugadores.get(jug).getTanque().getPos()[0] + 10 ) && ((int)Math.round(x)>=jugadores.get(jug).getTanque().getPos()[0] - 10) ){
-                        System.out.println("se pega a si mismo");
                         jugadores.get(jug).getTanque().setVida(jugadores.get(jug).getTanque().getVida()-jugadores.get(jug).getTanque().getBala().getDamageBala()[tipBala] );
                         barras.get(jug).setProgress(jugadores.get(jug).getTanque().getVida()/100);
                         if (jugadores.get(jug).getTanque().getVida() <=0 ){ //corresponderia al turno del otro tanque
@@ -292,27 +297,48 @@ public class JuegoController implements Initializable {
                                 cargarPantallaFinal(tGanador,event);
                             }
                         //}
-                    }
-                    
-                    
-                    
-                    
+                    }           
                 }
                 altMax=0;//se reinicia la altura máxima para el siguiente jugador
                 arrayBalasImagen.get(tipBala).get(jug).setVisible(false);
+            }else{
+                altMax=0;//se reinicia la altura máxima para el siguiente jugador
+                arrayBalasImagen.get(tipBala).get(jug).setVisible(false);
+                mapa.destruir((int)Math.round(x),(int)Math.round(464-y), (int)Math.round(jugadores.get(turno).getTanque().getBala().getDamageBala()[tipBala]/6));
+                setBoard();
             }
             
         });
         return false;
     }
-    
 
     //le asigna la hoja de estilos al fondo del panel y la da la clase con la imagen del mapa
     public void setMap(Mapa mapa){
-        mapaPanel.getStylesheets().clear();
-        mapaPanel.getStylesheets().add("Estilos.css");
-        mapaPanel.getStyleClass().add("map"+(mapa.getId()));
+        //mapaPanel.getStylesheets().clear();
+        //mapaPanel.getStylesheets().add("Estilos.css");
+       // mapaPanel.getStyleClass().add("map"+(mapa.getId()));
         this.mapa = mapa;
+        setBoard();
+    }
+    public void setBoard(){
+        GraphicsContext gc = board.getGraphicsContext2D();
+        gc.setFill(Color.valueOf("#008080"));
+        int x = 0;
+        for (Mapa.Area[] i : mapa.getMapeo()) {
+            int y = 0;
+            for (Mapa.Area j : i) {
+                if(j.equals(Mapa.Area.SOLIDO)){
+                    gc.setFill(Color.valueOf("#008080"));
+                    gc.fillRect(x, y, 1, 1);
+                }else if(j.equals(Mapa.Area.AIRE)){
+                    gc.setFill(Color.WHITE);
+                    gc.fillRect(x, y, 1, 1);
+                }
+                y++;
+            }
+            x++;
+            
+        }  
     }
     //setea el label al principio del juego
     public void setJugadores(ArrayList<Jugador> jugadores){
@@ -346,7 +372,6 @@ public class JuegoController implements Initializable {
                 if(campo[0]==x){
                     tanks.get(i).setY(campo[1]);
                     jugadores.get(i).getTanque().setPos((int)Math.round(x), campo[1]);
-                    System.out.println("tanque:"+jugadores.get(i).getTanque().getPos()[0]+","+jugadores.get(i).getTanque().getPos()[1]);
                     mapa.addTank((int)Math.round(x), campo[1]);
                 }
             }

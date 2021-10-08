@@ -5,17 +5,22 @@ import java.util.ResourceBundle;
 import javax.swing.JOptionPane;
 
 import javafx.scene.input.MouseEvent;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
+import javafx.scene.canvas.Canvas;
+import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
 public class EditorMapaController implements Initializable{
 
     @FXML private AnchorPane mapaPanel;
+    @FXML private Canvas board;
     @FXML private Label mouseLb;  
     @FXML private Label mNum;  
     @FXML private Label tEd;
@@ -53,6 +58,10 @@ public class EditorMapaController implements Initializable{
         if(editarCampos){
             mapa.setCampos(mouseX, mouseY);
         }else{
+            GraphicsContext gc = board.getGraphicsContext2D();
+            gc.setStroke(Color.AQUAMARINE);
+            gc.setFill(Color.valueOf("#008080"));
+            gc.fillRect(mouseX, mouseY, 1, 1000);
             mapa.setAreas(mouseX, mouseY);
         }
     }

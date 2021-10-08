@@ -38,17 +38,11 @@ public class Mapa implements Serializable{
      * i, j = son contadores cuando se llama tienen que ser 0
      * d = es el daño a realizar al mapa
      * En este metodo se hace un damange triangular al mapa*/
-    public void destruir(int x, int y, int i, int j, int d) {
-        if(i<d/2){
-           for (int k = y; k <= y+j; k++) {
-                mapeo[x][k] = Area.AIRE;
-           }
-           destruir(x+1, y, i+1, j+1, d);
-        }else if(i<+d){
-            for (int k = y; k <= y+j; k++) {
-                mapeo[x][k] = Area.AIRE;
-           }
-           destruir(x+1, y, i+1, j-1, d);
+    public void destruir(int x, int y, int d) {
+        for (int i = x-10; i < x+d+10; i++) {
+            for (int j = y-5; j < y+d+5; j++) {
+                mapeo[i][j] = Area.AIRE;
+            }
         }
     }
 
