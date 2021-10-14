@@ -1,6 +1,9 @@
+import java.util.ArrayList;
+
 public class Jugador{
     private String nombre;
     private boolean estado;
+    //private ArrayList<Tanque> tanques= new ArrayList<Tanque>();
     private Tanque tanque;
      
     public Jugador(String nombre){
