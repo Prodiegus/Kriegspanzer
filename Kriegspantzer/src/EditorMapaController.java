@@ -5,17 +5,22 @@ import java.util.ResourceBundle;
 import javax.swing.JOptionPane;
 
 import javafx.scene.input.MouseEvent;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
+import javafx.scene.canvas.Canvas;
+import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
 public class EditorMapaController implements Initializable{
 
     @FXML private AnchorPane mapaPanel;
+    @FXML private Canvas board;
     @FXML private Label mouseLb;  
     @FXML private Label mNum;  
     @FXML private Label tEd;
@@ -53,11 +58,42 @@ public class EditorMapaController implements Initializable{
         if(editarCampos){
             mapa.setCampos(mouseX, mouseY);
         }else{
+            GraphicsContext gc = board.getGraphicsContext2D();
+            gc.setStroke(Color.AQUAMARINE);
+            gc.setFill(Color.valueOf("#008080"));
+            gc.fillRect(mouseX, mouseY, 1, 1000);
             mapa.setAreas(mouseX, mouseY);
         }
     }
+    public void setBoard(Mapa map){
+        GraphicsContext gc = board.getGraphicsContext2D();
+        gc.setFill(Color.valueOf("#008080"));
+        int x = 0;
+        for (Mapa.Area[] i : mapa.getMapeo()) {
+            int y = 0;
+            for (Mapa.Area j : i) {
+                if(j.equals(Mapa.Area.SOLIDO)){
+                    gc.setFill(Color.valueOf("#008080"));
+                    gc.fillRect(x, y, 1, 1);
+                }else if(j.equals(Mapa.Area.AIRE)){
+                    gc.setFill(Color.WHITE);
+                    gc.fillRect(x, y, 1, 1);
+                }
+                y++;
+            }
+            x++;
+            
+        }  
+    }
     public void iniciarMapa() {
-        mapa.fillAire();
+        try {
+            Serializador sb = new Serializador();
+            this.mapa = sb.cargarDataBase(map);
+            setBoard(mapa);
+        }catch (IOException e) {
+            mapa.fillAire();
+            setBoard(mapa);
+        }    
     }
     @FXML
     private void handleSerializar(ActionEvent event){

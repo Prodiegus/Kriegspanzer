@@ -2,9 +2,11 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.FileNotFoundException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
+import javafx.scene.canvas.Canvas;
 
 import javax.swing.JOptionPane;
 
@@ -39,7 +41,13 @@ public class Serializador implements Serializable{
         file.close();
         return mapa;
     }
-
+    
+    public int getAmountMaps() throws IOException{
+        File mapas = new File("Mapas"); 
+        File[] maps = mapas.listFiles();
+        return maps.length-1;
+    }
+    
     //este metodo simplemente borra
     public void borrar(String id) {
         File cliente = new File("Mapas/mapa"+id);
