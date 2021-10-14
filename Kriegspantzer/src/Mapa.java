@@ -32,7 +32,7 @@ public class Mapa implements Serializable{
     public boolean comprobarCoordenadaAire(int x, int y) {
         return mapeo[x][y] == Area.AIRE;
     }
-    
+
     /* x = pos x disparo
      * y = pos y disparo
      * i, j = son contadores cuando se llama tienen que ser 0

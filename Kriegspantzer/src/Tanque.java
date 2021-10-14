@@ -1,20 +1,17 @@
 public class Tanque {
-    private String color;
+    private final String color;
     private int [] posTanque;
     private Bala bala;
     private double vida=100;
-    private double [] damageBala={30,50,40};   //(0)Proyectil 60mm;(1)Proyectil 105mm; (2)Proyectil perforante; 
+    private final double [] damageBala={30,50,40};   //(0)Proyectil 60mm;(1)Proyectil 105mm; (2)Proyectil perforante; 
     String[] balasDisp = { "Proyectil 60mm: 3 balas","Proyectil 105mm: 3 balas", "Proyectil Perforador: 10 balas"};
+    
         
     public Tanque (String color, int[] posTanque, Bala bala){
         this.color = color;
         this.posTanque = posTanque;
         this.bala=bala;
-        this.vida=vida;
-        this.balasDisp=balasDisp;
-        this.damageBala=damageBala;
     }
-
 
     public boolean disparo(double velocidad, double angulo, Mapa mapa){
         /*
