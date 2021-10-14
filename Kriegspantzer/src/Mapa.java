@@ -33,6 +33,18 @@ public class Mapa implements Serializable{
         return mapeo[x][y] == Area.AIRE;
     }
 
+    /* x = pos x disparo
+     * y = pos y disparo
+     * i, j = son contadores cuando se llama tienen que ser 0
+     * d = es el daño a realizar al mapa
+     * En este metodo se hace un damange triangular al mapa*/
+    public void destruir(int x, int y, int d) {
+        for (int i = x-10; i < x+d+10; i++) {
+            for (int j = y-5; j < y+d+5; j++) {
+                mapeo[i][j] = Area.AIRE;
+            }
+        }
+    }
 
     //ubica las posciones de los solidos
     public void setAreas(int x, int y) {
