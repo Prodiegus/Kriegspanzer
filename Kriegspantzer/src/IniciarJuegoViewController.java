@@ -70,7 +70,6 @@ public class IniciarJuegoViewController implements Initializable {
         //convertimos a Array
         Integer[] posiciones = camposX.stream().toArray(Integer[]::new);
         Arrays.sort(posiciones);
-
         int x1 = foundX(posiciones);
 
         int[] pos1 = {x1,0};
@@ -89,6 +88,8 @@ public class IniciarJuegoViewController implements Initializable {
 
         jugador1.setTanque(tanque1);
         jugador2.setTanque(tanque2);
+        //jugador1.setTanques(tanque1);
+        //jugador2.setTanques(tanque2);
         ArrayList<Jugador> jugadores = new ArrayList<Jugador>();
         jugadores.add(jugador1);
         jugadores.add(jugador2);
@@ -106,6 +107,7 @@ public class IniciarJuegoViewController implements Initializable {
             controller.addViews();
             controller.posTank(campos);
             controller.posBala();
+            controller.posBarras();
 
             stage.initModality(Modality.WINDOW_MODAL);
             stage.setResizable(false);
@@ -159,7 +161,7 @@ public class IniciarJuegoViewController implements Initializable {
             Random r = new Random();
             int x1;
             //verificamos que las x sean campos admisibles
-            for (x1 = r.nextInt(733/2);true;x1 = r.nextInt(733/2)){
+            for (x1 = r.nextInt(733/2);true;x1 = r.nextInt(733/2)){//x1 = LargoMapa/2 Asi se consigue la mitad del mapa de distancia
                 if(Arrays.binarySearch(posiciones, x1)>0 && Arrays.binarySearch(posiciones, (x1+(733/2)))>0){
                     return x1;  
                 }
@@ -167,7 +169,7 @@ public class IniciarJuegoViewController implements Initializable {
         }catch(Exception e){
             foundX(posiciones);
         }
-        return 200;
+        return 200;//en caso de error se toma una distancia cualquiera
     }
     public void setBoxes(String[] colors){
 
@@ -175,7 +177,7 @@ public class IniciarJuegoViewController implements Initializable {
         String path = "audio/7.mp3";
         Media media = new Media(new File(path).toURI().toString());
         MediaPlayer mediaPlayer = new MediaPlayer(media);
-        mediaPlayer.play();
+        mediaPlayer.setAutoPlay(true);
         MediaView mediaView = new MediaView(mediaPlayer);
         mediaView.getClip();
         this.cJugador1.getItems().removeAll(this.cJugador1.getItems());
@@ -196,7 +198,7 @@ public class IniciarJuegoViewController implements Initializable {
             JOptionPane.showMessageDialog(null, "Mapas no encontrados");
             this.map = 0;
         }
-        //this.map = 3;
+        //this.map = 10;
         //System.out.println("Id de mapa: Mapa"+this.map);
         
         //ese valor dentro del nextint es la cantidad de mapas creados en existencia
