@@ -446,7 +446,7 @@ public class JuegoController implements Initializable {
             barras.get(i).setTranslateX(  jugadores.get(i).getTanque().getPos()[0]-15);
             barras.get(i).setTranslateY( (jugadores.get(i).getTanque().getPos()[1])-25);
             barras.get(i).setProgress(1);
-            barras.get(i).setPrefSize(60, 7);
+            barras.get(i).setPrefSize(60, 10);
             mapaPanel.getChildren().add(barras.get(i));
         }
         
