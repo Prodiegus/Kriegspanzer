@@ -1,6 +1,10 @@
+
+import java.util.ArrayList;
+
 public class Jugador{
     private String nombre;
     private boolean estado;
+    private ArrayList<Tanque> tanques= new ArrayList<Tanque>();
     private Tanque tanque;
      
     public Jugador(String nombre){
@@ -24,13 +28,21 @@ public class Jugador{
     public String getName(){
         return nombre;
     }
-
+    
     public Tanque getTanque(){
         return this.tanque;
     }
     
     public boolean cheekTanque(){
         return estado;
+    }
+    
+    public ArrayList<Tanque> getTanques() {
+        return tanques;
+    }
+
+    public void setTanques(Tanque tank) {
+        this.tanques.add(tank);
     }
     
 }
