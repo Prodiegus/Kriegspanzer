@@ -88,6 +88,8 @@ public class IniciarJuegoViewController implements Initializable {
 
         jugador1.setTanque(tanque1);
         jugador2.setTanque(tanque2);
+        //jugador1.setTanques(tanque1);
+        //jugador2.setTanques(tanque2);
         ArrayList<Jugador> jugadores = new ArrayList<Jugador>();
         jugadores.add(jugador1);
         jugadores.add(jugador2);
@@ -105,6 +107,7 @@ public class IniciarJuegoViewController implements Initializable {
             controller.addViews();
             controller.posTank(campos);
             controller.posBala();
+            controller.posBarras();
 
             stage.initModality(Modality.WINDOW_MODAL);
             stage.setResizable(false);
