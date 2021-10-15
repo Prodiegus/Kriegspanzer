@@ -65,8 +65,35 @@ public class EditorMapaController implements Initializable{
             mapa.setAreas(mouseX, mouseY);
         }
     }
+    public void setBoard(Mapa map){
+        GraphicsContext gc = board.getGraphicsContext2D();
+        gc.setFill(Color.valueOf("#008080"));
+        int x = 0;
+        for (Mapa.Area[] i : mapa.getMapeo()) {
+            int y = 0;
+            for (Mapa.Area j : i) {
+                if(j.equals(Mapa.Area.SOLIDO)){
+                    gc.setFill(Color.valueOf("#008080"));
+                    gc.fillRect(x, y, 1, 1);
+                }else if(j.equals(Mapa.Area.AIRE)){
+                    gc.setFill(Color.WHITE);
+                    gc.fillRect(x, y, 1, 1);
+                }
+                y++;
+            }
+            x++;
+            
+        }  
+    }
     public void iniciarMapa() {
-        mapa.fillAire();
+        try {
+            Serializador sb = new Serializador();
+            this.mapa = sb.cargarDataBase(map);
+            setBoard(mapa);
+        }catch (IOException e) {
+            mapa.fillAire();
+            setBoard(mapa);
+        }    
     }
     @FXML
     private void handleSerializar(ActionEvent event){
