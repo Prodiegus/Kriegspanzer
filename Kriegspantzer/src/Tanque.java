@@ -8,7 +8,7 @@ public class Tanque {
         this.color = color;
         this.posTanque = posTanque;
         this.bala=bala;
-        this.vida=vida;
+        //this.vida=vida;
     }
 
     public boolean disparo(double velocidad, double angulo, Mapa mapa){
