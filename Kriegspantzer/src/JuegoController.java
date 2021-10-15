@@ -32,6 +32,7 @@ import javafx.application.Platform;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.ProgressBar;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.Border;
 
 
 public class JuegoController implements Initializable {
@@ -48,19 +49,14 @@ public class JuegoController implements Initializable {
     @FXML private TextField ang;
     @FXML private TextField vel;
     @FXML private ComboBox<String> tBalas;
-    @FXML private ProgressBar barraJ1=new ProgressBar();
-    @FXML private ProgressBar barraJ2=new ProgressBar();
     @FXML private ArrayList<ProgressBar> barras = new ArrayList<ProgressBar>();
-    @FXML private ArrayList<String[]> boxBalas = new ArrayList<String[]>();
     
     int turno=0;
     private Mapa mapa;
     private ArrayList<Jugador> jugadores = new ArrayList<Jugador>();
     double altMax=0;
     double disMax=0;
-    String[] tiposBalas1 = { "Proyectil 60mm: 3 balas","Proyectil 105mm: 3 balas", "Proyectil Perforador: 10 balas"};
-    String[] tiposBalas2 = { "Proyectil 60mm: 3 balas","Proyectil 105mm: 3 balas", "Proyectil Perforador: 10 balas"};
-
+    String[] balasDisp = { "Proyectil 60mm: 3 balas","Proyectil 105mm: 3 balas", "Proyectil Perforador: 10 balas"};
     
     @FXML public void scale(KeyEvent event){
         if(event.getCode().equals(KeyCode.R)){
@@ -93,81 +89,89 @@ public class JuegoController implements Initializable {
         if (jugadores.get(turno).lanzamiento(Integer.parseInt(vel.getText()), Integer.parseInt(ang.getText()), this.mapa)){
             //las posiciones que se ingresan de "y" están al revés, entonces debemos modificarlas al momento de pasarlas al moverBala
             int [] posBala=jugadores.get(turno).getTanque().getBala().getPosBala();
+            //int [] posBala=jugadores.get(turno).getTanques().get(id del tanque).getBala().getPosBala();
             int valid=0;
             //hacemos visible la bala del jugador del turno actual
-            if (boxBalas.get(turno)[0].equals(tBalas.getValue()) ){ //60mm
+            if ( jugadores.get(turno).getTanque().getBalasDisp()[0].equals(tBalas.getValue()) ){ //60mm
+                //jugadores.get(turno).getTanques().get(id del tanque).getBalasDisp()[0].equals(tBalas.getValue())
                 valid++;
                 if(jugadores.get(turno).getTanque().getBala().getTipoBalas()[0] != 0){
-                    jugadores.get(turno).getTanque().getBala().setCantBalas(0);
+                    //jugadores.get(turno).getTanques().get(id del tanque).getBala().getTipoBalas()[0]
                     
-                    boxBalas.get(turno)[0]="Proyectil 60mm: "+jugadores.get(turno).getTanque().getBala().getTipoBalas()[0]+ "balas";
+                    jugadores.get(turno).getTanque().getBala().setCantBalas(0);
+                    //jugadores.get(turno).getTanques().get(id del tanque).getBala().setCantBalas(0);
+                    
+                    jugadores.get(turno).getTanque().setBalasDisp( ("Proyectil 60mm: "+jugadores.get(turno).getTanque().getBala().getTipoBalas()[0]+ "  balas"), 0);
+                    //jugadores.get(turno).getTanques().get(id del tanque).setBalasDisp( ("Proyectil 60mm: "+jugadores.get(turno).getTanque().getBala().getTipoBalas()[0]+ "  balas"), 0);
                     
                     arrayBalasImagen.get(0).get(turno).setVisible(true);
+                    //arrayBalasImagen.get(0).get(turno).setVisible(true);
+                    
+                    //se le suman valores a las posiciones para que salga desde arriba y al medio del tanque y no desde una esquina
                     moverBala(posBala[0]+10,(470-posBala[1]),posBala[0]+10,(470-posBala[1]),Integer.parseInt(ang.getText()),Integer.parseInt(vel.getText()),tiempo,turno,tGanador, event,0);
                     turnoPanel.setText("Turno: "+jugadores.get(turno).getName()); 
                  //actualizamos los turnos
                     if (turno==1){ 
                         turno--;
-                        setJugadores(jugadores);
                     }
                     else{
                         turno++;
-                        setJugadores(jugadores);
                     }
+                    setJugadores(jugadores);
                     this.tBalas.getItems().removeAll(this.tBalas.getItems());
-                    this.tBalas.getItems().addAll(boxBalas.get(turno));
+                    this.tBalas.getItems().addAll(jugadores.get(turno).getTanque().getBalasDisp());
                 }
                 else{
                     JOptionPane.showMessageDialog(null, "No queda de este tipo de munición");
                 }
             }
-            if (boxBalas.get(turno)[1].equals(tBalas.getValue()) ){
+            if ( jugadores.get(turno).getTanque().getBalasDisp()[1].equals(tBalas.getValue()) ){
                 valid++;
                 if(jugadores.get(turno).getTanque().getBala().getTipoBalas()[1] != 0){
                     jugadores.get(turno).getTanque().getBala().setCantBalas(1);
                     
-                    boxBalas.get(turno)[1]="Proyectil 105mm: "+jugadores.get(turno).getTanque().getBala().getTipoBalas()[1]+ "balas";
+                    jugadores.get(turno).getTanque().setBalasDisp( ("Proyectil 105mm: "+jugadores.get(turno).getTanque().getBala().getTipoBalas()[1]+ "  balas"), 1);
                     
                     arrayBalasImagen.get(1).get(turno).setVisible(true);
+                    //se le suman valores a las posiciones para que salga desde arriba y al medio del tanque y no desde una esquina
                     moverBala(posBala[0]+10,(470-posBala[1]),posBala[0]+10,(470-posBala[1]),Integer.parseInt(ang.getText()),Integer.parseInt(vel.getText()),tiempo,turno,tGanador, event,1);
                     turnoPanel.setText("Turno: "+jugadores.get(turno).getName()); 
                     //actualizamos los turnos
                     if (turno==1){ 
                         turno--;
-                        setJugadores(jugadores);
                     }
                     else{
                         turno++;
-                        setJugadores(jugadores);
                     }
+                    setJugadores(jugadores);
                     this.tBalas.getItems().removeAll(this.tBalas.getItems());
-                    this.tBalas.getItems().addAll(boxBalas.get(turno));
+                    this.tBalas.getItems().addAll(jugadores.get(turno).getTanque().getBalasDisp());
                 }
                 else{
                     JOptionPane.showMessageDialog(null, "No queda de este tipo de munición");
                 }
             }
-            if (boxBalas.get(turno)[2].equals(tBalas.getValue()) ){
+            if ( jugadores.get(turno).getTanque().getBalasDisp()[2].equals(tBalas.getValue())  ){
                 valid++;
                 if(jugadores.get(turno).getTanque().getBala().getTipoBalas()[2] != 0){
                     jugadores.get(turno).getTanque().getBala().setCantBalas(2);
                     
-                    boxBalas.get(turno)[2]="Proyectil Perforador: "+jugadores.get(turno).getTanque().getBala().getTipoBalas()[2]+ "balas";
+                    jugadores.get(turno).getTanque().setBalasDisp( ("Proyectil Perforador: "+jugadores.get(turno).getTanque().getBala().getTipoBalas()[2]+ "  balas"), 2);
                     
                     arrayBalasImagen.get(2).get(turno).setVisible(true);
+                    //se le suman valores a las posiciones para que salga desde arriba y al medio del tanque y no desde una esquina
                     moverBala(posBala[0]+10,(470-posBala[1]),posBala[0]+10,(470-posBala[1]),Integer.parseInt(ang.getText()),Integer.parseInt(vel.getText()),tiempo,turno,tGanador, event,2);
                     turnoPanel.setText("Turno: "+jugadores.get(turno).getName()); 
                     //actualizamos los turnos
                     if (turno==1){ 
                         turno--;
-                        setJugadores(jugadores);
                     }
                     else{
                         turno++;
-                        setJugadores(jugadores);
                     }
+                    setJugadores(jugadores);
                     this.tBalas.getItems().removeAll(this.tBalas.getItems());
-                    this.tBalas.getItems().addAll(boxBalas.get(turno));
+                    this.tBalas.getItems().addAll(jugadores.get(turno).getTanque().getBalasDisp());
                 }
                 else{
                    JOptionPane.showMessageDialog(null, "No queda de este tipo de munición"); 
@@ -268,43 +272,55 @@ public class JuegoController implements Initializable {
                 if (xI!=x){
                     arrayBalasImagen.get(tipBala).get(jug).setX(x);
                 }
-                 arrayBalasImagen.get(tipBala).get(jug).setY(465-y);
-                try{//Se realiza la recursión hasta llegar al caso base
+                arrayBalasImagen.get(tipBala).get(jug).setY(465-y);//el 465 significa la posicion real en la matriz, ya que esta es invertida
+                try{//Se realiza la recursión hasta llegar al caso base 
                     moverBala(xI,yI,(xI+velocidad*Math.cos(Math.toRadians(angulo))*tiempo),(yI+velocidad*Math.sin(Math.toRadians(angulo))*tiempo-(0.5*9.81*(tiempo*tiempo))),angulo,velocidad,(tiempo+0.05),jug,tGanador, event,tipBala);      
                 }
                 catch(InterruptedException e2){
                     e2.printStackTrace();
                 }
             }
-            else if(mapa.comprobarCoordenadaTanque((int)Math.round(x),(int)Math.round(464-y))){
-                //entra al if si es que toca tanque
-                if (mapa.comprobarCoordenadaTanque( (int)Math.round(x),(int)Math.round(464-y)) ){
-                    //debo ver a cuál tanque es el que le pega
+            else if(mapa.comprobarCoordenadaTanque((int)Math.round(x),(int)Math.round(464-y))){ //entra al if si es que toca tanque
+                
+                // se verifica que si el lanzamiento de la bala llega a la zona del tanque se pega a sí mismo (posx-10,posx+10)
+                if( ( (int)Math.round(x)<=jugadores.get(jug).getTanque().getPos()[0] + 10 ) && ((int)Math.round(x)>=jugadores.get(jug).getTanque().getPos()[0] - 10) ){
+                    jugadores.get(jug).getTanque().setVida(jugadores.get(jug).getTanque().getVida()-jugadores.get(jug).getTanque().getBala().getDamageBala()[tipBala] );
+                    barras.get(jug).setProgress(jugadores.get(jug).getTanque().getVida()/100);
+                    if (jugadores.get(jug).getTanque().getVida() <=0 ){ //corresponderia al turno del otro tanque
+                        cargarPantallaFinal(turno,event);
+                    }
+                } 
+                else{ //si no se pega así mismo le pega al otro tanque
+                    /*falta mejorar esta parte por si se presentan futuros tanques, 
+                        Lo óptimo sería recorrer todos los tanques de cada jugador, primero se parte con un jugador, obtenemos sus tanques y verificamos uno por uno si su tanque
+                        se encuentra en la posición de la bala
                     
-                    if( ( (int)Math.round(x)<=jugadores.get(jug).getTanque().getPos()[0] + 10 ) && ((int)Math.round(x)>=jugadores.get(jug).getTanque().getPos()[0] - 10) ){
-                        jugadores.get(jug).getTanque().setVida(jugadores.get(jug).getTanque().getVida()-jugadores.get(jug).getTanque().getBala().getDamageBala()[tipBala] );
-                        barras.get(jug).setProgress(jugadores.get(jug).getTanque().getVida()/100);
-                        if (jugadores.get(jug).getTanque().getVida() <=0 ){ //corresponderia al turno del otro tanque
-                            cargarPantallaFinal(turno,event);
+                    for(int i=0;i<jugadores.size();i++){
+                       Jugador jugActual=jugadores.get(i); //tenemos el jugador actual
+                       for(int j=0;j<jugActual.getTanques().size();j++) //debemos tener el array de tanques que posee
+                        Tanque tankActual= jugActual.getTanques().get(j)
+                        if (  ((int)Math.round(x)<=tankActual.getPos()[0]+10) && ((int)Math.round(x)>=tankActual.getPos()[0]+10)  ){ //
+                            jugadores.get(i).getTanques().get(j).setVida( jugadores.get(i).getTanques().get(j).getVida()-jugadores.get(i).getTanques().get(j).getBala().getDamageBala[tipBala])
                         }
-                    } 
-                    else{
-                        //if (mapa.comprobarCoordenadaTanque(jugadores.get(jug).getTanque().getPos()[0],jugadores.get(jug).getTanque().getPos()[1]) ){ 
-                            jugadores.get(turno).getTanque().setVida(jugadores.get(turno).getTanque().getVida()-jugadores.get(turno).getTanque().getBala().getDamageBala()[tipBala] );
-                            barras.get(turno).setProgress(jugadores.get(turno).getTanque().getVida()/100);
-                            if (jugadores.get(turno).getTanque().getVida() <=0 ){ //corresponderia al turno del otro tanque
-                                cargarPantallaFinal(tGanador,event);
-                            }
-                        //}
-                    }           
-                }
+                    }
+                    */
+                    jugadores.get(turno).getTanque().setVida(jugadores.get(turno).getTanque().getVida()-jugadores.get(turno).getTanque().getDamageBala()[tipBala] );
+                    barras.get(turno).setProgress(jugadores.get(turno).getTanque().getVida()/100);
+                    if (jugadores.get(turno).getTanque().getVida() <=0 ){ //si la vida es menor, gana el turno del otro tanque
+                        cargarPantallaFinal(tGanador,event);
+                    }
+                }           
+                
                 altMax=0;//se reinicia la altura máxima para el siguiente jugador
                 arrayBalasImagen.get(tipBala).get(jug).setVisible(false);
             }else{
                 altMax=0;//se reinicia la altura máxima para el siguiente jugador
                 arrayBalasImagen.get(tipBala).get(jug).setVisible(false);
                 mapa.destruir((int)Math.round(x),(int)Math.round(464-y), (int)Math.round(jugadores.get(turno).getTanque().getBala().getDamageBala()[tipBala]/10));
+                arrayBalasImagen.get(tipBala).get(jug).setX(xI);
+                arrayBalasImagen.get(tipBala).get(jug).setY(465-yI);//el 465 significa la posicion real en la matriz, ya que esta es invertida
                 posTank();
+                //se reinicia la posicion de la bala, en la del tanque
                 setBoard();
             }
             
@@ -432,6 +448,20 @@ public class JuegoController implements Initializable {
         setBoard();
 
     }
+    public void  posBarras(){
+        for(int i=0;i< jugadores.size();i++){
+            //ingresar las progress bar por codigo y no fijas
+            barras.add(new ProgressBar(1));
+            barras.get(i).setStyle("-fx-accent:#5faf5f");
+            barras.get(i).setVisible(true);
+            barras.get(i).setTranslateX(  jugadores.get(i).getTanque().getPos()[0]-15);
+            barras.get(i).setTranslateY( (jugadores.get(i).getTanque().getPos()[1])-25);
+            barras.get(i).setProgress(1);
+            barras.get(i).setPrefSize(60, 4);
+            mapaPanel.getChildren().add(barras.get(i));
+        }
+        
+    }
     
 
     public void posBala(){//El metodo "posBala" posicionara las balas en "mapaPanel"
@@ -441,10 +471,12 @@ public class JuegoController implements Initializable {
         double anchoI = mapaPanel.getPrefWidth();
         double altoScale = ancho/anchoI;
         double anchoScale = alto/altoI;
-        barraJ1.setTranslateX(  jugadores.get(0).getTanque().getPos()[0] -15);
-        barraJ1.setTranslateY( (jugadores.get(0).getTanque().getPos()[1]) -25);
-        barraJ2.setTranslateX(  jugadores.get(1).getTanque().getPos()[0] -20);
-        barraJ2.setTranslateY( (jugadores.get(1).getTanque().getPos()[1]) -25 );
+        /*
+        barraJ1.setTranslateX(  jugadores.get(0).getTanque().getPos()[0] -15);    //se ubica la progressbar arriba del tanque
+        barraJ1.setTranslateY( (jugadores.get(0).getTanque().getPos()[1]) -25);    //se ubica la progressbar arriba del tanque
+        barraJ2.setTranslateX(  jugadores.get(1).getTanque().getPos()[0] -20);    //se ubica la progressbar arriba del tanque
+        barraJ2.setTranslateY( (jugadores.get(1).getTanque().getPos()[1]) -25 );    //se ubica la progressbar arriba del tanque
+        */
         for (int i=0; i<jugadores.size();i++){//Se utiliza el mismo metodo anterior para posicionar las balas.
             for (int j=0 ; j<arrayBalasImagen.size();j++){
                 if (i==1){
@@ -459,6 +491,7 @@ public class JuegoController implements Initializable {
                 //System.out.println("posicion de la bala "+j+" del jugador "+ i + ": "+ jugadores.get(i).getTanque().getPos()[0]*altoScale+","+jugadores.get(i).getTanque().getPos()[1]*anchoScale);
                 arrayBalasImagen.get(j).get(i).setVisible(false);//Se vuelve invisble la bala para que no se vea al estar en estado de reposo.
                 mapaPanel.getChildren().add(arrayBalasImagen.get(j).get(i));//se agregan las balas al mapaPanel.
+                
             }
         }
     }
@@ -467,13 +500,11 @@ public class JuegoController implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         this.tBalas.getItems().removeAll(this.tBalas.getItems());
-        this.tBalas.getItems().addAll(tiposBalas1);
-        boxBalas.add(tiposBalas1);
-        boxBalas.add(tiposBalas2);
-        barraJ1.setStyle("-fx-accent:#5faf5f");barraJ1.setProgress(1);
-        barraJ2.setStyle("-fx-accent:#5faf5f");barraJ1.setProgress(1);
-        barras.add(barraJ1);
-        barras.add(barraJ2);
+        this.tBalas.getItems().addAll(balasDisp);
+        //barraJ1.setStyle("-fx-accent:#5faf5f");barraJ1.setProgress(1);
+        //barraJ2.setStyle("-fx-accent:#5faf5f");barraJ1.setProgress(1);
+        //barras.add(barraJ1);
+        //barras.add(barraJ2);
         
     }
     
