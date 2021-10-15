@@ -91,7 +91,7 @@ public class EditorMapaController implements Initializable{
             setBoard(mapa);
         }catch (IOException e) {
             mapa.fillAire();
-            //setBoard(mapa);
+            setBoard(mapa);
         }    
     }
     @FXML
