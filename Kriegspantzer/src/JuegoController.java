@@ -418,7 +418,7 @@ public class JuegoController implements Initializable {
     }
     public int setYTank(int x) {
         for (int y = 0; y < 465; y++){//465 son las posibles y
-            if(mapa.comprobarCoordenadaSolido(x, y)){
+            if(mapa.comprobarCoordenadaSolido(x+10, y)){
                 return y-10;// se le resta el size en pixeles del tanque
             }
         }
