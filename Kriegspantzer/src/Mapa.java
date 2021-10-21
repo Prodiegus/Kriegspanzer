@@ -40,12 +40,15 @@ public class Mapa implements Serializable{
     /* x = pos x disparo
      * y = pos y disparo
      * d = es el daño a realizar al mapa
-     * En este metodo se hace un damange cuadrado al mapa*/
+     * En este metodo se hace un damange cuadrado al mapa
+     * Se comprueban cordenadas en caso de que el daño este en un borde fuera del mapa*/
     public void destruir(int x, int y, int d) {
-        for (int i = x-10; i < x+d+10; i++) {
-            for (int j = y-5; j < y+d+5; j++) {
-                mapeo[i][j] = Area.AIRE;
-            }
+        for (int i = x-d/2; i <= d/2+x; i++) {
+           for (int j = y-d/2; j <= d/2+y; j++) {
+                if(i>=0 && j>=0 && i<mapeo.length && j<mapeo[i].length){
+                    mapeo[i][j] = Area.AIRE;
+                }
+           }
         }
     }
 
