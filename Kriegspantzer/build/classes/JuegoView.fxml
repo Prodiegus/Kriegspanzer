@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.canvas.Canvas?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.control.ProgressBar?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.effect.InnerShadow?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -15,10 +15,9 @@
             <InnerShadow choke="1.0" height="6.17" radius="2.585" width="6.17" />
          </effect>
          <children>
+            <Canvas fx:id="board" height="465.0" width="733.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
             <Label fx:id="alturaPanel" layoutX="516.0" layoutY="14.0" prefHeight="25.0" prefWidth="173.0" text="Altura máxima: " AnchorPane.rightAnchor="43.39999999999998" AnchorPane.topAnchor="14.0" />
             <Label fx:id="distanciaPanel" layoutX="516.0" layoutY="40.0" prefHeight="25.0" prefWidth="173.0" text="Distancia máxima: " AnchorPane.rightAnchor="43.39999999999998" AnchorPane.topAnchor="40.0" />
-            <ProgressBar fx:id="barraJ1" layoutX="59.0" layoutY="425.0" prefWidth="200.0" progress="1.0" AnchorPane.bottomAnchor="21.600000000000023" AnchorPane.leftAnchor="59.0" />
-            <ProgressBar fx:id="barraJ2" layoutX="482.0" layoutY="425.0" prefWidth="200.0" progress="1.0" AnchorPane.bottomAnchor="21.600000000000023" AnchorPane.rightAnchor="51.0" />
          </children></AnchorPane>
       <AnchorPane layoutX="34.0" layoutY="471.0" prefHeight="129.0" prefWidth="733.0" AnchorPane.bottomAnchor="14.0" AnchorPane.leftAnchor="34.0" AnchorPane.rightAnchor="34.0" AnchorPane.topAnchor="471.0">
          <children>
@@ -31,7 +30,7 @@
             <TextField fx:id="vel" layoutX="54.0" layoutY="81.0" opacity="0.77" prefHeight="25.0" prefWidth="70.0" promptText="60" styleClass="backButton2" stylesheets="@Estilos.css" AnchorPane.leftAnchor="54.0" />
             <Button layoutX="611.0" layoutY="32.0" mnemonicParsing="false" onAction="#reset" opacity="0.77" prefHeight="25.0" prefWidth="94.0" styleClass="backButton2" stylesheets="@Estilos.css" text="Reiniciar" textFill="WHITE" />
             <Button layoutX="611.0" layoutY="81.0" mnemonicParsing="false" onAction="#close" opacity="0.77" styleClass="backButton2" stylesheets="@Estilos.css" text="Finalizar Juego" textFill="WHITE" />
-            <ComboBox fx:id="tBalas" layoutX="254.0" layoutY="40.0" prefWidth="150.0" promptText="Tipo de Municion" styleClass="backButton" stylesheets="@Estilos.css" />
+            <ComboBox fx:id="tBalas" layoutX="254.0" layoutY="40.0" prefHeight="26.0" prefWidth="200.0" promptText="Tipo de Municion" styleClass="backButton" stylesheets="@Estilos.css" />
          </children>
       </AnchorPane>
    </children>

@@ -1,6 +1,5 @@
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -9,7 +8,6 @@ import java.io.Serializable;
 
 import javax.swing.JOptionPane;
 
-import javafx.scene.canvas.Canvas;
 
 public class Serializador implements Serializable{
 

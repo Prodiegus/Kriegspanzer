@@ -5,7 +5,6 @@ import java.util.ResourceBundle;
 import javax.swing.JOptionPane;
 
 import javafx.scene.input.MouseEvent;
-import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
