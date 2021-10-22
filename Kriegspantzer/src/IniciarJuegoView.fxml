@@ -17,10 +17,6 @@
          <rotationAxis>
             <Point3D />
          </rotationAxis>
-         <children>
-            <Button layoutX="88.0" layoutY="426.0" mnemonicParsing="false" onAction="#handleEdMap" styleClass="backButton" stylesheets="@Estilos.css" text="Editar Mapa" textFill="WHITE" />
-            <TextField fx:id="nMap" layoutX="14.0" layoutY="426.0" prefHeight="25.0" prefWidth="60.0" promptText="Numero" styleClass="backButton2" stylesheets="@Estilos.css" />
-         </children>
       </AnchorPane>
       <AnchorPane layoutX="24.0" layoutY="481.0" prefHeight="119.0" prefWidth="803.0" AnchorPane.bottomAnchor="14.0" AnchorPane.leftAnchor="27.0" AnchorPane.rightAnchor="21.0">
          <children>
