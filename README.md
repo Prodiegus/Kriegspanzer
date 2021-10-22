@@ -1,7 +1,6 @@
 Proyecto: Kriegspanzer
 
-Desarrolladores: Bastian Nuñez, Carlos Jara, Diego Fernández, Omar 
-Muñoz.
+Desarrolladores: Bastian Nuñez, Carlos Jara, Diego Fernández, Omar Muñoz.
 
 Lenguaje: Java (JavaFXML)
 
@@ -71,4 +70,7 @@ Compilacion:
 	Si a la hora de ejecutar el programa aparece este error se debe copiar 
 	la carpeta "Mapas" encontrada en (Kriegspanzer) y se debe pegar en la capeta
 	(Kriegspanzer\Kriegspantzer).
-	
+
+Ruta codigo fuente:
+
+    /Kriegpantzer/src/
