@@ -110,7 +110,7 @@ public class IniciarJuegoViewController implements Initializable {
             controller.posBarras();
 
             stage.initModality(Modality.WINDOW_MODAL);
-            stage.setResizable(false);
+            stage.setResizable(true);
             stage.setTitle("Kiegspanzer Game");
             stage.getIcons().add(new Image(getClass().getResourceAsStream("img/icon.png")));
             stage.setScene(scene);
