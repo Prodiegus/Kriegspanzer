@@ -12,7 +12,6 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.ImageCursor;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -32,7 +31,6 @@ public class IniciarJuegoViewController implements Initializable {
     @FXML private AnchorPane mapaPanel;
     @FXML private TextField nJugador1;
     @FXML private TextField nJugador2;
-    @FXML private TextField nMap;
 
     //label de testeo
     private int map;
@@ -70,7 +68,6 @@ public class IniciarJuegoViewController implements Initializable {
         //convertimos a Array
         Integer[] posiciones = camposX.stream().toArray(Integer[]::new);
         Arrays.sort(posiciones);
-
         int x1 = foundX(posiciones);
 
         int[] pos1 = {x1,0};
@@ -122,35 +119,7 @@ public class IniciarJuegoViewController implements Initializable {
         }
         return true;
     }
-    @FXML
-    private void handleEdMap(ActionEvent event){
-        //la instruccion esta dentro de un try catch debido a que se podrian presentar errores en la ejecucion 
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("EditorMapa.fxml"));
-
-            Parent root = loader.load();
-            Scene scene = new Scene(root);
-            Stage stage = new Stage();
-
-            EditorMapaController controller = loader.getController();
-
-            Image img = new Image("img/Cursor32x32.png");
-            scene.setCursor(new ImageCursor(img));
-            controller.setMap(Integer.parseInt(nMap.getText().trim()));
-            controller.iniciarMapa();
-            stage.initModality(Modality.APPLICATION_MODAL);
-            stage.setResizable(false);
-            stage.setTitle("Kriegspanzer Map Editor");
-            stage.getIcons().add(new Image(getClass().getResourceAsStream("img/icon.png")));
-            stage.setScene(scene);
-            stage.show();
-
-        } catch (IOException e) {
-            //en caso de que algo salga mal mostraremos el siguiente mensaje
-            JOptionPane.showMessageDialog(null, "Error 001:\nNo ha sido posible cargar el editor\n"+e.getCause());
-        }
-        
-    }
+    
     //closer
     @FXML private void close(ActionEvent event) {
         Node source = (Node) event.getSource();
@@ -162,7 +131,7 @@ public class IniciarJuegoViewController implements Initializable {
             Random r = new Random();
             int x1;
             //verificamos que las x sean campos admisibles
-            for (x1 = r.nextInt(733/2);true;x1 = r.nextInt(733/2)){
+            for (x1 = r.nextInt(733/2);true;x1 = r.nextInt(733/2)){//x1 = LargoMapa/2 Asi se consigue la mitad del mapa de distancia
                 if(Arrays.binarySearch(posiciones, x1)>0 && Arrays.binarySearch(posiciones, (x1+(733/2)))>0){
                     return x1;  
                 }
@@ -170,15 +139,15 @@ public class IniciarJuegoViewController implements Initializable {
         }catch(Exception e){
             foundX(posiciones);
         }
-        return 200;
+        return 200;//en caso de error se toma una distancia cualquiera
     }
     public void setBoxes(String[] colors){
 
         //Aqui agregamos un track de musica para escuchar durante el juego
-        String path = "audio/7.mp3";
+        String path = "audio/6.mp3";
         Media media = new Media(new File(path).toURI().toString());
         MediaPlayer mediaPlayer = new MediaPlayer(media);
-        mediaPlayer.play();
+        mediaPlayer.setAutoPlay(true);
         MediaView mediaView = new MediaView(mediaPlayer);
         mediaView.getClip();
         this.cJugador1.getItems().removeAll(this.cJugador1.getItems());
@@ -199,7 +168,7 @@ public class IniciarJuegoViewController implements Initializable {
             JOptionPane.showMessageDialog(null, "Mapas no encontrados");
             this.map = 0;
         }
-        //this.map = 3;
+        //this.map = 4;
         //System.out.println("Id de mapa: Mapa"+this.map);
         
         //ese valor dentro del nextint es la cantidad de mapas creados en existencia

@@ -4,7 +4,7 @@ import java.util.ArrayList;
 public class Mapa implements Serializable{
     private int mapId;
     public enum Area{AIRE, SOLIDO, TANQUE}
-    private Area[][] mapeo =new Area[733][465];
+    private Area[][] mapeo =new Area[733][465];//Area[LargoMapa][AnchoMapa]
     private ArrayList<int[]> campos = new ArrayList<int[]>();
 
     //la id del mapa se define al crear el objeto
@@ -14,11 +14,15 @@ public class Mapa implements Serializable{
     
     //rellena el mapa con aire
     public void fillAire() {
-        for(int i=0; i<733;i++){
-            for(int j=0; j<465;j++){
+        for(int i=0; i<733;i++){// i<LargoMapa
+            for(int j=0; j<465;j++){// j<AnchoMapa
                 mapeo[i][j] = Area.AIRE;
             }
         }
+    }
+    //le pone aire al mapa
+    public void fillAire(int x, int y) {
+        mapeo[x][y] = Area.AIRE;
     }
     /**@return mapeo[x][y] == Area.SOLIDO si la coordenada actual es de tipo sólido*/
     public boolean comprobarCoordenadaSolido(int x, int y) {
@@ -35,14 +39,16 @@ public class Mapa implements Serializable{
 
     /* x = pos x disparo
      * y = pos y disparo
-     * i, j = son contadores cuando se llama tienen que ser 0
      * d = es el daño a realizar al mapa
-     * En este metodo se hace un damange triangular al mapa*/
+     * En este metodo se hace un damange cuadrado al mapa
+     * Se comprueban cordenadas en caso de que el daño este en un borde fuera del mapa*/
     public void destruir(int x, int y, int d) {
-        for (int i = x-10; i < x+d+10; i++) {
-            for (int j = y-5; j < y+d+5; j++) {
-                mapeo[i][j] = Area.AIRE;
-            }
+        for (int i = x-d/2; i <= d/2+x; i++) {
+           for (int j = y-d/2; j <= d/2+y; j++) {
+                if(i>=0 && j>=0 && i<mapeo.length && j<mapeo[i].length){
+                    mapeo[i][j] = Area.AIRE;
+                }
+           }
         }
     }
 
@@ -63,6 +69,15 @@ public class Mapa implements Serializable{
         for(int i=x; i<x+20;i++){
             for(int j=y; j<y+11;j++){
                 mapeo[i][j] = Area.TANQUE;
+            }
+        }
+    }
+
+    //le da el valor de Aire a la posicion entregada
+    public void removeTank(int x, int y){
+        for(int i=x; i<x+20;i++){
+            for(int j=y; j<y+11;j++){
+                mapeo[i][j] = Area.AIRE;
             }
         }
     }
@@ -89,4 +104,5 @@ public class Mapa implements Serializable{
         }
         
     }
+     
 }

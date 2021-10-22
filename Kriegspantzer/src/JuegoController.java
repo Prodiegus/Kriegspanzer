@@ -11,7 +11,6 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.print.PrintColor;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -47,6 +46,7 @@ public class JuegoController implements Initializable {
     @FXML private ArrayList<ImageView> balasGImagen = new ArrayList<ImageView>();
     @FXML private ArrayList<ImageView> balasPImagen = new ArrayList<ImageView>();
     @FXML private ArrayList<ImageView> tanks = new ArrayList<ImageView>();
+    @FXML private ImageView explosion;
     @FXML private TextField ang;
     @FXML private TextField vel;
     @FXML private ComboBox<String> tBalas;
@@ -76,18 +76,17 @@ public class JuegoController implements Initializable {
         /* Al presionar el botón de disparo lo primero que debemos hacer es verificar
            qué jugador es, para así poder hacer los lanzamientos por separados
         */
-
-        //musica de disparo
-        String path = "audio/5.mp3";
-        Media media = new Media(new File(path).toURI().toString());
-        MediaPlayer mediaPlayer = new MediaPlayer(media);
-        mediaPlayer.play();
-        MediaView mediaView = new MediaView(mediaPlayer);
-        mediaView.getClip();
         
         double tiempo=0;
         int tGanador=turno;
         if (jugadores.get(turno).lanzamiento(Integer.parseInt(vel.getText()), Integer.parseInt(ang.getText()), this.mapa)){
+            //musica de disparo
+            String path = "audio/5.mp3";
+            Media media = new Media(new File(path).toURI().toString());
+            MediaPlayer mediaPlayer = new MediaPlayer(media);
+            mediaPlayer.play();
+            MediaView mediaView = new MediaView(mediaPlayer);
+            mediaView.getClip();
             //las posiciones que se ingresan de "y" están al revés, entonces debemos modificarlas al momento de pasarlas al moverBala
             int [] posBala=jugadores.get(turno).getTanque().getBala().getPosBala();
             //int [] posBala=jugadores.get(turno).getTanques().get(id del tanque).getBala().getPosBala();
@@ -282,7 +281,17 @@ public class JuegoController implements Initializable {
                 }
             }
             else if(mapa.comprobarCoordenadaTanque((int)Math.round(x),(int)Math.round(464-y))){ //entra al if si es que toca tanque
+                //musica de colision tanque
+                /*
+                String path = "audio/5.mp3";
+                Media media = new Media(new File(path).toURI().toString());
+                MediaPlayer mediaPlayer = new MediaPlayer(media);
+                mediaPlayer.play();
+                MediaView mediaView = new MediaView(mediaPlayer);
+                mediaView.getClip();*/
+
                 
+
                 // se verifica que si el lanzamiento de la bala llega a la zona del tanque se pega a sí mismo (posx-10,posx+10)
                 if( ( (int)Math.round(x)<=jugadores.get(jug).getTanque().getPos()[0] + 10 ) && ((int)Math.round(x)>=jugadores.get(jug).getTanque().getPos()[0] - 10) ){
                     jugadores.get(jug).getTanque().setVida(jugadores.get(jug).getTanque().getVida()-jugadores.get(jug).getTanque().getDamageBala()[tipBala] );
@@ -310,8 +319,8 @@ public class JuegoController implements Initializable {
                     if (jugadores.get(turno).getTanque().getVida() <=0 ){ //si la vida es menor, gana el turno del otro tanque
                         cargarPantallaFinal(tGanador,event);
                     }
-                }           
-                
+                }   
+                 
                 altMax=0;//se reinicia la altura máxima para el siguiente jugador
                 arrayBalasImagen.get(tipBala).get(jug).setVisible(false);
             }else{
@@ -320,10 +329,10 @@ public class JuegoController implements Initializable {
                 //se reinicia la posicion de la bala, en la del tanque
                 arrayBalasImagen.get(tipBala).get(jug).setX(xI);
                 arrayBalasImagen.get(tipBala).get(jug).setY(465-yI);//el 465 significa la posicion real en la matriz, ya que esta es invertida
-                mapa.destruir((int)Math.round(x),(int)Math.round(464-y), (int)Math.round(jugadores.get(turno).getTanque().getDamageBala()[tipBala]/6));
-                setBoard();
+                mapa.destruir((int)Math.round(x),(int)Math.round(464-y), (int)Math.round(jugadores.get(turno).getTanque().getDamageBala()[tipBala]/3));
             }
-            
+            posTank();
+            setBoard();
         });
         return false;
     }
@@ -346,7 +355,7 @@ public class JuegoController implements Initializable {
                 if(j.equals(Mapa.Area.SOLIDO)){
                     gc.setFill(Color.valueOf("#008080"));
                     gc.fillRect(x, y, 1, 1);
-                }else if(j.equals(Mapa.Area.AIRE)){
+                }else if(j.equals(Mapa.Area.AIRE) || j.equals(Mapa.Area.TANQUE)){
                     gc.setFill(Color.WHITE);
                     gc.fillRect(x, y, 1, 1);
                 }
@@ -371,13 +380,16 @@ public class JuegoController implements Initializable {
             balasGImagen.add(new ImageView(new Image(getClass().getResourceAsStream("img/balaG.png"))));
             balasPImagen.add(new ImageView(new Image(getClass().getResourceAsStream("img/balaP.png"))));
         }
+        explosion = new ImageView(new Image(getClass().getResourceAsStream("img/explosion.png")));
+        explosion.setVisible(false);
+        mapaPanel.getChildren().add(explosion);
         arrayBalasImagen.add(balasPredImagen);
         arrayBalasImagen.add(balasGImagen);
         arrayBalasImagen.add(balasPImagen);
     }
 
     public void posTank(ArrayList<int[]> campos){
-        double ancho = 733;
+        double ancho = 733;//ancho panel con un pequeño padding
         double anchoI = mapaPanel.getPrefWidth();
         double altoScale = ancho/anchoI;
         //ArrayList<int[]> campos = mapa.getCampos();
@@ -386,14 +398,32 @@ public class JuegoController implements Initializable {
             tanks.get(i).setX(x);
             for (int[] campo : campos) {
                 if(campo[0]==x){
-                    tanks.get(i).setY(campo[1]);
-                    jugadores.get(i).getTanque().setPos((int)Math.round(x), campo[1]);
-                    mapa.addTank((int)Math.round(x), campo[1]);
+                    int y = setYTank((int) Math.round(x));
+                    tanks.get(i).setY(y);
+                    jugadores.get(i).getTanque().setPos((int)Math.round(x), y);
+                    mapa.addTank((int)Math.round(x), y);
+                    for (int k = (int)Math.round(x); k < 20+(int)Math.round(x); k++) {//ancho de un tanque en el mapa
+                        for (int j = y+10; j < 465; j++) {//alto del mapa le ponemos suelo al tanque
+                            mapa.setAreas(k, j);
+                        }
+                        for (int j = 0; j < y; j++){
+                            mapa.fillAire(k, j);
+                        }
+                    }
                 }
             }
             mapaPanel.getChildren().add(tanks.get(i));
         }
+        setBoard();
 
+    }
+    public int setYTank(int x) {
+        for (int y = 0; y < 465; y++){//465 son las posibles y
+            if(mapa.comprobarCoordenadaSolido(x+10, y)){
+                return y-10;// se le resta el size en pixeles del tanque
+            }
+        }
+        return 0;
     }
     public void posTank(){//El metodo "posTank" posicionara los tanques en "mapaPanel"
         double alto = mapaPanel.getHeight();//se toma la cantidad de pixeles en alto que hay de la ventana original.
@@ -402,21 +432,30 @@ public class JuegoController implements Initializable {
         double anchoI = mapaPanel.getPrefWidth();//se toma la cantidad de pixeles en ancho que hay de la ventana actual (rescalada).
         double altoScale = ancho/anchoI;//la division de ambos anchos de una proporcion de la ventana actual.
         double anchoScale = alto/altoI;//la division de ambas alturas de una proporcion de la ventana actual.
+        
         for (int i = 0; i<jugadores.size(); i++) {// se recorre el arraylist "jugadores", para proporcionarle cada tanque a su jugador.
+            int x = jugadores.get(i).getTanque().getPos()[0];
+            int y = setYTank(x);
+            mapa.removeTank(jugadores.get(i).getTanque().getPos()[0], jugadores.get(i).getTanque().getPos()[1]);
             tanks.get(i).setX(jugadores.get(i).getTanque().getPos()[0]*altoScale);
-            tanks.get(i).setY(jugadores.get(i).getTanque().getPos()[1]*anchoScale);
-            
+            tanks.get(i).setY(y*anchoScale);
+            jugadores.get(i).getTanque().setPos(x, y);
+            barras.get(i).setTranslateX(  jugadores.get(i).getTanque().getPos()[0]-15);
+            barras.get(i).setTranslateY( (jugadores.get(i).getTanque().getPos()[1])-25);
+            mapa.addTank(x, y);
             //se setean los tanques con el pocisionamiento respectivo y se multiplica con su reescalado.
-            
-        }
-        for (int i=0; i<jugadores.size();i++){//Se utiliza el mismo metodo anterior para posicionar las balas.
-            for (int j=0 ; j<arrayBalasImagen.size();j++){
-                    arrayBalasImagen.get(j).get(i).setX(jugadores.get(i).getTanque().getPos()[0]*altoScale);
-                    arrayBalasImagen.get(j).get(i).setY(jugadores.get(i).getTanque().getPos()[1]*anchoScale);
-                
+            for (int k = x; k < 20+x; k++) {//ancho de un tanque en el mapa
+                for (int j = y+10; j < 465; j++) {//alto del mapa le ponemos suelo al tanque
+                    mapa.setAreas(k, j);
+                }
+                for (int j = 0; j < y; j++){
+                    mapa.fillAire(k, j);
+                }
             }
         }
-
+    }
+    public int returnI(int i){
+        return i;
     }
     public void  posBarras(){
         for(int i=0;i< jugadores.size();i++){
@@ -427,7 +466,7 @@ public class JuegoController implements Initializable {
             barras.get(i).setTranslateX(  jugadores.get(i).getTanque().getPos()[0]-15);
             barras.get(i).setTranslateY( (jugadores.get(i).getTanque().getPos()[1])-25);
             barras.get(i).setProgress(1);
-            barras.get(i).setPrefSize(60, 4);
+            barras.get(i).setPrefSize(60, 10);
             mapaPanel.getChildren().add(barras.get(i));
         }
         
@@ -441,12 +480,7 @@ public class JuegoController implements Initializable {
         double anchoI = mapaPanel.getPrefWidth();
         double altoScale = ancho/anchoI;
         double anchoScale = alto/altoI;
-        /*
-        barraJ1.setTranslateX(  jugadores.get(0).getTanque().getPos()[0] -15);    //se ubica la progressbar arriba del tanque
-        barraJ1.setTranslateY( (jugadores.get(0).getTanque().getPos()[1]) -25);    //se ubica la progressbar arriba del tanque
-        barraJ2.setTranslateX(  jugadores.get(1).getTanque().getPos()[0] -20);    //se ubica la progressbar arriba del tanque
-        barraJ2.setTranslateY( (jugadores.get(1).getTanque().getPos()[1]) -25 );    //se ubica la progressbar arriba del tanque
-        */
+        
         for (int i=0; i<jugadores.size();i++){//Se utiliza el mismo metodo anterior para posicionar las balas.
             for (int j=0 ; j<arrayBalasImagen.size();j++){
                 if (i==1){
@@ -471,11 +505,6 @@ public class JuegoController implements Initializable {
     public void initialize(URL location, ResourceBundle resources) {
         this.tBalas.getItems().removeAll(this.tBalas.getItems());
         this.tBalas.getItems().addAll(balasDisp);
-        //barraJ1.setStyle("-fx-accent:#5faf5f");barraJ1.setProgress(1);
-        //barraJ2.setStyle("-fx-accent:#5faf5f");barraJ1.setProgress(1);
-        //barras.add(barraJ1);
-        //barras.add(barraJ2);
-        
     }
     
 }
