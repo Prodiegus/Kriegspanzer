@@ -34,9 +34,10 @@ public class IniciarJuegoViewController implements Initializable {
     @FXML private TextField nJugador2;
     @FXML private TextField nMap;
 
-    //label de testeo
     private int map;
     private Mapa mapa;
+    private int ancho = 800;
+    private int alto = 800;
     
     //a
     @FXML
@@ -108,9 +109,12 @@ public class IniciarJuegoViewController implements Initializable {
             controller.posTank(campos);
             controller.posBala();
             controller.posBarras();
+            controller.setBoardSize(alto*1.3204011, ancho*1.09276944);
 
             stage.initModality(Modality.WINDOW_MODAL);
-            stage.setResizable(false);
+            stage.setHeight(alto);
+            stage.setWidth(ancho);
+            stage.setResizable(true);
             stage.setTitle("Kiegspanzer Game");
             stage.getIcons().add(new Image(getClass().getResourceAsStream("img/icon.png")));
             stage.setScene(scene);
@@ -150,12 +154,37 @@ public class IniciarJuegoViewController implements Initializable {
         }
         
     }
+    @FXML
+    private void handleConfings(ActionEvent event){
+        //la instruccion esta dentro de un try catch debido a que se podrian presentar errores en la ejecucion 
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("Confing.fxml"));
+
+            Parent root = loader.load();
+            Scene scene = new Scene(root);
+            Stage stage = new Stage();
+
+            //ConfingController controller = loader.getController();
+            
+            stage.initModality(Modality.APPLICATION_MODAL);
+            stage.setResizable(false);
+            stage.setTitle("Kriegspanzer Confings");
+            stage.getIcons().add(new Image(getClass().getResourceAsStream("img/icon.png")));
+            stage.setScene(scene);
+            stage.show();
+            close(event);
+        } catch (IOException e) {
+            //en caso de que algo salga mal mostraremos el siguiente mensaje
+            JOptionPane.showMessageDialog(null, "Error 081:\nNo ha sido posible cargar las configuraciones\n"+e.getCause());
+        }
+    }
     //closer
     @FXML private void close(ActionEvent event) {
         Node source = (Node) event.getSource();
         Stage stage = (Stage) source.getScene().getWindow();
         stage.close();
     }
+
     private int foundX(Integer[] posiciones){
         try{
             Random r = new Random();
@@ -170,6 +199,10 @@ public class IniciarJuegoViewController implements Initializable {
             foundX(posiciones);
         }
         return 200;//en caso de error se toma una distancia cualquiera
+    }
+    public void setAnchoAlto(int ancho, int alto) {
+        this.alto = alto;
+        this.ancho = ancho;
     }
     public void setBoxes(String[] colors){
 
