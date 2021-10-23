@@ -53,6 +53,7 @@ public class JuegoController implements Initializable {
     int turno=0;
     private Mapa mapa;
     private ArrayList<Jugador> jugadores = new ArrayList<Jugador>();
+    private int altoV, anchoV;
     double altMax=0;
     double disMax=0;
     String[] balasDisp = { "Proyectil 60mm: 3 balas","Proyectil 105mm: 3 balas", "Proyectil Perforador: 10 balas"};
@@ -346,29 +347,34 @@ public class JuegoController implements Initializable {
     }
 
     public void setBoard(){
+        double altoI = mapaPanel.getPrefHeight();//se toma la cantidad de pixeles en alto que hay de la ventana actual (rescalada).
+        double anchoI = mapaPanel.getPrefWidth();//se toma la cantidad de pixeles en ancho que hay de la ventana actual (rescalada).
+        double altoScale = anchoV/anchoI;//la division de ambos anchos de una proporcion de la ventana actual.
+        double anchoScale = altoV/altoI;//la division de ambas alturas de una proporcion de la ventana actual.
+        // a la hora de recorrer el ciclo se multiplica por sus escalas los valores
         GraphicsContext gc = board.getGraphicsContext2D();
         gc.setFill(Color.valueOf("#008080"));
-        int x = 0;
-        for (Mapa.Area[] i : mapa.getMapeo()) {
-            int y = 0;
-            for (Mapa.Area j : i) {
-                if(j.equals(Mapa.Area.SOLIDO)){
+        Mapa.Area[][] mapeo = mapa.getMapeo();
+        for (int x = 0; x<mapeo.length*altoScale; x++) {
+            for (int y = 0; y<mapeo[(int)Math.floor(x/altoScale)].length*anchoScale; y++) {
+                if(mapeo[(int)Math.floor(x/altoScale)][(int)Math.floor(y/anchoScale)].equals(Mapa.Area.SOLIDO)){
                     gc.setFill(Color.valueOf("#008080"));
-                    gc.fillRect(x, y, 1, 1);
-                }else if(j.equals(Mapa.Area.AIRE) || j.equals(Mapa.Area.TANQUE)){
+                    gc.fillRect(x, y, 100, 100);
+                }else if(mapeo[(int)Math.floor(x/anchoScale)][(int)Math.floor(y/altoScale)].equals(Mapa.Area.AIRE) ||mapeo[(int)Math.floor(x/anchoScale)][(int)Math.floor(y/altoScale)].equals(Mapa.Area.TANQUE)  ){
                     gc.setFill(Color.WHITE);
                     gc.fillRect(x, y, 1, 1);
                 }
-                y++;
             }
-            x++;
-            
         }  
     }
     //setea el label al principio del juego
     public void setJugadores(ArrayList<Jugador> jugadores){
         this.jugadores = jugadores;
         turnoPanel.setText("Turno: "+jugadores.get(turno).getName());
+    }
+    public void setDimesiones(int alto, int ancho) {
+        this.altoV = alto;
+        this.anchoV = ancho;
     }
     //se añade las imagenes a nuestro cuadro
     public void addViews(){
@@ -478,6 +484,10 @@ public class JuegoController implements Initializable {
             //se setean los tanques con el pocisionamiento respectivo y se multiplica con su reescalado.
             
         }
+    }
+    public void setBoardSize(double alto, double ancho){
+        board.setWidth(alto);
+        board.setHeight(ancho);
     }
     public void  posBarras(){
         for(int i=0;i< jugadores.size();i++){
