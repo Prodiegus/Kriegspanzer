@@ -36,7 +36,7 @@ import javafx.scene.control.TextField;
 
 public class JuegoController implements Initializable {
     @FXML private AnchorPane mapaPanel;
-    @FXML private Canvas board;
+    @FXML private Canvas board = new Canvas();
     @FXML private Label turnoPanel;
     @FXML private Label alturaPanel;
     @FXML private Label distanciaPanel;
@@ -53,7 +53,8 @@ public class JuegoController implements Initializable {
     int turno=0;
     private Mapa mapa;
     private ArrayList<Jugador> jugadores = new ArrayList<Jugador>();
-    private int altoV, anchoV;
+    private int altoV;
+    private int anchoV;
     double altMax=0;
     double disMax=0;
     String[] balasDisp = { "Proyectil 60mm: 3 balas","Proyectil 105mm: 3 balas", "Proyectil Perforador: 10 balas"};
@@ -359,8 +360,8 @@ public class JuegoController implements Initializable {
             for (int y = 0; y<mapeo[(int)Math.floor(x/altoScale)].length*anchoScale; y++) {
                 if(mapeo[(int)Math.floor(x/altoScale)][(int)Math.floor(y/anchoScale)].equals(Mapa.Area.SOLIDO)){
                     gc.setFill(Color.valueOf("#008080"));
-                    gc.fillRect(x, y, 100, 100);
-                }else if(mapeo[(int)Math.floor(x/anchoScale)][(int)Math.floor(y/altoScale)].equals(Mapa.Area.AIRE) ||mapeo[(int)Math.floor(x/anchoScale)][(int)Math.floor(y/altoScale)].equals(Mapa.Area.TANQUE)  ){
+                    gc.fillRect(x, y, 1, 1);
+                }else if(mapeo[(int)Math.floor(x/altoScale)][(int)Math.floor(y/anchoScale)].equals(Mapa.Area.AIRE) ||mapeo[(int)Math.floor(x/altoScale)][(int)Math.floor(y/anchoScale)].equals(Mapa.Area.TANQUE)  ){
                     gc.setFill(Color.WHITE);
                     gc.fillRect(x, y, 1, 1);
                 }
@@ -486,8 +487,9 @@ public class JuegoController implements Initializable {
         }
     }
     public void setBoardSize(double alto, double ancho){
-        board.setWidth(alto);
-        board.setHeight(ancho);
+        this.board.setWidth(alto);
+        this.board.setHeight(ancho);
+
     }
     public void  posBarras(){
         for(int i=0;i< jugadores.size();i++){
