@@ -1,14 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.CheckBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane id="AnchorPane" prefHeight="559.0" prefWidth="449.0" styleClass="backButton2" stylesheets="@Estilos.css" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ConfingController">
+<AnchorPane id="AnchorPane" prefHeight="471.0" prefWidth="449.0" styleClass="backButton2" stylesheets="@Estilos.css" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ConfingController">
    <children>
-      <Button layoutX="370.0" layoutY="509.0" mnemonicParsing="false" onAction="#aceptar" styleClass="backButton" stylesheets="@Estilos.css" text="Aceptar" textFill="#f8f8f8" />
+      <Button layoutX="361.0" layoutY="427.0" mnemonicParsing="false" onAction="#aceptar" styleClass="backButton" stylesheets="@Estilos.css" text="Aceptar" textFill="#f8f8f8" />
       <Label contentDisplay="CENTER" layoutX="88.0" layoutY="14.0" text="Configuraciones" textAlignment="CENTER" textFill="WHITE" underline="true">
          <font>
             <Font name="Consolas Bold" size="33.0" />
@@ -18,5 +19,21 @@
       <TextField fx:id="pAncho" layoutX="30.0" layoutY="103.0" prefHeight="25.0" prefWidth="67.0" promptText="Ancho" />
       <TextField fx:id="pLargo" layoutX="114.0" layoutY="103.0" prefHeight="25.0" prefWidth="67.0" promptText="Largo" />
       <Label layoutX="101.0" layoutY="107.0" text="x" textFill="WHITE" />
+      <Label layoutX="31.0" layoutY="152.0" text="Jugadores:" textFill="WHITE" />
+      <TextField layoutX="29.0" layoutY="176.0" prefHeight="25.0" prefWidth="118.0" promptText="Cantidad Jugadores" />
+      <Label layoutX="30.0" layoutY="223.0" text="Proyectiles:" textFill="WHITE" />
+      <TextField layoutX="29.0" layoutY="249.0" prefHeight="25.0" prefWidth="60.0" promptText="60mm" />
+      <TextField layoutX="98.0" layoutY="249.0" prefHeight="25.0" prefWidth="74.0" promptText="Perforante" />
+      <TextField layoutX="179.0" layoutY="249.0" prefHeight="25.0" prefWidth="74.0" promptText="105mm" />
+      <CheckBox layoutX="31.0" layoutY="324.0" mnemonicParsing="false" text="Efectos de entorno" textFill="WHITE">
+         <font>
+            <Font name="Consolas" size="12.0" />
+         </font>
+      </CheckBox>
+      <CheckBox layoutX="155.0" layoutY="181.0" mnemonicParsing="false" text="Aplicar IA" textFill="WHITE">
+         <font>
+            <Font name="Consolas" size="12.0" />
+         </font>
+      </CheckBox>
    </children>
 </AnchorPane>
