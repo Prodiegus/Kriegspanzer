@@ -15,7 +15,7 @@
             <InnerShadow choke="1.0" height="6.17" radius="2.585" width="6.17" />
          </effect>
          <children>
-            <Canvas fx:id="board" height="465.0" width="733.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+            <Canvas fx:id="board" height="465.0" layoutY="-14.0" width="733.0" AnchorPane.bottomAnchor="14.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="-14.0" />
             <Label fx:id="alturaPanel" layoutX="516.0" layoutY="14.0" prefHeight="25.0" prefWidth="173.0" text="Altura máxima: " AnchorPane.rightAnchor="43.39999999999998" AnchorPane.topAnchor="14.0" />
             <Label fx:id="distanciaPanel" layoutX="516.0" layoutY="40.0" prefHeight="25.0" prefWidth="173.0" text="Distancia máxima: " AnchorPane.rightAnchor="43.39999999999998" AnchorPane.topAnchor="40.0" />
          </children></AnchorPane>
