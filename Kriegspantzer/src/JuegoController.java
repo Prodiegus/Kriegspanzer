@@ -399,9 +399,9 @@ public class JuegoController implements Initializable {
     }
 
     public void posTank(ArrayList<int[]> campos){
-        double ancho = 733;//ancho panel con un pequeño padding
-        double anchoI = mapaPanel.getPrefWidth();
-        double altoScale = ancho/anchoI;
+        double altoScale = board.getWidth()/mapaPanel.getPrefWidth();//la division de ambos anchos de una proporcion de la ventana actual.
+        double anchoScale = board.getHeight()/mapaPanel.getPrefHeight();//la division de ambas alturas de una proporcion de la ventana actual.
+
         //ArrayList<int[]> campos = mapa.getCampos();
         for (int i = 0; i<jugadores.size(); i++) {
             Double x = jugadores.get(i).getTanque().getPos()[0]*altoScale;
@@ -440,12 +440,8 @@ public class JuegoController implements Initializable {
 
     @FXML
     public void posTank(){//El metodo "posTank" posicionara los tanques en "mapaPanel"
-        double alto = mapaPanel.getHeight();//se toma la cantidad de pixeles en alto que hay de la ventana original.
-        double ancho = mapaPanel.getWidth();//se toma la cantidad de pixeles en ancho que hay de la ventana original.
-        double altoI = mapaPanel.getPrefHeight();//se toma la cantidad de pixeles en alto que hay de la ventana actual (rescalada).
-        double anchoI = mapaPanel.getPrefWidth();//se toma la cantidad de pixeles en ancho que hay de la ventana actual (rescalada).
-        double altoScale = ancho/anchoI;//la division de ambos anchos de una proporcion de la ventana actual.
-        double anchoScale = alto/altoI;//la division de ambas alturas de una proporcion de la ventana actual.
+        double altoScale = board.getWidth()/mapaPanel.getPrefWidth();//la division de ambos anchos de una proporcion de la ventana actual.
+        double anchoScale = board.getHeight()/mapaPanel.getPrefHeight();//la division de ambas alturas de una proporcion de la ventana actual.
         
         for (int i = 0; i<jugadores.size(); i++) {// se recorre el arraylist "jugadores", para proporcionarle cada tanque a su jugador.
             int x = jugadores.get(i).getTanque().getPos()[0];
@@ -470,13 +466,9 @@ public class JuegoController implements Initializable {
     }
     @FXML
     public void posTank(boolean v){//El metodo "posTank" posicionara los tanques en "mapaPanel"
-        double alto = board.getHeight();//se toma la cantidad de pixeles en alto que hay de la ventana original.
-        double ancho = board.getWidth();//se toma la cantidad de pixeles en ancho que hay de la ventana original.
-        double altoI = mapaPanel.getPrefHeight();//se toma la cantidad de pixeles en alto que hay de la ventana actual (rescalada).
-        double anchoI = mapaPanel.getPrefWidth();//se toma la cantidad de pixeles en ancho que hay de la ventana actual (rescalada).
-        double altoScale = ancho/anchoI;//la division de ambos anchos de una proporcion de la ventana actual.
-        double anchoScale = alto/altoI;//la division de ambas alturas de una proporcion de la ventana actual.
-        
+        double altoScale = board.getWidth()/mapaPanel.getPrefWidth();//la division de ambos anchos de una proporcion de la ventana actual.
+        double anchoScale = board.getHeight()/mapaPanel.getPrefHeight();//la division de ambas alturas de una proporcion de la ventana actual.
+            
         for (int i = 0; i<jugadores.size(); i++) {// se recorre el arraylist "jugadores", para proporcionarle cada tanque a su jugador.
             int x = jugadores.get(i).getTanque().getPos()[0];
             int y = setYTank(x);
