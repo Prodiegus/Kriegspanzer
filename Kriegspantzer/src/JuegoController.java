@@ -53,8 +53,8 @@ public class JuegoController implements Initializable {
     int turno=0;
     private Mapa mapa;
     private ArrayList<Jugador> jugadores = new ArrayList<Jugador>();
-    private int altoV;
-    private int anchoV;
+    private double altoV;
+    private double anchoV;
     double altMax=0;
     double disMax=0;
     String[] balasDisp = { "Proyectil 60mm: 3 balas","Proyectil 105mm: 3 balas", "Proyectil Perforador: 10 balas"};
@@ -348,10 +348,9 @@ public class JuegoController implements Initializable {
     }
 
     public void setBoard(){
-        double altoI = mapaPanel.getPrefHeight();//se toma la cantidad de pixeles en alto que hay de la ventana actual (rescalada).
-        double anchoI = mapaPanel.getPrefWidth();//se toma la cantidad de pixeles en ancho que hay de la ventana actual (rescalada).
-        double altoScale = anchoV/anchoI;//la division de ambos anchos de una proporcion de la ventana actual.
-        double anchoScale = altoV/altoI;//la division de ambas alturas de una proporcion de la ventana actual.
+        
+        double altoScale = board.getWidth()/mapaPanel.getPrefWidth();//la division de ambos anchos de una proporcion de la ventana actual.
+        double anchoScale = board.getHeight()/mapaPanel.getPrefHeight();//la division de ambas alturas de una proporcion de la ventana actual.
         // a la hora de recorrer el ciclo se multiplica por sus escalas los valores
         GraphicsContext gc = board.getGraphicsContext2D();
         gc.setFill(Color.valueOf("#008080"));
@@ -373,12 +372,19 @@ public class JuegoController implements Initializable {
         this.jugadores = jugadores;
         turnoPanel.setText("Turno: "+jugadores.get(turno).getName());
     }
-    public void setDimesiones(int alto, int ancho) {
+    public void setDimesiones(double alto, double ancho) {
         this.altoV = alto;
         this.anchoV = ancho;
     }
     //se añade las imagenes a nuestro cuadro
     public void addViews(){
+        //Aqui agregamos un track de musica para escuchar durante el juego
+        String path = "audio/6.mp3";
+        Media media = new Media(new File(path).toURI().toString());
+        MediaPlayer mediaPlayer = new MediaPlayer(media);
+        mediaPlayer.setAutoPlay(true);
+        MediaView mediaView = new MediaView(mediaPlayer);
+        mediaView.getClip();
         for (int i = 0; i<jugadores.size(); i++) {
             tanks.add(new ImageView(
                 new Image(getClass()
@@ -462,11 +468,10 @@ public class JuegoController implements Initializable {
             }
         }
     }
-
     @FXML
     public void posTank(boolean v){//El metodo "posTank" posicionara los tanques en "mapaPanel"
-        double alto = mapaPanel.getHeight();//se toma la cantidad de pixeles en alto que hay de la ventana original.
-        double ancho = mapaPanel.getWidth();//se toma la cantidad de pixeles en ancho que hay de la ventana original.
+        double alto = board.getHeight();//se toma la cantidad de pixeles en alto que hay de la ventana original.
+        double ancho = board.getWidth();//se toma la cantidad de pixeles en ancho que hay de la ventana original.
         double altoI = mapaPanel.getPrefHeight();//se toma la cantidad de pixeles en alto que hay de la ventana actual (rescalada).
         double anchoI = mapaPanel.getPrefWidth();//se toma la cantidad de pixeles en ancho que hay de la ventana actual (rescalada).
         double altoScale = ancho/anchoI;//la division de ambos anchos de una proporcion de la ventana actual.
