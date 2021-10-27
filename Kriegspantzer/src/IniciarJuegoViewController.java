@@ -20,9 +20,6 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.media.Media;
-import javafx.scene.media.MediaPlayer;
-import javafx.scene.media.MediaView;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 public class IniciarJuegoViewController implements Initializable {
@@ -102,25 +99,28 @@ public class IniciarJuegoViewController implements Initializable {
             Stage stage = new Stage();
 
             JuegoController controller = loader.getController();
-            
-            controller.setMap(mapa);
-            controller.setJugadores(jugadores);
-            controller.addViews();
-            controller.posTank(campos);
-            controller.posBala();
-            controller.posBarras();
+
             
 
             stage.initModality(Modality.WINDOW_MODAL);
             stage.setHeight(alto);
             stage.setWidth(ancho);
-            controller.setBoardSize(this.alto*1.3204011, this.ancho*1.09276944);
             stage.setResizable(true);
             stage.setTitle("Kiegspanzer Game");
             stage.getIcons().add(new Image(getClass().getResourceAsStream("img/icon.png")));
             stage.setScene(scene);
             stage.show();
             close(event);
+
+            controller.setBoardSize(this.ancho*0.915106117, this.alto*0.75732899);//escala de proporcionalidada canvas/ventana
+            controller.setDimesiones(this.alto*0.915106117, this.ancho*0.75732899);//escala de proporcionalidada canvas/ventana
+            controller.setMap(mapa);
+            controller.setJugadores(jugadores);
+            controller.addViews();
+            controller.posTank(campos);
+            controller.posBala();
+            controller.posBarras();
+
         } catch (IOException e) {
             JOptionPane.showMessageDialog(null, "Error: 006\nno se a podido cargar el juego");
         }
@@ -207,13 +207,7 @@ public class IniciarJuegoViewController implements Initializable {
     }
     public void setBoxes(String[] colors){
 
-        //Aqui agregamos un track de musica para escuchar durante el juego
-        String path = "audio/6.mp3";
-        Media media = new Media(new File(path).toURI().toString());
-        MediaPlayer mediaPlayer = new MediaPlayer(media);
-        mediaPlayer.setAutoPlay(true);
-        MediaView mediaView = new MediaView(mediaPlayer);
-        mediaView.getClip();
+        
         this.cJugador1.getItems().removeAll(this.cJugador1.getItems());
         this.cJugador2.getItems().removeAll(this.cJugador1.getItems());
         this.cJugador1.getItems().addAll(colors);
