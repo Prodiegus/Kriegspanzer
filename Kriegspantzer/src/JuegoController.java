@@ -2,6 +2,7 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.ResourceBundle;
 import java.util.concurrent.TimeUnit;
 
@@ -32,6 +33,7 @@ import javafx.application.Platform;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.ProgressBar;
 import javafx.scene.control.TextField;
+import java.util.Random;
 
 
 public class JuegoController implements Initializable {
@@ -51,6 +53,8 @@ public class JuegoController implements Initializable {
     @FXML private ArrayList<ProgressBar> barras = new ArrayList<ProgressBar>();
     
     int turno=0;
+    int []orden;
+    int cont_orden=0;
     private Mapa mapa;
     private ArrayList<Jugador> jugadores = new ArrayList<Jugador>();
     private double altoV;
@@ -58,6 +62,7 @@ public class JuegoController implements Initializable {
     double altMax=0;
     double disMax=0;
     String[] balasDisp = { "Proyectil 60mm: 3 balas","Proyectil 105mm: 3 balas", "Proyectil Perforador: 10 balas"};
+    
     
     @FXML public void scale(KeyEvent event){
         if(event.getCode().equals(KeyCode.R)){
@@ -89,23 +94,17 @@ public class JuegoController implements Initializable {
             mediaView.getClip();
             //las posiciones que se ingresan de "y" están al revés, entonces debemos modificarlas al momento de pasarlas al moverBala
             int [] posBala=jugadores.get(turno).getTanque().getBala().getPosBala();
-            //int [] posBala=jugadores.get(turno).getTanques().get(id del tanque).getBala().getPosBala();
             int valid=0;
             //hacemos visible la bala del jugador del turno actual
             if ( jugadores.get(turno).getTanque().getBalasDisp()[0].equals(tBalas.getValue()) ){ //60mm
-                //jugadores.get(turno).getTanques().get(id del tanque).getBalasDisp()[0].equals(tBalas.getValue())
                 valid++;
                 if(jugadores.get(turno).getTanque().getBala().getTipoBalas()[0] != 0){
-                    //jugadores.get(turno).getTanques().get(id del tanque).getBala().getTipoBalas()[0]
                     
                     jugadores.get(turno).getTanque().getBala().setCantBalas(0);
-                    //jugadores.get(turno).getTanques().get(id del tanque).getBala().setCantBalas(0);
                     
                     jugadores.get(turno).getTanque().setBalasDisp( ("Proyectil 60mm: "+jugadores.get(turno).getTanque().getBala().getTipoBalas()[0]+ "  balas"), 0);
-                    //jugadores.get(turno).getTanques().get(id del tanque).setBalasDisp( ("Proyectil 60mm: "+jugadores.get(turno).getTanque().getBala().getTipoBalas()[0]+ "  balas"), 0);
                     
                     arrayBalasImagen.get(0).get(turno).setVisible(true);
-                    //arrayBalasImagen.get(0).get(turno).setVisible(true);
                     
                     //se le suman valores a las posiciones para que salga desde arriba y al medio del tanque y no desde una esquina
                     moverBala(posBala[0]+10,(470-posBala[1]),posBala[0]+10,(470-posBala[1]),Integer.parseInt(ang.getText()),Integer.parseInt(vel.getText()),tiempo,turno,tGanador, event,0);
@@ -117,6 +116,13 @@ public class JuegoController implements Initializable {
                     else{
                         turno++;
                     }
+                    /*
+                        cont_orden+=1
+                        if (cont_orden == orden.length){
+                            cont_orden=0;
+                        }
+                        
+                    */
                     setJugadores(jugadores);
                     this.tBalas.getItems().removeAll(this.tBalas.getItems());
                     this.tBalas.getItems().addAll(jugadores.get(turno).getTanque().getBalasDisp());
@@ -180,7 +186,9 @@ public class JuegoController implements Initializable {
             if(valid==0){
                 JOptionPane.showMessageDialog(null, "Debe elegir un tipo de bala");
             }
-
+            if (jugadores.get(turno).getTanque().getBala().verificaBalas()){
+                //deberia entregar el mensaje del juego
+            }
             //les pasamos las coordenadas verdaderas al método, que representan en el plano XY
         }
         else{
@@ -371,6 +379,19 @@ public class JuegoController implements Initializable {
     public void setJugadores(ArrayList<Jugador> jugadores){
         this.jugadores = jugadores;
         turnoPanel.setText("Turno: "+jugadores.get(turno).getName());
+    }
+    public void ordenTurnos(ArrayList<Jugador> jugadores){
+        this.orden= new int[jugadores.size()];
+        for(int i=0;i<jugadores.size();i++){
+            orden[i]=i;
+        }
+        Random r=new Random();
+        for (int i=0; i<orden.length; i++) {
+            int posAleatoria = r.nextInt(orden.length);
+            int aux = this.orden[i];
+            this.orden[i] = this.orden[posAleatoria];
+            this.orden[posAleatoria] = aux;
+        }
     }
     public void setDimesiones(double alto, double ancho) {
         this.altoV = alto;
