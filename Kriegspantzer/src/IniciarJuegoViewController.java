@@ -22,21 +22,63 @@ import javafx.scene.image.Image;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import java.util.Random;
+import javafx.scene.control.CheckBox;
 public class IniciarJuegoViewController implements Initializable {
     
-    @FXML private ComboBox<String> cJugador1;
+    @FXML private ComboBox<String> cJugador;
     @FXML private ComboBox<String> cJugador2;
     @FXML private AnchorPane mapaPanel;
-    @FXML private TextField nJugador1;
-    @FXML private TextField nJugador2;
+    @FXML private TextField nJugador;
     @FXML private TextField nMap;
+    @FXML private CheckBox IA;
 
     private int map;
     private Mapa mapa;
     private int ancho = 800;
     private int alto = 800;
+    private int cantJug=2;
+    int[] balas = new int[3];
+    private ArrayList<Jugador> jugadores = new ArrayList<Jugador>();
+    String[] colors = {"Azul", "Verde", "Amarillo", "Rojo", "Morado", "Naranja", "Negro"};//colores disponibles
     
-    //a
+    @FXML
+    private boolean handleIngresar(ActionEvent event) {
+        //por ahora se generan las posiciones aleatorias de los tanques
+        int valorDado = (int) Math.floor(Math.random()*100);
+        int[] pos={valorDado,10};
+        boolean flag=true;
+        for(int i=0;i<jugadores.size();i++){
+            if(cJugador.getValue().equals(jugadores.get(i).getTanque().getColor())){
+                flag=false;
+            }
+        }
+        if(flag){
+            Jugador jActual =  new Jugador(nJugador.getText().trim(),IA.isSelected());
+            Bala bActual = new Bala(pos);
+            Tanque tActual =  new Tanque(cJugador.getValue(), pos,bActual);
+            jActual.setTanque(tActual);
+            jugadores.add(jActual);
+            
+            this.cJugador.getItems().removeAll(this.cJugador.getItems());
+            this.cJugador.getItems().addAll(colors);
+            cJugador.setPromptText("Color Tanque "+(jugadores.size()+1)); 
+            nJugador.setText("- Nombre jugador "+(jugadores.size()+1)+" - ");
+            IA.setSelected(false);
+        }
+        else{
+            this.cJugador.getItems().removeAll(this.cJugador.getItems());
+            this.cJugador.getItems().addAll(colors);
+            cJugador.setPromptText("Color Tanque "+(jugadores.size()+1)); 
+            nJugador.setText("- Nombre jugador "+(jugadores.size()+1)+" - ");
+            IA.setSelected(false);
+            
+            JOptionPane.showMessageDialog(null, "Ya existe un tanque con ese color.");
+            return false;
+        }
+        return true;
+    }
+    
     @FXML
     private boolean handlePlay(ActionEvent event) {
         
@@ -69,28 +111,6 @@ public class IniciarJuegoViewController implements Initializable {
         Integer[] posiciones = camposX.stream().toArray(Integer[]::new);
         Arrays.sort(posiciones);
         int x1 = foundX(posiciones);
-
-        int[] pos1 = {x1,0};
-        int[] pos2 = {x1+(733/2),0};
-        Jugador jugador1 = new Jugador(nJugador1.getText().trim());
-        Jugador jugador2 = new Jugador(nJugador2.getText().trim());
-        Bala bala1= new Bala(pos1);
-        Bala bala2=new Bala(pos2);
-        if(cJugador1.getValue().equals(cJugador2.getValue())){
-            JOptionPane.showMessageDialog(null, "Los colores de los tanques no pueden ser iguales");
-            return false;
-        }
-        Tanque tanque1 = new Tanque(cJugador1.getValue(), pos1,bala1);
-        Tanque tanque2 = new Tanque(cJugador2.getValue(), pos2, bala2);
- 
-
-        jugador1.setTanque(tanque1);
-        jugador2.setTanque(tanque2);
-        //jugador1.setTanques(tanque1);
-        //jugador2.setTanques(tanque2);
-        ArrayList<Jugador> jugadores = new ArrayList<Jugador>();
-        jugadores.add(jugador1);
-        jugadores.add(jugador2);
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("JuegoView.fxml"));
 
@@ -115,7 +135,9 @@ public class IniciarJuegoViewController implements Initializable {
             controller.setBoardSize(this.ancho*0.915106117, this.alto*0.75732899);//escala de proporcionalidada canvas/ventana
             controller.setDimesiones(this.alto*0.915106117, this.ancho*0.75732899);//escala de proporcionalidada canvas/ventana
             controller.setMap(mapa);
+            controller.ordenTurnos(jugadores);
             controller.setJugadores(jugadores);
+            controller.actualizaCantBalas(balas);
             controller.addViews();
             controller.posTank(campos);
             controller.posBala();
@@ -179,6 +201,11 @@ public class IniciarJuegoViewController implements Initializable {
             JOptionPane.showMessageDialog(null, "Error 081:\nNo ha sido posible cargar las configuraciones\n"+e.getCause());
         }
     }
+    public void setCantBalasIni(int balas60, int balasPe, int balas105){
+        this.balas[0]=balas60;
+        this.balas[1]=balas105;
+        this.balas[2]=balasPe;
+    }
     //closer
     @FXML private void close(ActionEvent event) {
         Node source = (Node) event.getSource();
@@ -206,12 +233,8 @@ public class IniciarJuegoViewController implements Initializable {
         this.ancho = ancho;
     }
     public void setBoxes(String[] colors){
-
-        
-        this.cJugador1.getItems().removeAll(this.cJugador1.getItems());
-        this.cJugador2.getItems().removeAll(this.cJugador1.getItems());
-        this.cJugador1.getItems().addAll(colors);
-        this.cJugador2.getItems().addAll(colors);
+        this.cJugador.getItems().removeAll(this.cJugador.getItems());
+        this.cJugador.getItems().addAll(colors);
     }
 
     // Esta funcion agrega un fondo al anchorPane del mapa
@@ -233,6 +256,11 @@ public class IniciarJuegoViewController implements Initializable {
         mapaPanel.getStylesheets().clear();
         mapaPanel.getStylesheets().add("Estilos.css");
         mapaPanel.getStyleClass().add("map"+(map));
+    }
+    
+    //cambia la cantidad de jugadores que habrán
+    public void setCantJug(int num){
+        this.cantJug=num;
     }
 
     @Override
