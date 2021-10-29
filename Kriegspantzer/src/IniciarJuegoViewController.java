@@ -38,6 +38,7 @@ public class IniciarJuegoViewController implements Initializable {
     private int ancho = 800;
     private int alto = 800;
     private int cantJug=2;
+    int[] balas = new int[3];
     private ArrayList<Jugador> jugadores = new ArrayList<Jugador>();
     String[] colors = {"Azul", "Verde", "Amarillo", "Rojo", "Morado", "Naranja", "Negro"};//colores disponibles
     
@@ -110,29 +111,6 @@ public class IniciarJuegoViewController implements Initializable {
         Integer[] posiciones = camposX.stream().toArray(Integer[]::new);
         Arrays.sort(posiciones);
         int x1 = foundX(posiciones);
-        /*
-        int[] pos1 = {x1,0};
-        int[] pos2 = {x1+(733/2),0};
-        Jugador jugador1 = new Jugador(nJugador.getText().trim());
-        Jugador jugador2 = new Jugador(nJugador2.getText().trim());
-        Bala bala1= new Bala(pos1);
-        Bala bala2=new Bala(pos2);
-        if(cJugador.getValue().equals(cJugador2.getValue())){
-            JOptionPane.showMessageDialog(null, "Los colores de los tanques no pueden ser iguales");
-            return false;
-        }
-        Tanque tanque1 = new Tanque(cJugador.getValue(), pos1,bala1);
-        Tanque tanque2 = new Tanque(cJugador2.getValue(), pos2, bala2);
- 
-
-        jugador1.setTanque(tanque1);
-        jugador2.setTanque(tanque2);
-        //jugador1.setTanques(tanque1);
-        //jugador2.setTanques(tanque2);
-        ArrayList<Jugador> jugadores = new ArrayList<Jugador>();
-        jugadores.add(jugador1);
-        jugadores.add(jugador2);
-        */
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("JuegoView.fxml"));
 
@@ -157,12 +135,13 @@ public class IniciarJuegoViewController implements Initializable {
             controller.setBoardSize(this.ancho*0.915106117, this.alto*0.75732899);//escala de proporcionalidada canvas/ventana
             controller.setDimesiones(this.alto*0.915106117, this.ancho*0.75732899);//escala de proporcionalidada canvas/ventana
             controller.setMap(mapa);
+            controller.ordenTurnos(jugadores);
             controller.setJugadores(jugadores);
+            controller.actualizaCantBalas(balas);
             controller.addViews();
             controller.posTank(campos);
             controller.posBala();
             controller.posBarras();
-            controller.ordenTurnos(jugadores);
 
         } catch (IOException e) {
             JOptionPane.showMessageDialog(null, "Error: 006\nno se a podido cargar el juego");
@@ -221,6 +200,11 @@ public class IniciarJuegoViewController implements Initializable {
             //en caso de que algo salga mal mostraremos el siguiente mensaje
             JOptionPane.showMessageDialog(null, "Error 081:\nNo ha sido posible cargar las configuraciones\n"+e.getCause());
         }
+    }
+    public void setCantBalasIni(int balas60, int balasPe, int balas105){
+        this.balas[0]=balas60;
+        this.balas[1]=balas105;
+        this.balas[2]=balasPe;
     }
     //closer
     @FXML private void close(ActionEvent event) {

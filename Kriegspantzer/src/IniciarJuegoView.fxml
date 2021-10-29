@@ -35,7 +35,7 @@
                <font>
                   <Font name="Consolas Bold" size="14.0" />
                </font></TextField>
-            <Button layoutX="553.0" layoutY="67.0" mnemonicParsing="false" onAction="#handleConfings" prefHeight="36.0" prefWidth="157.0" styleClass="backButton" stylesheets="@Estilos.css" text="Configuraciones" textFill="WHITE">
+            <Button layoutX="553.0" layoutY="67.0" mnemonicParsing="false" onAction="#handleConfings" prefHeight="36.0" prefWidth="157.0" styleClass="backButton" stylesheets="@Estilos.css" text="Configuraciones" textFill="WHITE" AnchorPane.rightAnchor="43.00000000000003">
                <font>
                   <Font name="Consolas Bold" size="15.0" />
                </font>

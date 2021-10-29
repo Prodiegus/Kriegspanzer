@@ -18,6 +18,9 @@ import javafx.stage.Stage;
 public class ConfingController implements Initializable {
     @FXML TextField pAncho;
     @FXML TextField pLargo;
+    @FXML TextField balas60;
+    @FXML TextField balasPe;
+    @FXML TextField balas105;
 
     @FXML
     private void aceptar(ActionEvent event) {
@@ -33,8 +36,9 @@ public class ConfingController implements Initializable {
             String[] colors = {"Azul", "Verde", "Amarillo", "Rojo", "Morado", "Naranja", "Negro"};
 
             controller.setBoxes(colors);
-            controller.setAnchoAlto(Integer.parseInt(pAncho.getText().trim()), Integer.parseInt(pLargo.getText().trim()));
+            controller.setAnchoAlto(Integer.parseInt(pAncho.getText().trim()), Integer.parseInt(pLargo.getText().trim())); //falta ver donde validar
             controller.setMap();
+            controller.setCantBalasIni(Integer.parseInt(balas60.getText().trim()),Integer.parseInt(balasPe.getText().trim()),Integer.parseInt(balas105.getText().trim())); //falta ver donde validar
             stage.setResizable(true);
             stage.setTitle("Kriegspanzer Game");
             stage.getIcons().add(new Image(getClass().getResourceAsStream("img/icon.png")));

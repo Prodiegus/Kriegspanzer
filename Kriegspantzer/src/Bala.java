@@ -84,6 +84,9 @@ public class Bala{
     public boolean verificaBalas(){ //metodo que retorna true si no existen balas
         return (cantBalas[0]==0 && cantBalas[1]==0 && cantBalas[2]==0);
     }
+    public void actualizaMuniciones(int[] balas){
+        this.cantBalas=balas;
+    }
     
 }
 
