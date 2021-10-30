@@ -81,29 +81,31 @@ public class JuegoController implements Initializable {
         /* Al presionar el botón de disparo lo primero que debemos hacer es verificar
            qué jugador es, para así poder hacer los lanzamientos por separados
         */
-        
+        int turno = arrayOrden[cont_orden];//posicion del jugador en el array de jugadores de su turno
         double tiempo=0;
         int tGanador=cont_orden;
-        if (jugadores.get(arrayOrden[cont_orden]).lanzamiento(Integer.parseInt(vel.getText()), Integer.parseInt(ang.getText()), this.mapa)){
+        if (jugadores.get(turno).lanzamiento(Integer.parseInt(vel.getText()), Integer.parseInt(ang.getText()), this.mapa)){
             //musica de disparo
             String path = "audio/5.mp3";
             Media media = new Media(new File(path).toURI().toString());
             MediaPlayer mediaPlayer = new MediaPlayer(media);
             mediaPlayer.play();
             MediaView mediaView = new MediaView(mediaPlayer);
-            mediaView.getClip();
+            mediaView.getClip(); 
             //las posiciones que se ingresan de "y" están al revés, entonces debemos modificarlas al momento de pasarlas al moverBala
-            int [] posBala=jugadores.get(arrayOrden[cont_orden]).getTanque().getBala().getPosBala();
+            int [] posBala=jugadores.get(turno).getTanque().getBala().getPosBala();
             //hacemos visible la bala del jugador del turno actual
-            if ( jugadores.get(arrayOrden[cont_orden]).getTanque().getBalasDisp()[0].equals(tBalas.getValue()) ){ //60mm
-                if(jugadores.get(arrayOrden[cont_orden]).getTanque().getBala().getTipoBalas()[0] != 0){
+            if ( jugadores.get(turno).getTanque().getBalasDisp()[0].equals(tBalas.getValue()) ){ //60mm
+                if(jugadores.get(turno).getTanque().getBala().getTipoBalas()[0] != 0){
                     
-                    System.out.println(jugadores.get(arrayOrden[cont_orden]).getName());
-                    jugadores.get(arrayOrden[cont_orden]).getTanque().getBala().setCantBalas(0);
+                    System.out.println(jugadores.get(turno).getName());
+                    int[] municion = jugadores.get(turno).getTanque().getBala().getTipoBalas();
+                    municion[0] = municion[0]-1;
+                    jugadores.get(turno).getTanque().getBala().actualizaMuniciones(municion);
                     
-                    jugadores.get(arrayOrden[cont_orden]).getTanque().setBalasDisp(("Proyectil 60mm: "+jugadores.get(arrayOrden[cont_orden]).getTanque().getBala().getTipoBalas()[0]+ " balas"), 0);
+                    jugadores.get(turno).getTanque().setBalasDisp(("Proyectil 60mm: "+jugadores.get(turno).getTanque().getBala().getTipoBalas()[0]+ " balas"), 0);
                     
-                    arrayBalasImagen.get(0).get(arrayOrden[cont_orden]).setVisible(true);
+                    arrayBalasImagen.get(0).get(turno).setVisible(true);
                     
                     //se le suman valores a las posiciones para que salga desde arriba y al medio del tanque y no desde una esquina
                     moverBala(posBala[0]+10,(470-posBala[1]),posBala[0]+10,(470-posBala[1]),Integer.parseInt(ang.getText()),Integer.parseInt(vel.getText()),tiempo,cont_orden,tGanador, event,0);
@@ -117,64 +119,64 @@ public class JuegoController implements Initializable {
                     turnoPanel.setText("Turno: "+jugadores.get(cont_orden).getName());
                     setJugadores(jugadores);
                     this.tBalas.getItems().removeAll(this.tBalas.getItems());
-                    this.tBalas.getItems().addAll(jugadores.get(arrayOrden[cont_orden]).getTanque().getBalasDisp());
-                    System.out.println("balas de "+jugadores.get(arrayOrden[cont_orden]).getName()+":"+jugadores.get(arrayOrden[cont_orden]).getTanque().getBalasDisp()[0]+","+jugadores.get(arrayOrden[cont_orden]).getTanque().getBalasDisp()[1]+","+jugadores.get(arrayOrden[cont_orden]).getTanque().getBalasDisp()[2] );
+                    this.tBalas.getItems().addAll(jugadores.get(turno).getTanque().getBalasDisp());
+                    System.out.println("balas de "+jugadores.get(turno).getName()+":"+jugadores.get(turno).getTanque().getBalasDisp()[0]+","+jugadores.get(turno).getTanque().getBalasDisp()[1]+","+jugadores.get(turno).getTanque().getBalasDisp()[2] );
                     System.out.println("");
                 }
                 else{
                     JOptionPane.showMessageDialog(null, "No queda de este tipo de munición");
                 }
             }
-            else if( jugadores.get(arrayOrden[cont_orden]).getTanque().getBalasDisp()[1].equals(tBalas.getValue()) ){
-                if(jugadores.get(arrayOrden[cont_orden]).getTanque().getBala().getTipoBalas()[1] != 0){
+            else if( jugadores.get(turno).getTanque().getBalasDisp()[1].equals(tBalas.getValue()) ){
+                if(jugadores.get(turno).getTanque().getBala().getTipoBalas()[1] != 0){
                     
-                    System.out.println(jugadores.get(arrayOrden[cont_orden]).getName());
-                    jugadores.get(arrayOrden[cont_orden]).getTanque().getBala().setCantBalas(1);
+                    System.out.println(jugadores.get(turno).getName());
+                    jugadores.get(turno).getTanque().getBala().setCantBalas(1);
                     
-                    jugadores.get(arrayOrden[cont_orden]).getTanque().setBalasDisp(("Proyectil 105mm: "+jugadores.get(arrayOrden[cont_orden]).getTanque().getBala().getTipoBalas()[1]+ " balas"), 1);
+                    jugadores.get(turno).getTanque().setBalasDisp(("Proyectil 105mm: "+jugadores.get(turno).getTanque().getBala().getTipoBalas()[1]+ " balas"), 1);
                     
-                    arrayBalasImagen.get(1).get(arrayOrden[cont_orden]).setVisible(true);
+                    arrayBalasImagen.get(1).get(turno).setVisible(true);
                     //se le suman valores a las posiciones para que salga desde arriba y al medio del tanque y no desde una esquina
-                    moverBala(posBala[0]+10,(470-posBala[1]),posBala[0]+10,(470-posBala[1]),Integer.parseInt(ang.getText()),Integer.parseInt(vel.getText()),tiempo,arrayOrden[cont_orden],tGanador, event,1);
+                    moverBala(posBala[0]+10,(470-posBala[1]),posBala[0]+10,(470-posBala[1]),Integer.parseInt(ang.getText()),Integer.parseInt(vel.getText()),tiempo,turno,tGanador, event,1);
                     
                     //actualizamos los turnos
                     cont_orden+=1;
                     if (cont_orden == arrayOrden.length){
                         cont_orden=0;
                     }
-                    turnoPanel.setText("Turno: "+jugadores.get(arrayOrden[cont_orden]).getName()); 
+                    turnoPanel.setText("Turno: "+jugadores.get(turno).getName()); 
                     setJugadores(jugadores);
                     this.tBalas.getItems().removeAll(this.tBalas.getItems());
-                    this.tBalas.getItems().addAll(jugadores.get(arrayOrden[cont_orden]).getTanque().getBalasDisp());
-                    System.out.println("balas de "+jugadores.get(arrayOrden[cont_orden]).getName()+":"+jugadores.get(arrayOrden[cont_orden]).getTanque().getBalasDisp()[0]+","+jugadores.get(arrayOrden[cont_orden]).getTanque().getBalasDisp()[1]+","+jugadores.get(arrayOrden[cont_orden]).getTanque().getBalasDisp()[2] );
+                    this.tBalas.getItems().addAll(jugadores.get(turno).getTanque().getBalasDisp());
+                    System.out.println("balas de "+jugadores.get(turno).getName()+":"+jugadores.get(turno).getTanque().getBalasDisp()[0]+","+jugadores.get(turno).getTanque().getBalasDisp()[1]+","+jugadores.get(turno).getTanque().getBalasDisp()[2] );
                     System.out.println("");
                 }
                 else{
                     JOptionPane.showMessageDialog(null, "No queda de este tipo de munición");
                 }
             }
-            else if ( jugadores.get(arrayOrden[cont_orden]).getTanque().getBalasDisp()[2].equals(tBalas.getValue())  ){
-                if(jugadores.get(arrayOrden[cont_orden]).getTanque().getBala().getTipoBalas()[2] != 0){
+            else if ( jugadores.get(turno).getTanque().getBalasDisp()[2].equals(tBalas.getValue())  ){
+                if(jugadores.get(turno).getTanque().getBala().getTipoBalas()[2] != 0){
                     
-                    System.out.println(jugadores.get(arrayOrden[cont_orden]).getName());
-                    jugadores.get(arrayOrden[cont_orden]).getTanque().getBala().setCantBalas(2);
+                    System.out.println(jugadores.get(turno).getName());
+                    jugadores.get(turno).getTanque().getBala().setCantBalas(2);
                     
-                    jugadores.get(arrayOrden[cont_orden]).getTanque().setBalasDisp(("Proyectil Perforador: "+jugadores.get(arrayOrden[cont_orden]).getTanque().getBala().getTipoBalas()[2]+ " balas"), 2);
+                    jugadores.get(turno).getTanque().setBalasDisp(("Proyectil Perforador: "+jugadores.get(turno).getTanque().getBala().getTipoBalas()[2]+ " balas"), 2);
                     
-                    arrayBalasImagen.get(2).get(arrayOrden[cont_orden]).setVisible(true);
+                    arrayBalasImagen.get(2).get(turno).setVisible(true);
                     //se le suman valores a las posiciones para que salga desde arriba y al medio del tanque y no desde una esquina
-                    moverBala(posBala[0]+10,(470-posBala[1]),posBala[0]+10,(470-posBala[1]),Integer.parseInt(ang.getText()),Integer.parseInt(vel.getText()),tiempo,arrayOrden[cont_orden],tGanador, event,2);
+                    moverBala(posBala[0]+10,(470-posBala[1]),posBala[0]+10,(470-posBala[1]),Integer.parseInt(ang.getText()),Integer.parseInt(vel.getText()),tiempo,turno,tGanador, event,2);
                   
                     //actualizamos los turnos
                     cont_orden+=1;
                     if (cont_orden == arrayOrden.length){
                         cont_orden=0;
                     }
-                    turnoPanel.setText("Turno: "+jugadores.get(arrayOrden[cont_orden]).getName()); 
+                    turnoPanel.setText("Turno: "+jugadores.get(turno).getName()); 
                     setJugadores(jugadores);
                     this.tBalas.getItems().removeAll(this.tBalas.getItems());
-                    this.tBalas.getItems().addAll(jugadores.get(arrayOrden[cont_orden]).getTanque().getBalasDisp());
-                    System.out.println("balas de "+jugadores.get(arrayOrden[cont_orden]).getName()+":"+jugadores.get(arrayOrden[cont_orden]).getTanque().getBalasDisp()[0]+","+jugadores.get(arrayOrden[cont_orden]).getTanque().getBalasDisp()[1]+","+jugadores.get(arrayOrden[cont_orden]).getTanque().getBalasDisp()[2] );
+                    this.tBalas.getItems().addAll(jugadores.get(turno).getTanque().getBalasDisp());
+                    System.out.println("balas de "+jugadores.get(turno).getName()+":"+jugadores.get(turno).getTanque().getBalasDisp()[0]+","+jugadores.get(turno).getTanque().getBalasDisp()[1]+","+jugadores.get(turno).getTanque().getBalasDisp()[2] );
                     System.out.println("");
                 }
                 else{
@@ -184,7 +186,7 @@ public class JuegoController implements Initializable {
             else{
                 JOptionPane.showMessageDialog(null, "Debe elegir un tipo de bala");
             }
-            if (jugadores.get(arrayOrden[cont_orden]).getTanque().getBala().verificaBalas()){
+            if (jugadores.get(turno).getTanque().getBala().verificaBalas()){
                 cargarEmpate(event);
             }
             //les pasamos las coordenadas verdaderas al método, que representan en el plano XY
@@ -408,9 +410,9 @@ public class JuegoController implements Initializable {
     //si se realiza un cambio en configuraciones, acá se aplican el el juego
     public void actualizaCantBalas(int[] balas){
         if (balas[0] != 0 || balas[1] != 0 || balas[2] != 0){   //si lo q recibio son solo ceros es porque se usará las municiones por default
-            for(int i=0;i<jugadores.size();i++) {
-                this.jugadores.get(i).getTanque().getBala().actualizaMuniciones(balas);
-                this.jugadores.get(i).getTanque().actMunicionesString(balas);
+            for (Jugador jugador : jugadores) {
+                jugador.getTanque().getBala().actualizaMuniciones(balas);
+                jugador.getTanque().actMunicionesString(balas);
             }
             this.tBalas.getItems().removeAll(this.tBalas.getItems());
             this.tBalas.getItems().addAll(jugadores.get(arrayOrden[0]).getTanque().getBalasDisp() );
