@@ -27,7 +27,6 @@ import javafx.scene.control.CheckBox;
 public class IniciarJuegoViewController implements Initializable {
     
     @FXML private ComboBox<String> cJugador;
-    @FXML private ComboBox<String> cJugador2;
     @FXML private AnchorPane mapaPanel;
     @FXML private TextField nJugador;
     @FXML private TextField nMap;
@@ -38,7 +37,8 @@ public class IniciarJuegoViewController implements Initializable {
     private int ancho = 800;
     private int alto = 800;
     private int cantJug=2;
-    int[] balas = new int[3];
+    
+    int[] municiones = {3,3,10}; 
     private ArrayList<Jugador> jugadores = new ArrayList<Jugador>();
     String[] colors = {"Azul", "Verde", "Amarillo", "Rojo", "Morado", "Naranja", "Negro"};//colores disponibles
     
@@ -63,14 +63,15 @@ public class IniciarJuegoViewController implements Initializable {
             this.cJugador.getItems().removeAll(this.cJugador.getItems());
             this.cJugador.getItems().addAll(colors);
             cJugador.setPromptText("Color Tanque "+(jugadores.size()+1)); 
-            nJugador.setText("- Nombre jugador "+(jugadores.size()+1)+" - ");
+            nJugador.setText(null);
+            nJugador.setPromptText("- Nombre jugador "+(jugadores.size()+1)+" - ");
             IA.setSelected(false);
         }
         else{
             this.cJugador.getItems().removeAll(this.cJugador.getItems());
             this.cJugador.getItems().addAll(colors);
             cJugador.setPromptText("Color Tanque "+(jugadores.size()+1)); 
-            nJugador.setText("- Nombre jugador "+(jugadores.size()+1)+" - ");
+            nJugador.setPromptText("- Nombre jugador "+(jugadores.size()+1)+" - ");
             IA.setSelected(false);
             
             JOptionPane.showMessageDialog(null, "Ya existe un tanque con ese color.");
@@ -106,7 +107,6 @@ public class IniciarJuegoViewController implements Initializable {
         for (int[] campo : campos) {
             camposX.add(campo[0]);
         }
-
         //convertimos a Array
         Integer[] posiciones = camposX.stream().toArray(Integer[]::new);
         Arrays.sort(posiciones);
@@ -137,7 +137,7 @@ public class IniciarJuegoViewController implements Initializable {
             controller.setMap(mapa);
             controller.ordenTurnos(jugadores);
             controller.setJugadores(jugadores);
-            controller.actualizaCantBalas(balas);
+            controller.actualizaCantBalas(municiones);
             controller.addViews();
             controller.posTank(campos);
             controller.posBala();
@@ -202,9 +202,9 @@ public class IniciarJuegoViewController implements Initializable {
         }
     }
     public void setCantBalasIni(int balas60, int balasPe, int balas105){
-        this.balas[0]=balas60;
-        this.balas[1]=balas105;
-        this.balas[2]=balasPe;
+        municiones[0]=balas60;
+        municiones[1]=balas105;
+        municiones[2]=balasPe;
     }
     //closer
     @FXML private void close(ActionEvent event) {

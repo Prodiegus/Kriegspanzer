@@ -45,19 +45,20 @@ public class Tanque {
     public double getVida() {
         return vida;
     }
+    public double[] getDamageBala() {
+        return damageBala;
+    }
     public void setBalasDisp(String nombre, int tipBala) {
         this.balasDisp[tipBala] = nombre;
     }
     public void actMunicionesString(int[] balas){
-        balasDisp[0]="Proyectil 60mm: "+balas[0]+" balas";
-        balasDisp[1]="Proyectil 105mm: "+balas[1]+" balas";
-        balasDisp[2]="Proyectil Perforador: "+balas[2]+" balas";
+        this.balasDisp[0]="Proyectil 60mm: "+balas[0]+" balas";
+        this.balasDisp[1]="Proyectil 105mm: "+balas[1]+" balas";
+        this.balasDisp[2]="Proyectil Perforador: "+balas[2]+" balas";
     }
     public String[] getBalasDisp() {
         return balasDisp;
     }
-    public double[] getDamageBala() {
-        return damageBala;
-    }
+   
 }
 
