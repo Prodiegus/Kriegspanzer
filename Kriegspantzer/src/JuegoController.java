@@ -454,8 +454,8 @@ public class JuegoController implements Initializable {
             Double x = jugadores.get(i).getTanque().getPos()[0]*altoScale;
             tanks.get(i).setX(x);
             int y = setYTank((int)Math.round(x));
-            tanks.get(i).setY(y);
-            jugadores.get(i).getTanque().setPos((int)Math.round(x*altoScale), y);
+            tanks.get(i).setY(y*anchoScale);
+            jugadores.get(i).getTanque().setPos((int)Math.round(x/altoScale), y);
             mapa.addTank((int)Math.round(x), y);
             for (int k = (int)Math.round(x); k < 20+(int)Math.round(x); k++) {//ancho de un tanque en el mapa
                 for (int j = y+10; j < 465; j++) {//alto del mapa le ponemos suelo al tanque
@@ -473,9 +473,10 @@ public class JuegoController implements Initializable {
 
     @FXML
     public int setYTank(int x) {
+        double altoScale = board.getWidth()/mapaPanel.getPrefWidth();//la division de ambos anchos de una proporcion de la ventana actual.
         double anchoScale = board.getHeight()/mapaPanel.getPrefHeight();//la division de ambas alturas de una proporcion de la ventana actual.
         for (int y = 0; y < 465; y++){//465 son las posibles y
-            if(mapa.comprobarCoordenadaSolido(x+10, y)){
+            if(mapa.comprobarCoordenadaSolido(x+(int)Math.round(10/anchoScale), y)){
                 return y-(int)Math.round(10/anchoScale);// se le resta el size en pixeles del tanque escalado
             }
         }
