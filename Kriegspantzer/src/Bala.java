@@ -83,7 +83,10 @@ public class Bala{
     }
     
     public void actualizaMuniciones(int[] balas){
-        this.cantBalas=balas;
+        
+        this.cantBalas[0] = balas[0];
+        this.cantBalas[1] = balas[1];
+        this.cantBalas[2] = balas[2];
     }
     
 }

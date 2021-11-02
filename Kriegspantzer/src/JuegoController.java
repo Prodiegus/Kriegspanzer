@@ -119,8 +119,8 @@ public class JuegoController implements Initializable {
                     turnoPanel.setText("Turno: "+jugadores.get(cont_orden).getName());
                     setJugadores(jugadores);
                     this.tBalas.getItems().removeAll(this.tBalas.getItems());
-                    this.tBalas.getItems().addAll(jugadores.get(turno).getTanque().getBalasDisp());
-                    System.out.println("balas de "+jugadores.get(turno).getName()+":"+jugadores.get(turno).getTanque().getBalasDisp()[0]+","+jugadores.get(turno).getTanque().getBalasDisp()[1]+","+jugadores.get(turno).getTanque().getBalasDisp()[2] );
+                    this.tBalas.getItems().addAll(jugadores.get(arrayOrden[cont_orden]).getTanque().getBalasDisp());
+                    System.out.println("balas de "+jugadores.get(arrayOrden[cont_orden]).getName()+":"+jugadores.get(turno).getTanque().getBalasDisp()[0]+","+jugadores.get(turno).getTanque().getBalasDisp()[1]+","+jugadores.get(turno).getTanque().getBalasDisp()[2] );
                     System.out.println("");
                 }
                 else{
@@ -147,8 +147,8 @@ public class JuegoController implements Initializable {
                     turnoPanel.setText("Turno: "+jugadores.get(turno).getName()); 
                     setJugadores(jugadores);
                     this.tBalas.getItems().removeAll(this.tBalas.getItems());
-                    this.tBalas.getItems().addAll(jugadores.get(turno).getTanque().getBalasDisp());
-                    System.out.println("balas de "+jugadores.get(turno).getName()+":"+jugadores.get(turno).getTanque().getBalasDisp()[0]+","+jugadores.get(turno).getTanque().getBalasDisp()[1]+","+jugadores.get(turno).getTanque().getBalasDisp()[2] );
+                    this.tBalas.getItems().addAll(jugadores.get(arrayOrden[cont_orden]).getTanque().getBalasDisp());
+                    System.out.println("balas de "+jugadores.get(arrayOrden[cont_orden]).getName()+":"+jugadores.get(turno).getTanque().getBalasDisp()[0]+","+jugadores.get(turno).getTanque().getBalasDisp()[1]+","+jugadores.get(turno).getTanque().getBalasDisp()[2] );
                     System.out.println("");
                 }
                 else{
@@ -175,8 +175,8 @@ public class JuegoController implements Initializable {
                     turnoPanel.setText("Turno: "+jugadores.get(turno).getName()); 
                     setJugadores(jugadores);
                     this.tBalas.getItems().removeAll(this.tBalas.getItems());
-                    this.tBalas.getItems().addAll(jugadores.get(turno).getTanque().getBalasDisp());
-                    System.out.println("balas de "+jugadores.get(turno).getName()+":"+jugadores.get(turno).getTanque().getBalasDisp()[0]+","+jugadores.get(turno).getTanque().getBalasDisp()[1]+","+jugadores.get(turno).getTanque().getBalasDisp()[2] );
+                    this.tBalas.getItems().addAll(jugadores.get(arrayOrden[cont_orden]).getTanque().getBalasDisp());
+                    System.out.println("balas de "+jugadores.get(arrayOrden[cont_orden]).getName()+":"+jugadores.get(arrayOrden[cont_orden]).getTanque().getBalasDisp()[0]+","+jugadores.get(arrayOrden[cont_orden]).getTanque().getBalasDisp()[1]+","+jugadores.get(arrayOrden[cont_orden]).getTanque().getBalasDisp()[2] );
                     System.out.println("");
                 }
                 else{
@@ -186,7 +186,7 @@ public class JuegoController implements Initializable {
             else{
                 JOptionPane.showMessageDialog(null, "Debe elegir un tipo de bala");
             }
-            if (jugadores.get(turno).getTanque().getBala().verificaBalas()){
+            if (jugadores.get(arrayOrden[cont_orden]).getTanque().getBala().verificaBalas()){
                 cargarEmpate(event);
             }
             //les pasamos las coordenadas verdaderas al método, que representan en el plano XY
@@ -445,7 +445,7 @@ public class JuegoController implements Initializable {
         arrayBalasImagen.add(balasPImagen);
     }
 
-    public void posTank(ArrayList<int[]> campos){
+    public void posTank(){
         double altoScale = board.getWidth()/mapaPanel.getPrefWidth();//la division de ambos anchos de una proporcion de la ventana actual.
         double anchoScale = board.getHeight()/mapaPanel.getPrefHeight();//la division de ambas alturas de una proporcion de la ventana actual.
 
@@ -453,22 +453,18 @@ public class JuegoController implements Initializable {
         for (int i = 0; i<jugadores.size(); i++) {
             Double x = jugadores.get(i).getTanque().getPos()[0]*altoScale;
             tanks.get(i).setX(x);
-            for (int[] campo : campos) {
-                if(campo[0]==x){
-                    int y = setYTank((int) Math.round(x));
-                    tanks.get(i).setY(y);
-                    jugadores.get(i).getTanque().setPos((int)Math.round(x), y);
-                    mapa.addTank((int)Math.round(x), y);
-                    for (int k = (int)Math.round(x); k < 20+(int)Math.round(x); k++) {//ancho de un tanque en el mapa
-                        for (int j = y+10; j < 465; j++) {//alto del mapa le ponemos suelo al tanque
-                            mapa.setAreas(k, j);
-                        }
-                        for (int j = 0; j < y; j++){
-                            mapa.fillAire(k, j);
-                        }
-                    }
+            int y = setYTank((int)Math.round(x));
+            tanks.get(i).setY(y);
+            jugadores.get(i).getTanque().setPos((int)Math.round(x*altoScale), y);
+            mapa.addTank((int)Math.round(x), y);
+            for (int k = (int)Math.round(x); k < 20+(int)Math.round(x); k++) {//ancho de un tanque en el mapa
+                for (int j = y+10; j < 465; j++) {//alto del mapa le ponemos suelo al tanque
+                     mapa.setAreas(k, j);
                 }
-            }
+                for (int j = 0; j < y; j++){
+                     mapa.fillAire(k, j);
+                }
+            }  
             mapaPanel.getChildren().add(tanks.get(i));
         }
         setBoard();
@@ -477,40 +473,15 @@ public class JuegoController implements Initializable {
 
     @FXML
     public int setYTank(int x) {
+        double anchoScale = board.getHeight()/mapaPanel.getPrefHeight();//la division de ambas alturas de una proporcion de la ventana actual.
         for (int y = 0; y < 465; y++){//465 son las posibles y
             if(mapa.comprobarCoordenadaSolido(x+10, y)){
-                return y-10;// se le resta el size en pixeles del tanque
+                return y-(int)Math.round(10/anchoScale);// se le resta el size en pixeles del tanque escalado
             }
         }
         return 0;
     }
 
-    @FXML
-    public void posTank(){//El metodo "posTank" posicionara los tanques en "mapaPanel"
-        double altoScale = board.getWidth()/mapaPanel.getPrefWidth();//la division de ambos anchos de una proporcion de la ventana actual.
-        double anchoScale = board.getHeight()/mapaPanel.getPrefHeight();//la division de ambas alturas de una proporcion de la ventana actual.
-        
-        for (int i = 0; i<jugadores.size(); i++) {// se recorre el arraylist "jugadores", para proporcionarle cada tanque a su jugador.
-            int x = jugadores.get(i).getTanque().getPos()[0];
-            int y = setYTank(x);
-            mapa.removeTank(jugadores.get(i).getTanque().getPos()[0], jugadores.get(i).getTanque().getPos()[1]);
-            tanks.get(i).setX(jugadores.get(i).getTanque().getPos()[0]*altoScale);
-            tanks.get(i).setY(y*anchoScale);
-            jugadores.get(i).getTanque().setPos(x, y);
-            barras.get(i).setTranslateX(  jugadores.get(i).getTanque().getPos()[0]-15);
-            barras.get(i).setTranslateY( (jugadores.get(i).getTanque().getPos()[1])-25);
-            mapa.addTank(x, y);
-            //se setean los tanques con el pocisionamiento respectivo y se multiplica con su reescalado.
-            for (int k = x; k < 20+x; k++) {//ancho de un tanque en el mapa
-                for (int j = y+10; j < 465; j++) {//alto del mapa le ponemos suelo al tanque
-                    mapa.setAreas(k, j);
-                }
-                for (int j = 0; j < y; j++){
-                    mapa.fillAire(k, j);
-                }
-            }
-        }
-    }
     @FXML
     public void posTank(boolean v){//El metodo "posTank" posicionara los tanques en "mapaPanel"
         double altoScale = board.getWidth()/mapaPanel.getPrefWidth();//la division de ambos anchos de una proporcion de la ventana actual.
