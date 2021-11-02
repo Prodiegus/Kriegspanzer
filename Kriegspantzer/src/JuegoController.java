@@ -473,11 +473,11 @@ public class JuegoController implements Initializable {
 
     @FXML
     public int setYTank(int x) {
-        double altoScale = board.getWidth()/mapaPanel.getPrefWidth();//la division de ambos anchos de una proporcion de la ventana actual.
         double anchoScale = board.getHeight()/mapaPanel.getPrefHeight();//la division de ambas alturas de una proporcion de la ventana actual.
+
         for (int y = 0; y < 465; y++){//465 son las posibles y
             if(mapa.comprobarCoordenadaSolido(x+(int)Math.round(10/anchoScale), y)){
-                return y-(int)Math.round(10/anchoScale);// se le resta el size en pixeles del tanque escalado
+                return y-10;// se le resta el size en pixeles del tanque
             }
         }
         return 0;
