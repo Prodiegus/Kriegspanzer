@@ -11,7 +11,7 @@
 <?import javafx.scene.paint.Stop?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane id="AnchorPane" prefHeight="348.0" prefWidth="500.0" styleClass="endGame" stylesheets="@Estilos.css" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="SeguirJugandoViewController">
+<AnchorPane id="AnchorPane" prefHeight="348.0" prefWidth="500.0" styleClass="endGame" stylesheets="@Estilos.css" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="EmpateViewController">
    <children>
       <Pane layoutX="12.0" layoutY="206.0" prefHeight="155.0" prefWidth="477.0">
          <children>

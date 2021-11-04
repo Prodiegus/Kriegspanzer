@@ -93,24 +93,19 @@ public class JuegoController implements Initializable {
             MediaView mediaView = new MediaView(mediaPlayer);
             mediaView.getClip(); 
             //las posiciones que se ingresan de "y" están al revés, entonces debemos modificarlas al momento de pasarlas al moverBala
-            int [] posBala=jugadores.get(turno).getTanque().getBala().getPosBala();
-            //hacemos visible la bala del jugador del turno actual
-            if ( jugadores.get(turno).getTanque().getBalasDisp()[0].equals(tBalas.getValue()) ){ //60mm
-                if(jugadores.get(turno).getTanque().getBala().getTipoBalas()[0] != 0){
+            int [] posBala=jugadores.get(arrayOrden[cont_orden]).getTanque().getBala().getPosBala();
+            
+            if ( jugadores.get(arrayOrden[cont_orden]).getTanque().getBalasDisp()[0].equals(tBalas.getValue()) ){ //60mm
+                if(jugadores.get(arrayOrden[cont_orden]).getTanque().getBala().getTipoBalas()[0] != 0){
                     
-                    System.out.println(jugadores.get(turno).getName());
-                    int[] municion = jugadores.get(turno).getTanque().getBala().getTipoBalas();
-                    municion[0] = municion[0]-1;
-                    jugadores.get(turno).getTanque().getBala().actualizaMuniciones(municion);
+                    //System.out.println(jugadores.get(arrayOrden[cont_orden]).getName());
+                    jugadores.get(arrayOrden[cont_orden]).getTanque().getBala().setCantBalas(0);
+                    jugadores.get(arrayOrden[cont_orden]).getTanque().setBalasDisp(("Proyectil 60mm: "+jugadores.get(arrayOrden[cont_orden]).getTanque().getBala().getTipoBalas()[0]+ " balas"), 0);
                     
-                    jugadores.get(turno).getTanque().setBalasDisp(("Proyectil 60mm: "+jugadores.get(turno).getTanque().getBala().getTipoBalas()[0]+ " balas"), 0);
-                    
-                    arrayBalasImagen.get(0).get(turno).setVisible(true);
-                    
+                    arrayBalasImagen.get(0).get(arrayOrden[cont_orden]).setVisible(true);
                     //se le suman valores a las posiciones para que salga desde arriba y al medio del tanque y no desde una esquina
                     moverBala(posBala[0]+10,(470-posBala[1]),posBala[0]+10,(470-posBala[1]),Integer.parseInt(ang.getText()),Integer.parseInt(vel.getText()),tiempo,cont_orden,tGanador, event,0);
                      
-                    
                     //actualizamos los turnos
                     cont_orden+=1;
                     if (cont_orden == arrayOrden.length){
@@ -120,8 +115,8 @@ public class JuegoController implements Initializable {
                     setJugadores(jugadores);
                     this.tBalas.getItems().removeAll(this.tBalas.getItems());
                     this.tBalas.getItems().addAll(jugadores.get(arrayOrden[cont_orden]).getTanque().getBalasDisp());
-                    System.out.println("balas de "+jugadores.get(arrayOrden[cont_orden]).getName()+":"+jugadores.get(turno).getTanque().getBalasDisp()[0]+","+jugadores.get(turno).getTanque().getBalasDisp()[1]+","+jugadores.get(turno).getTanque().getBalasDisp()[2] );
-                    System.out.println("");
+                    //System.out.println("balas de "+jugadores.get(arrayOrden[cont_orden]).getName()+":"+jugadores.get(arrayOrden[cont_orden]).getTanque().getBalasDisp()[0]+","+jugadores.get(arrayOrden[cont_orden]).getTanque().getBalasDisp()[1]+","+jugadores.get(arrayOrden[cont_orden]).getTanque().getBalasDisp()[2] );
+                    //System.out.println("");
                 }
                 else{
                     JOptionPane.showMessageDialog(null, "No queda de este tipo de munición");
@@ -130,10 +125,9 @@ public class JuegoController implements Initializable {
             else if( jugadores.get(turno).getTanque().getBalasDisp()[1].equals(tBalas.getValue()) ){
                 if(jugadores.get(turno).getTanque().getBala().getTipoBalas()[1] != 0){
                     
-                    System.out.println(jugadores.get(turno).getName());
-                    jugadores.get(turno).getTanque().getBala().setCantBalas(1);
-                    
-                    jugadores.get(turno).getTanque().setBalasDisp(("Proyectil 105mm: "+jugadores.get(turno).getTanque().getBala().getTipoBalas()[1]+ " balas"), 1);
+                    //System.out.println(jugadores.get(arrayOrden[cont_orden]).getName());
+                    jugadores.get(arrayOrden[cont_orden]).getTanque().getBala().setCantBalas(1);
+                    jugadores.get(arrayOrden[cont_orden]).getTanque().setBalasDisp(("Proyectil 105mm: "+jugadores.get(arrayOrden[cont_orden]).getTanque().getBala().getTipoBalas()[1]+ " balas"), 1);
                     
                     arrayBalasImagen.get(1).get(turno).setVisible(true);
                     //se le suman valores a las posiciones para que salga desde arriba y al medio del tanque y no desde una esquina
@@ -148,8 +142,8 @@ public class JuegoController implements Initializable {
                     setJugadores(jugadores);
                     this.tBalas.getItems().removeAll(this.tBalas.getItems());
                     this.tBalas.getItems().addAll(jugadores.get(arrayOrden[cont_orden]).getTanque().getBalasDisp());
-                    System.out.println("balas de "+jugadores.get(arrayOrden[cont_orden]).getName()+":"+jugadores.get(turno).getTanque().getBalasDisp()[0]+","+jugadores.get(turno).getTanque().getBalasDisp()[1]+","+jugadores.get(turno).getTanque().getBalasDisp()[2] );
-                    System.out.println("");
+                    //System.out.println("balas de "+jugadores.get(arrayOrden[cont_orden]).getName()+":"+jugadores.get(arrayOrden[cont_orden]).getTanque().getBalasDisp()[0]+","+jugadores.get(arrayOrden[cont_orden]).getTanque().getBalasDisp()[1]+","+jugadores.get(arrayOrden[cont_orden]).getTanque().getBalasDisp()[2] );
+                    //System.out.println("");
                 }
                 else{
                     JOptionPane.showMessageDialog(null, "No queda de este tipo de munición");
@@ -158,10 +152,9 @@ public class JuegoController implements Initializable {
             else if ( jugadores.get(turno).getTanque().getBalasDisp()[2].equals(tBalas.getValue())  ){
                 if(jugadores.get(turno).getTanque().getBala().getTipoBalas()[2] != 0){
                     
-                    System.out.println(jugadores.get(turno).getName());
-                    jugadores.get(turno).getTanque().getBala().setCantBalas(2);
-                    
-                    jugadores.get(turno).getTanque().setBalasDisp(("Proyectil Perforador: "+jugadores.get(turno).getTanque().getBala().getTipoBalas()[2]+ " balas"), 2);
+                    //System.out.println(jugadores.get(arrayOrden[cont_orden]).getName());
+                    jugadores.get(arrayOrden[cont_orden]).getTanque().getBala().setCantBalas(2);
+                    jugadores.get(arrayOrden[cont_orden]).getTanque().setBalasDisp(("Proyectil Perforador: "+jugadores.get(arrayOrden[cont_orden]).getTanque().getBala().getTipoBalas()[2]+ " balas"), 2);
                     
                     arrayBalasImagen.get(2).get(turno).setVisible(true);
                     //se le suman valores a las posiciones para que salga desde arriba y al medio del tanque y no desde una esquina
@@ -176,8 +169,8 @@ public class JuegoController implements Initializable {
                     setJugadores(jugadores);
                     this.tBalas.getItems().removeAll(this.tBalas.getItems());
                     this.tBalas.getItems().addAll(jugadores.get(arrayOrden[cont_orden]).getTanque().getBalasDisp());
-                    System.out.println("balas de "+jugadores.get(arrayOrden[cont_orden]).getName()+":"+jugadores.get(arrayOrden[cont_orden]).getTanque().getBalasDisp()[0]+","+jugadores.get(arrayOrden[cont_orden]).getTanque().getBalasDisp()[1]+","+jugadores.get(arrayOrden[cont_orden]).getTanque().getBalasDisp()[2] );
-                    System.out.println("");
+                    //System.out.println("balas de "+jugadores.get(arrayOrden[cont_orden]).getName()+":"+jugadores.get(arrayOrden[cont_orden]).getTanque().getBalasDisp()[0]+","+jugadores.get(arrayOrden[cont_orden]).getTanque().getBalasDisp()[1]+","+jugadores.get(arrayOrden[cont_orden]).getTanque().getBalasDisp()[2] );
+                    //System.out.println("");
                 }
                 else{
                    JOptionPane.showMessageDialog(null, "No queda de este tipo de munición"); 
@@ -189,7 +182,6 @@ public class JuegoController implements Initializable {
             if (jugadores.get(arrayOrden[cont_orden]).getTanque().getBala().verificaBalas()){
                 cargarEmpate(event);
             }
-            //les pasamos las coordenadas verdaderas al método, que representan en el plano XY
         }
         else{
             JOptionPane.showMessageDialog(null, "Tiro fuera de límite, intente de nuevo.");
@@ -340,14 +332,14 @@ public class JuegoController implements Initializable {
                 }   
                  
                 altMax=0;//se reinicia la altura máxima para el siguiente jugador.
-                arrayBalasImagen.get(tipBala).get(jug).setVisible(false);
+                arrayBalasImagen.get(tipBala).get(arrayOrden[jug]).setVisible(false);
             }else{
                 altMax=0;//se reinicia la altura máxima para el siguiente jugador.
-                arrayBalasImagen.get(tipBala).get(jug).setVisible(false);
+                arrayBalasImagen.get(tipBala).get(arrayOrden[jug]).setVisible(false);
                 //se reinicia la posicion de la bala, en la del tanque
-                arrayBalasImagen.get(tipBala).get(jug).setX(xI);
-                arrayBalasImagen.get(tipBala).get(jug).setY(465-yI);//el 465 significa la posicion real en la matriz, ya que esta es invertida
-                mapa.destruir((int)Math.round(x),(int)Math.round(464-y), (int)Math.round(jugadores.get(cont_orden).getTanque().getDamageBala()[tipBala]/3));
+                arrayBalasImagen.get(tipBala).get(arrayOrden[jug]).setX(xI);
+                arrayBalasImagen.get(tipBala).get(arrayOrden[jug]).setY(465-yI);//el 465 significa la posicion real en la matriz, ya que esta es invertida
+                mapa.destruir((int)Math.round(x),(int)Math.round(464-y), (int)Math.round(jugadores.get(arrayOrden[jug]).getTanque().getDamageBala()[tipBala]/3));
                 
                 posTank(true);
                 setBoard();
