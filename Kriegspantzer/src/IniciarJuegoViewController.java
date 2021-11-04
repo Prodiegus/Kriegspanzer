@@ -45,7 +45,7 @@ public class IniciarJuegoViewController implements Initializable {
     @FXML
     private boolean handleIngresar(ActionEvent event) {
         //por ahora se generan las posiciones aleatorias de los tanques
-        int valorDado = (int) Math.floor(Math.random()*100);
+        int valorDado = (int) Math.floor(Math.random()*700);
         int[] pos={valorDado,10};
         boolean flag=true;
         for(int i=0;i<jugadores.size();i++){

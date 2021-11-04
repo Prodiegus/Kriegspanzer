@@ -71,9 +71,9 @@ public class Bala{
         return posBala;
     }
     public void setCantBalas(int posicion) {
-        System.out.println("antes: "+this.cantBalas[0]+","+this.cantBalas[1]+","+this.cantBalas[2]);
+        //System.out.println("antes: "+this.cantBalas[0]+","+this.cantBalas[1]+","+this.cantBalas[2]);
         this.cantBalas[posicion] = cantBalas[posicion]-1;
-        System.out.println("nuevas municiones para este: "+this.cantBalas[0]+","+this.cantBalas[1]+","+this.cantBalas[2]);
+        //System.out.println("nuevas municiones para este: "+this.cantBalas[0]+","+this.cantBalas[1]+","+this.cantBalas[2]);
     }
     public int[] getTipoBalas() {
         return this.cantBalas;
