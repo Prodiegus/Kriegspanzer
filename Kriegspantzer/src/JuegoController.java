@@ -187,7 +187,6 @@ public class JuegoController implements Initializable {
             if (jugadores.get(arrayOrden[cont_orden]).getTanque().getBala().verificaBalas()){
                 cargarEmpate(event);
             }
-            //les pasamos las coordenadas verdaderas al método, que representan en el plano XY
         }
         else{
             JOptionPane.showMessageDialog(null, "Tiro fuera de límite, intente de nuevo.");
