@@ -51,6 +51,10 @@
     -fx-text-inner-color: #EEEEEE;
     -fx-background-color: #008080;
 }
+.backButton1{
+    -fx-text-inner-color: #000000;
+    -fx-background-color: #ffffff;
+}
 .backButton2{
     -fx-text-decoration-color: #EEEEEE;
     -fx-text-inner-color: #EEEEEE;

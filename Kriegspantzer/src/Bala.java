@@ -62,23 +62,30 @@ public class Bala{
             posY=465-posBala[1]+(velocidad*Math.sin(Math.toRadians(angulo))*tFinal)-( 0.5*9.81*(tFinal)*(tFinal)) ;
             return (posY>(465-limDer)? 0:1);//si la altura pasa del limite retorna 0
         }
-        
     }
     
     public void setPosBala(int[] posBala) {
         this.posBala = posBala;
     }
-    
     public int[] getPosBala() {
         return posBala;
     }
-    
-    public void setCantBalas( int posicion) {
+    public void setCantBalas(int posicion) {
+        //System.out.println("antes: "+this.cantBalas[0]+","+this.cantBalas[1]+","+this.cantBalas[2]);
         this.cantBalas[posicion] = cantBalas[posicion]-1;
+        //System.out.println("nuevas municiones para este: "+this.cantBalas[0]+","+this.cantBalas[1]+","+this.cantBalas[2]);
     }
-
     public int[] getTipoBalas() {
-        return cantBalas;
+        return this.cantBalas;
+    }
+    public boolean verificaBalas(){ //metodo que retorna true si no existen balas
+        return (this.cantBalas[0]==0 && this.cantBalas[1]==0 && this.cantBalas[2]==0);
+    }
+    
+    public void actualizaMuniciones(int[] balas){
+        this.cantBalas[0]=balas[0];
+        this.cantBalas[1]=balas[1];
+        this.cantBalas[2]=balas[2];
     }
     
 }

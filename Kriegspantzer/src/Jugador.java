@@ -1,15 +1,14 @@
 
-import java.util.ArrayList;
-
 public class Jugador{
     private String nombre;
     private boolean estado;
-    private ArrayList<Tanque> tanques= new ArrayList<Tanque>();
     private Tanque tanque;
+    private boolean IA;
      
-    public Jugador(String nombre){
+    public Jugador(String nombre, boolean IA){
         this.nombre = nombre;
         this.estado = true;
+        this.IA=IA;
     }
     //metodo que hará el lanzamiento de la bala en la clase Bala
     public boolean lanzamiento(double velocidad, double angulo, Mapa mapa){
@@ -20,6 +19,9 @@ public class Jugador{
         return false;
     }
 
+    public boolean isIA() {
+        return IA;
+    }
 
     public void setTanque(Tanque tanque){
         this.tanque = tanque;
@@ -35,14 +37,6 @@ public class Jugador{
     
     public boolean cheekTanque(){
         return estado;
-    }
-    
-    public ArrayList<Tanque> getTanques() {
-        return tanques;
-    }
-
-    public void setTanques(Tanque tank) {
-        this.tanques.add(tank);
     }
     
 }

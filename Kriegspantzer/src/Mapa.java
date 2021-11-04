@@ -24,15 +24,15 @@ public class Mapa implements Serializable{
     public void fillAire(int x, int y) {
         mapeo[x][y] = Area.AIRE;
     }
-    /**@return mapeo[x][y] == Area.SOLIDO si la coordenada actual es de tipo sólido*/
+    /**@return Si la coordenada actual es de tipo sólido retorna verdadero*/
     public boolean comprobarCoordenadaSolido(int x, int y) {
         return mapeo[x][y] == Area.SOLIDO;
     }
-    /**@return return mapeo[x][y] == Area.TANQUE comprueba si la coordenada actual es de tipo tanque*/
+    /**@return Si la coordenada actual es de tipo tanque retorna verdadero*/
     public boolean comprobarCoordenadaTanque(int x, int y) {
         return mapeo[x][y] == Area.TANQUE;
     }
-    /**@return mapeo[x][y] == Area.AIRE si la coordenada actual es de tipo aire*/
+    /**@return Si la coordenada actual es de tipo aire retorna verdadero*/
     public boolean comprobarCoordenadaAire(int x, int y) {
         return mapeo[x][y] == Area.AIRE;
     }
@@ -67,7 +67,7 @@ public class Mapa implements Serializable{
     //le da el valor de TANQUE a la posicion entregada
     public void addTank(int x, int y){
         for(int i=x; i<x+20;i++){
-            for(int j=y; j<y+11;j++){
+            for(int j=y; j<y+10;j++){
                 mapeo[i][j] = Area.TANQUE;
             }
         }
@@ -76,7 +76,7 @@ public class Mapa implements Serializable{
     //le da el valor de Aire a la posicion entregada
     public void removeTank(int x, int y){
         for(int i=x; i<x+20;i++){
-            for(int j=y; j<y+11;j++){
+            for(int j=y; j<y+10;j++){
                 mapeo[i][j] = Area.AIRE;
             }
         }

@@ -33,33 +33,32 @@ public class Tanque {
         int [] pos = {x, y};
         posTanque = pos;
     }
-    
     public void setBala(Bala bala){
         this.bala=bala;
-    
     }
-
     public Bala getBala() {
         return bala;
     }
-
     public void setVida(double vida) {
         this.vida = vida;
     }
-
     public double getVida() {
         return vida;
-    }
-    
-    public void setBalasDisp(String nombre, int tipBala) {
-        this.balasDisp[tipBala] = nombre;
-    }
-
-    public String[] getBalasDisp() {
-        return balasDisp;
     }
     public double[] getDamageBala() {
         return damageBala;
     }
+    public void setBalasDisp(String nombre, int tipBala) {
+        this.balasDisp[tipBala] = nombre;
+    }
+    public void actMunicionesString(int[] balas){
+        this.balasDisp[0]="Proyectil 60mm: "+balas[0]+" balas";
+        this.balasDisp[1]="Proyectil 105mm: "+balas[1]+" balas";
+        this.balasDisp[2]="Proyectil Perforador: "+balas[2]+" balas";
+    }
+    public String[] getBalasDisp() {
+        return balasDisp;
+    }
+   
 }
 
