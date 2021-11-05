@@ -350,9 +350,6 @@ public class JuegoController implements Initializable {
 
     //le asigna la hoja de estilos al fondo del panel y la da la clase con la imagen del mapa
     public void setMap(Mapa mapa){
-        //mapaPanel.getStylesheets().clear();
-        //mapaPanel.getStylesheets().add("Estilos.css");
-       // mapaPanel.getStyleClass().add("map"+(mapa.getId()));
         this.mapa = mapa;
         setBoard();
     }
