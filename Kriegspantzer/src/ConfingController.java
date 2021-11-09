@@ -1,5 +1,6 @@
 import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.ResourceBundle;
 
 import javax.swing.JOptionPane;
@@ -29,6 +30,7 @@ public class ConfingController implements Initializable {
     int munPe;
     int mun105;
     int cantJ;
+    private ArrayList<Jugador> jugadores = new ArrayList<Jugador>();
     
     @FXML
     private void aceptar(ActionEvent event) {
@@ -38,7 +40,7 @@ public class ConfingController implements Initializable {
         munPe = Integer.parseInt(balasPe.getText().trim());
         mun105 = Integer.parseInt(balas105.getText().trim());
         cantJ = Integer.parseInt(cantJug.getText().trim());
-        if( (panAncho  <=1600 ) && (panLargo <=1600 ) && (cantJ>=0 && cantJ<=6) ){
+        if( (panAncho  <=1600 ) && (panLargo <=1600 ) && (cantJ>=2 && cantJ<=6) ){
             if ( (mun60>= 0) && (mun60 <= 30) && (mun105>= 0) && (mun105 <= 30) && (munPe>= 0) && (munPe <= 100) ){
                 try {
                     FXMLLoader loader =new FXMLLoader(getClass().getResource("IniciarJuegoView.fxml"));
@@ -48,7 +50,7 @@ public class ConfingController implements Initializable {
                     Stage stage = new Stage();
 
                     IniciarJuegoViewController controller = loader.getController();
-
+                    
                     String[] colors = {"Azul", "Verde", "Amarillo", "Rojo", "Morado", "Naranja", "Negro"};
 
                     controller.setBoxes(colors);
@@ -56,6 +58,7 @@ public class ConfingController implements Initializable {
                     controller.setMap();
                     controller.setCantBalasIni(mun60,munPe,mun105); //falta ver donde validar
                     controller.setCantJug(cantJ);
+                    controller.recuperaJugadores(jugadores);
                     stage.setResizable(true);
                     stage.setTitle("Kriegspanzer Game");
                     stage.getIcons().add(new Image(getClass().getResourceAsStream("img/icon.png")));
@@ -75,6 +78,9 @@ public class ConfingController implements Initializable {
             }
     }
     
+    public void guardaJugadores(ArrayList<Jugador> jug){
+        this.jugadores=jug;
+    }
     //closer
     @FXML private void close(ActionEvent event) {
         Node source = (Node) event.getSource();
