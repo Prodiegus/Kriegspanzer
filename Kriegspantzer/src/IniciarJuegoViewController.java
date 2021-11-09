@@ -45,39 +45,46 @@ public class IniciarJuegoViewController implements Initializable {
     @FXML
     private boolean handleIngresar(ActionEvent event) {
         //por ahora se generan las posiciones aleatorias de los tanques
-        int valorDado = (int) Math.floor(Math.random()*700);
-        int[] pos={valorDado,10};
-        boolean flag=true;
-        for(int i=0;i<jugadores.size();i++){
-            if(cJugador.getValue().equals(jugadores.get(i).getTanque().getColor())){
-                flag=false;
+        if (jugadores.size()<cantJug){//mientras la cantidad de jugadores ingresados sea menor a la maxima puede ingresar más
+            int valorDado = (int) Math.floor(Math.random()*700);
+            int[] pos={valorDado,10};
+            boolean flag=true;
+            for(int i=0;i<jugadores.size();i++){
+                if(cJugador.getValue().equals(jugadores.get(i).getTanque().getColor())){
+                    flag=false;
+                }
             }
-        }
-        if(flag){
-            Jugador jActual =  new Jugador(nJugador.getText().trim(),IA.isSelected());
-            Bala bActual = new Bala(pos);
-            Tanque tActual =  new Tanque(cJugador.getValue(), pos,bActual);
-            jActual.setTanque(tActual);
-            jugadores.add(jActual);
-            
-            this.cJugador.getItems().removeAll(this.cJugador.getItems());
-            this.cJugador.getItems().addAll(colors);
-            cJugador.setPromptText("Color Tanque "+(jugadores.size()+1)); 
-            nJugador.setText(null);
-            nJugador.setPromptText("- Nombre jugador "+(jugadores.size()+1)+" - ");
-            IA.setSelected(false);
+            if(flag){
+                Jugador jActual =  new Jugador(nJugador.getText().trim(),IA.isSelected());
+                Bala bActual = new Bala(pos);
+                Tanque tActual =  new Tanque(cJugador.getValue(), pos,bActual);
+                jActual.setTanque(tActual);
+                jugadores.add(jActual);
+
+                this.cJugador.getItems().removeAll(this.cJugador.getItems());
+                this.cJugador.getItems().addAll(colors);
+                cJugador.setPromptText("Color Tanque "+(jugadores.size()+1)); 
+                nJugador.setText(null);
+                nJugador.setPromptText("- Nombre jugador "+(jugadores.size()+1)+" - ");
+                IA.setSelected(false);
+            }
+            else{
+                this.cJugador.getItems().removeAll(this.cJugador.getItems());
+                this.cJugador.getItems().addAll(colors);
+                cJugador.setPromptText("Color Tanque "+(jugadores.size()+1)); 
+                nJugador.setPromptText("- Nombre jugador "+(jugadores.size()+1)+" - ");
+                IA.setSelected(false);
+
+                JOptionPane.showMessageDialog(null, "Ya existe un tanque con ese color.");
+                return false;
+            }
+            return true;
         }
         else{
-            this.cJugador.getItems().removeAll(this.cJugador.getItems());
-            this.cJugador.getItems().addAll(colors);
-            cJugador.setPromptText("Color Tanque "+(jugadores.size()+1)); 
-            nJugador.setPromptText("- Nombre jugador "+(jugadores.size()+1)+" - ");
-            IA.setSelected(false);
-            
-            JOptionPane.showMessageDialog(null, "Ya existe un tanque con ese color.");
+            JOptionPane.showMessageDialog(null, "No puede agregar más jugadores, aprete jugar o reinicie configuraciones.");
             return false;
         }
-        return true;
+        
     }
     
     @FXML
@@ -133,7 +140,7 @@ public class IniciarJuegoViewController implements Initializable {
             close(event);
 
             controller.setBoardSize(this.ancho*0.915106117, this.alto*0.75732899);//escala de proporcionalidada canvas/ventana
-            controller.setDimesiones(this.alto*0.915106117, this.ancho*0.75732899);//escala de proporcionalidada canvas/ventana
+            controller.setScale();
             controller.setMap(mapa);
             controller.ordenTurnos(jugadores);
             controller.setJugadores(jugadores);
