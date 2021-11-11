@@ -1,5 +1,6 @@
 import java.util.ArrayList;
 import java.util.Random;
+import java.util.concurrent.TimeUnit;
 
 public class IA {
     private int velocidad;
@@ -38,10 +39,10 @@ public class IA {
     }
 
     public int getAngulo() {
-        return this.getAngulo();
+        return this.angulo;
     }
 
-    public static void main(String[] args){
+    public static void main(String[] args) throws InterruptedException{
         ArrayList<Jugador> jugadores = new ArrayList<Jugador>();
         int valorDado = (int) Math.floor(Math.random()*700);
         int[] pos1={valorDado,10};
@@ -55,9 +56,9 @@ public class IA {
         int[] pos2={valorDado,10};
         Jugador j2 =  new Jugador("pedro",true);
         Bala b2 = new Bala(pos2);
-        Tanque t2 =  new Tanque("tierra", pos2,b2);
+        Tanque t2 =  new Tanque("azul", pos2,b2);
         t2.setPos(pos2[0], pos2[1]);
-        j1.setTanque(t2);
+        j2.setTanque(t2);
         jugadores.add(j2);
         IA ia = new IA(jugadores);
         int[] disparo = jugadores.get(0).getTanque().getBala().getPosBala();
@@ -67,11 +68,13 @@ public class IA {
         int velocidad = ia.getVelocidad();
         int angulo = ia.getAngulo();
         int[] objetivo = jugadores.get(ia.objetivo).getTanque().getPos();
+        System.out.println("Velocidad: "+velocidad+" Angulo: "+angulo);
         while(disparo!=objetivo){
             disparo[0] = (int)(xi+velocidad*Math.cos(Math.toRadians(angulo))*tiempo);
             disparo[1] = (int)(yi+velocidad*Math.sin(Math.toRadians(angulo))*tiempo-(0.5*ia.gravedad*(tiempo*tiempo)));
             
             System.out.println("("+disparo[0]+", "+disparo[1]+") to ("+objetivo[0]+", "+objetivo[1]+")");
+            TimeUnit.SECONDS.sleep(1);
             tiempo++;
         } 
     }
