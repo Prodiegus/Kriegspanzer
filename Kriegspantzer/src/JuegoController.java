@@ -91,16 +91,16 @@ public class JuegoController implements Initializable {
             MediaView mediaView = new MediaView(mediaPlayer);
             mediaView.getClip(); 
             //las posiciones que se ingresan de "y" están al revés, entonces debemos modificarlas al momento de pasarlas al moverBala
-            int [] posBala=jugadores.get(arrayOrden[cont_orden]).getTanque().getBala().getPosBala();
+            int [] posBala=jugadores.get(turno).getTanque().getBala().getPosBala();
             
-            if ( jugadores.get(arrayOrden[cont_orden]).getTanque().getBalasDisp()[0].equals(tBalas.getValue()) ){ //60mm
-                if(jugadores.get(arrayOrden[cont_orden]).getTanque().getBala().getTipoBalas()[0] != 0){
+            if ( jugadores.get(turno).getTanque().getBalasDisp()[0].equals(tBalas.getValue()) ){ //60mm
+                if(jugadores.get(turno).getTanque().getBala().getTipoBalas()[0] != 0){
                     
                     //System.out.println(jugadores.get(arrayOrden[cont_orden]).getName());
-                    jugadores.get(arrayOrden[cont_orden]).getTanque().getBala().setCantBalas(0);
-                    jugadores.get(arrayOrden[cont_orden]).getTanque().setBalasDisp(("Proyectil 60mm: "+jugadores.get(arrayOrden[cont_orden]).getTanque().getBala().getTipoBalas()[0]+ " balas"), 0);
+                    jugadores.get(turno).getTanque().getBala().setCantBalas(0);
+                    jugadores.get(turno).getTanque().setBalasDisp(("Proyectil 60mm: "+jugadores.get(turno).getTanque().getBala().getTipoBalas()[0]+ " balas"), 0);
                     
-                    arrayBalasImagen.get(0).get(arrayOrden[cont_orden]).setVisible(true);
+                    arrayBalasImagen.get(0).get(turno).setVisible(true);
                     //se le suman valores a las posiciones para que salga desde arriba y al medio del tanque y no desde una esquina
                     moverBala(posBala[0]+(10*altoScale),(470*anchoScale-posBala[1]),posBala[0]+(10*altoScale),(470*anchoScale-posBala[1]),Integer.parseInt(ang.getText()),Integer.parseInt(vel.getText()),tiempo,cont_orden,tGanador, event,0);
                      
@@ -122,12 +122,12 @@ public class JuegoController implements Initializable {
                 if(jugadores.get(turno).getTanque().getBala().getTipoBalas()[1] != 0){
                     
                     //System.out.println(jugadores.get(arrayOrden[cont_orden]).getName());
-                    jugadores.get(arrayOrden[cont_orden]).getTanque().getBala().setCantBalas(1);
-                    jugadores.get(arrayOrden[cont_orden]).getTanque().setBalasDisp(("Proyectil 105mm: "+jugadores.get(arrayOrden[cont_orden]).getTanque().getBala().getTipoBalas()[1]+ " balas"), 1);
+                    jugadores.get(turno).getTanque().getBala().setCantBalas(1);
+                    jugadores.get(turno).getTanque().setBalasDisp(("Proyectil 105mm: "+jugadores.get(turno).getTanque().getBala().getTipoBalas()[1]+ " balas"), 1);
                     
                     arrayBalasImagen.get(1).get(turno).setVisible(true);
                     //se le suman valores a las posiciones para que salga desde arriba y al medio del tanque y no desde una esquina
-                    moverBala(posBala[0]+(10*altoScale),(470*anchoScale-posBala[1]),posBala[0]+(10*altoScale),(470*anchoScale-posBala[1]),Integer.parseInt(ang.getText()),Integer.parseInt(vel.getText()),tiempo,cont_orden,tGanador, event,0);
+                    moverBala(posBala[0]+10,(470-posBala[1]),posBala[0]+10,(470-posBala[1]),Integer.parseInt(ang.getText()),Integer.parseInt(vel.getText()),tiempo,cont_orden,tGanador, event,1);
                     
                     //actualizamos los turnos
                     cont_orden+=1;
@@ -147,13 +147,13 @@ public class JuegoController implements Initializable {
                 if(jugadores.get(turno).getTanque().getBala().getTipoBalas()[2] != 0){
                     
                     //System.out.println(jugadores.get(arrayOrden[cont_orden]).getName());
-                    jugadores.get(arrayOrden[cont_orden]).getTanque().getBala().setCantBalas(2);
-                    jugadores.get(arrayOrden[cont_orden]).getTanque().setBalasDisp(("Proyectil Perforador: "+jugadores.get(arrayOrden[cont_orden]).getTanque().getBala().getTipoBalas()[2]+ " balas"), 2);
+                    jugadores.get(turno).getTanque().getBala().setCantBalas(2);
+                    jugadores.get(turno).getTanque().setBalasDisp(("Proyectil Perforador: "+jugadores.get(turno).getTanque().getBala().getTipoBalas()[2]+ " balas"), 2);
                     
                     arrayBalasImagen.get(2).get(turno).setVisible(true);
                     //se le suman valores a las posiciones para que salga desde arriba y al medio del tanque y no desde una esquina
-                    moverBala(posBala[0]+(10*altoScale),(470*anchoScale-posBala[1]),posBala[0]+(10*altoScale),(470*anchoScale-posBala[1]),Integer.parseInt(ang.getText()),Integer.parseInt(vel.getText()),tiempo,cont_orden,tGanador, event,0);
-                                      
+                    moverBala(posBala[0]+10,(470-posBala[1]),posBala[0]+10,(470-posBala[1]),Integer.parseInt(ang.getText()),Integer.parseInt(vel.getText()),tiempo,cont_orden,tGanador, event,2);
+                  
                     //actualizamos los turnos
                     cont_orden+=1;
                     if (cont_orden == arrayOrden.length){
@@ -268,14 +268,14 @@ public class JuegoController implements Initializable {
                 Se setea los labels que van mostrando la distancia y altura máxima en cada instante
             */
             if (x-xI >=0 ){
-                distanciaPanel.setText("Distancia máxima: "+ Math.round( (x-xI)*100.0)/100.0);
+                distanciaPanel.setText("Distancia máxima: "+ Math.round( altoScale*(x-xI)*100.0)/100.0);
             }
             else{
-                distanciaPanel.setText("Distancia máxima: "+ Math.round( (xI-x)*100.0)/100.0);
+                distanciaPanel.setText("Distancia máxima: "+ Math.round( altoScale*(xI-x)*100.0)/100.0);
             }
             if (altMax<y){
                 altMax=y;
-                alturaPanel.setText("Altura máxima: "+Math.round( altMax*100.0)/100.0);
+                alturaPanel.setText("Altura máxima: "+Math.round( anchoScale*altMax*100.0)/100.0);
             } 
             /*
                 Antes de inicar el proceso de recursión debemos verificar si las coordenadas que nos están entregando
@@ -325,11 +325,9 @@ public class JuegoController implements Initializable {
                 }   
                  
                 altMax=0;//se reinicia la altura máxima para el siguiente jugador.
-                System.out.println("esconde la bala de:"+jugadores.get(arrayOrden[jug]).getName());
                 arrayBalasImagen.get(tipBala).get(arrayOrden[jug]).setVisible(false);
             }else{
                 altMax=0;//se reinicia la altura máxima para el siguiente jugador.
-                System.out.println("esconde la bala de:"+jugadores.get(arrayOrden[jug]).getName());
                 arrayBalasImagen.get(tipBala).get(arrayOrden[jug]).setVisible(false);
                 //se reinicia la posicion de la bala, en la del tanque
                 arrayBalasImagen.get(tipBala).get(arrayOrden[jug]).setX(xI);
