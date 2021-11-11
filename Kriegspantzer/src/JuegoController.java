@@ -2,7 +2,6 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.ResourceBundle;
 import java.util.concurrent.TimeUnit;
 
@@ -61,6 +60,7 @@ public class JuegoController implements Initializable {
     double anchoScale;//la division de ambas alturas de una proporcion de la ventana actual.    
     double altMax=0;
     double disMax=0;
+    boolean disparo = false; //mientras la bala esta en aire no se puede disparar
     String[] balasDisp = { "Proyectil 60mm: 3 balas","Proyectil 105mm: 3 balas", "Proyectil Perforador: 10 balas"};
     
     
@@ -78,7 +78,7 @@ public class JuegoController implements Initializable {
     }
     @FXML private void pressShoot(ActionEvent event) throws InterruptedException {
         /* Al presionar el botón de disparo lo primero que debemos hacer es verificar
-           qué jugador es, para así poder hacer los lanzamientos por separados
+        qué jugador es, para así poder hacer los lanzamientos por separados
         */
         int turno=arrayOrden[cont_orden];
         double tiempo=0;
@@ -93,18 +93,18 @@ public class JuegoController implements Initializable {
             mediaView.getClip();
             //las posiciones que se ingresan de "y" están al revés, entonces debemos modificarlas al momento de pasarlas al moverBala
             int [] posBala=jugadores.get(turno).getTanque().getBala().getPosBala();
-            
+                
             if ( jugadores.get(turno).getTanque().getBalasDisp()[0].equals(tBalas.getValue()) ){ //60mm
                 if(jugadores.get(turno).getTanque().getBala().getTipoBalas()[0] != 0){
-                    
+                        
                     //System.out.println(jugadores.get(arrayOrden[cont_orden]).getName());
                     jugadores.get(turno).getTanque().getBala().setCantBalas(0);
                     jugadores.get(turno).getTanque().setBalasDisp(("Proyectil 60mm: "+jugadores.get(turno).getTanque().getBala().getTipoBalas()[0]+ " balas"), 0);
-                    
+                        
                     arrayBalasImagen.get(0).get(turno).setVisible(true);
                     //se le suman valores a las posiciones para que salga desde arriba y al medio del tanque y no desde una esquina
                     moverBala(posBala[0]+10,(470-posBala[1]),posBala[0]+10,(470-posBala[1]),Integer.parseInt(ang.getText()),Integer.parseInt(vel.getText()),tiempo,cont_orden,tGanador, event,0);
-                     
+                        
                     //actualizamos los turnos
                     cont_orden+=1;
                     if (cont_orden == arrayOrden.length){
@@ -121,15 +121,15 @@ public class JuegoController implements Initializable {
             }
             else if( jugadores.get(turno).getTanque().getBalasDisp()[1].equals(tBalas.getValue()) ){
                 if(jugadores.get(turno).getTanque().getBala().getTipoBalas()[1] != 0){
-                    
+                        
                     //System.out.println(jugadores.get(arrayOrden[cont_orden]).getName());
                     jugadores.get(turno).getTanque().getBala().setCantBalas(1);
                     jugadores.get(turno).getTanque().setBalasDisp(("Proyectil 105mm: "+jugadores.get(turno).getTanque().getBala().getTipoBalas()[1]+ " balas"), 1);
-                    
+                        
                     arrayBalasImagen.get(1).get(turno).setVisible(true);
                     //se le suman valores a las posiciones para que salga desde arriba y al medio del tanque y no desde una esquina
                     moverBala(posBala[0]+10,(470-posBala[1]),posBala[0]+10,(470-posBala[1]),Integer.parseInt(ang.getText()),Integer.parseInt(vel.getText()),tiempo,cont_orden,tGanador, event,1);
-                    
+                        
                     //actualizamos los turnos
                     cont_orden+=1;
                     if (cont_orden == arrayOrden.length){
@@ -150,11 +150,11 @@ public class JuegoController implements Initializable {
                     //System.out.println(jugadores.get(arrayOrden[cont_orden]).getName());
                     jugadores.get(turno).getTanque().getBala().setCantBalas(2);
                     jugadores.get(turno).getTanque().setBalasDisp(("Proyectil Perforador: "+jugadores.get(turno).getTanque().getBala().getTipoBalas()[2]+ " balas"), 2);
-                    
+                        
                     arrayBalasImagen.get(2).get(turno).setVisible(true);
                     //se le suman valores a las posiciones para que salga desde arriba y al medio del tanque y no desde una esquina
                     moverBala(posBala[0]+10,(470-posBala[1]),posBala[0]+10,(470-posBala[1]),Integer.parseInt(ang.getText()),Integer.parseInt(vel.getText()),tiempo,cont_orden,tGanador, event,2);
-                  
+                    
                     //actualizamos los turnos
                     cont_orden+=1;
                     if (cont_orden == arrayOrden.length){
@@ -166,7 +166,7 @@ public class JuegoController implements Initializable {
                     this.tBalas.getItems().addAll(jugadores.get(arrayOrden[cont_orden]).getTanque().getBalasDisp());
                 }
                 else{
-                   JOptionPane.showMessageDialog(null, "No queda de este tipo de munición"); 
+                    JOptionPane.showMessageDialog(null, "No queda de este tipo de munición"); 
                 }
             }
             else{
@@ -179,9 +179,8 @@ public class JuegoController implements Initializable {
         else{
             JOptionPane.showMessageDialog(null, "Tiro fuera de límite, intente de nuevo.");
         }
-        
-    }
-
+    }  
+    
     @FXML
     private void reset(ActionEvent event) {
         try {
