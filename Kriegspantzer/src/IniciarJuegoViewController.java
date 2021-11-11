@@ -1,4 +1,3 @@
-import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
@@ -22,7 +21,6 @@ import javafx.scene.image.Image;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-import java.util.Random;
 import javafx.scene.control.CheckBox;
 public class IniciarJuegoViewController implements Initializable {
     
@@ -107,7 +105,7 @@ public class IniciarJuegoViewController implements Initializable {
             //convertimos a Array
             Integer[] posiciones = camposX.stream().toArray(Integer[]::new);
             Arrays.sort(posiciones);
-            int x1 = foundX(posiciones);
+            //int x1 = foundX(posiciones);
             try {
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("JuegoView.fxml"));
 
