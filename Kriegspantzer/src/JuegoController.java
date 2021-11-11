@@ -68,7 +68,6 @@ public class JuegoController implements Initializable {
             posTank(true);
             //posBala();
         }
-
     }
     //closer
     @FXML private void close(ActionEvent event) {
@@ -114,8 +113,6 @@ public class JuegoController implements Initializable {
                     setJugadores(jugadores);
                     this.tBalas.getItems().removeAll(this.tBalas.getItems());
                     this.tBalas.getItems().addAll(jugadores.get(arrayOrden[cont_orden]).getTanque().getBalasDisp());
-                    //System.out.println("balas de "+jugadores.get(arrayOrden[cont_orden]).getName()+":"+jugadores.get(arrayOrden[cont_orden]).getTanque().getBalasDisp()[0]+","+jugadores.get(arrayOrden[cont_orden]).getTanque().getBalasDisp()[1]+","+jugadores.get(arrayOrden[cont_orden]).getTanque().getBalasDisp()[2] );
-                    //System.out.println("");
                 }
                 else{
                     JOptionPane.showMessageDialog(null, "No queda de este tipo de munición");
@@ -141,8 +138,6 @@ public class JuegoController implements Initializable {
                     setJugadores(jugadores);
                     this.tBalas.getItems().removeAll(this.tBalas.getItems());
                     this.tBalas.getItems().addAll(jugadores.get(arrayOrden[cont_orden]).getTanque().getBalasDisp());
-                    //System.out.println("balas de "+jugadores.get(arrayOrden[cont_orden]).getName()+":"+jugadores.get(arrayOrden[cont_orden]).getTanque().getBalasDisp()[0]+","+jugadores.get(arrayOrden[cont_orden]).getTanque().getBalasDisp()[1]+","+jugadores.get(arrayOrden[cont_orden]).getTanque().getBalasDisp()[2] );
-                    //System.out.println("");
                 }
                 else{
                     JOptionPane.showMessageDialog(null, "No queda de este tipo de munición");
@@ -168,8 +163,6 @@ public class JuegoController implements Initializable {
                     setJugadores(jugadores);
                     this.tBalas.getItems().removeAll(this.tBalas.getItems());
                     this.tBalas.getItems().addAll(jugadores.get(arrayOrden[cont_orden]).getTanque().getBalasDisp());
-                    //System.out.println("balas de "+jugadores.get(arrayOrden[cont_orden]).getName()+":"+jugadores.get(arrayOrden[cont_orden]).getTanque().getBalasDisp()[0]+","+jugadores.get(arrayOrden[cont_orden]).getTanque().getBalasDisp()[1]+","+jugadores.get(arrayOrden[cont_orden]).getTanque().getBalasDisp()[2] );
-                    //System.out.println("");
                 }
                 else{
                    JOptionPane.showMessageDialog(null, "No queda de este tipo de munición"); 
@@ -292,9 +285,9 @@ public class JuegoController implements Initializable {
             if ( (x>=0 &&  x<=733) && (y>=0) && (y>464 || mapa.comprobarCoordenadaAire((int)Math.round(x/altoScale),(int)Math.round(464-(y/anchoScale))) )){
                 //se setean las imagenes en pantalla
                 if (xI!=x){
-                    arrayBalasImagen.get(tipBala).get(jug).setX(x*altoScale);
+                    arrayBalasImagen.get(tipBala).get(arrayOrden[jug]).setX(x*altoScale);
                 }
-                arrayBalasImagen.get(tipBala).get(jug).setY((465*anchoScale)-y);//el 465 significa la posicion real en la matriz, ya que esta es invertida
+                arrayBalasImagen.get(tipBala).get(arrayOrden[jug]).setY((465-y)*anchoScale);//el 465 significa la posicion real en la matriz, ya que esta es invertida
                 try{//Se realiza la recursión hasta llegar al caso base 
                     moverBala(xI,yI,(xI+velocidad*Math.cos(Math.toRadians(angulo))*tiempo),(yI+velocidad*Math.sin(Math.toRadians(angulo))*tiempo-(0.5*9.81*(tiempo*tiempo))),angulo,velocidad,(tiempo+0.05),jug,tGanador, event,tipBala);      
                     
@@ -332,9 +325,11 @@ public class JuegoController implements Initializable {
                 }   
                  
                 altMax=0;//se reinicia la altura máxima para el siguiente jugador.
+                System.out.println("esconde la bala de:"+jugadores.get(arrayOrden[jug]).getName());
                 arrayBalasImagen.get(tipBala).get(arrayOrden[jug]).setVisible(false);
             }else{
                 altMax=0;//se reinicia la altura máxima para el siguiente jugador.
+                System.out.println("esconde la bala de:"+jugadores.get(arrayOrden[jug]).getName());
                 arrayBalasImagen.get(tipBala).get(arrayOrden[jug]).setVisible(false);
                 //se reinicia la posicion de la bala, en la del tanque
                 arrayBalasImagen.get(tipBala).get(arrayOrden[jug]).setX(xI);
@@ -360,8 +355,9 @@ public class JuegoController implements Initializable {
         this.altoScale = board.getWidth()/mapaPanel.getPrefWidth();
         this.anchoScale = board.getHeight()/mapaPanel.getPrefHeight();
     }
+    
     public void setBoard(){
-       // a la hora de recorrer el ciclo se multiplica por sus escalas los valores
+        // a la hora de recorrer el ciclo se multiplica por sus escalas los valores
         GraphicsContext gc = board.getGraphicsContext2D();
         gc.setFill(Color.valueOf("#008080"));
         Mapa.Area[][] mapeo = mapa.getMapeo();
@@ -409,7 +405,7 @@ public class JuegoController implements Initializable {
             this.tBalas.getItems().removeAll(this.tBalas.getItems());
             this.tBalas.getItems().addAll(jugadores.get(arrayOrden[0]).getTanque().getBalasDisp() );
             }
-    }  
+    }
     //se añade las imagenes a nuestro cuadro
     public void addViews(){
         //Aqui agregamos un track de musica para escuchar durante el juego
@@ -474,18 +470,16 @@ public class JuegoController implements Initializable {
             tanks.get(i).setX(jugadores.get(i).getTanque().getPos()[0]*altoScale);
             tanks.get(i).setY(y*anchoScale);
             jugadores.get(i).getTanque().setPos(x, y);
-            barras.get(i).setTranslateX(  jugadores.get(i).getTanque().getPos()[0]-15);
-            barras.get(i).setTranslateY( (jugadores.get(i).getTanque().getPos()[1])-25);
+            barras.get(i).setTranslateX( (jugadores.get(i).getTanque().getPos()[0]-15)*altoScale ); //reposiciono la barras con su respectiba escala
+            barras.get(i).setTranslateY( (jugadores.get(i).getTanque().getPos()[1]-25)*anchoScale );//reposiciono la barras con su respectiba escala
             mapa.addTank(x, y);
             //se setean los tanques con el pocisionamiento respectivo y se multiplica con su reescalado.
-            
         }
         
     }
     public void setBoardSize(double alto, double ancho){
         this.board.setWidth(alto);
         this.board.setHeight(ancho);
-
     }
     //posiciona las balas incialmente arriba de los tanques
     public void  posBarras(){
@@ -494,14 +488,13 @@ public class JuegoController implements Initializable {
             barras.add(new ProgressBar(1));
             barras.get(i).setStyle("-fx-accent:#5faf5f");
             barras.get(i).setVisible(true);
-            barras.get(i).setTranslateX(  jugadores.get(i).getTanque().getPos()[0]-15);
-            barras.get(i).setTranslateY( (jugadores.get(i).getTanque().getPos()[1])-25);
+            barras.get(i).setTranslateX( (jugadores.get(i).getTanque().getPos()[0]-15)*altoScale );
+            barras.get(i).setTranslateY( (jugadores.get(i).getTanque().getPos()[1]-25)*anchoScale );
             barras.get(i).setProgress(1);
             barras.get(i).setPrefSize(60, 10);
             mapaPanel.getChildren().add(barras.get(i));
         }
     }
-    
 
     public void posBala(){//El metodo "posBala" posicionara las balas en "mapaPanel"
        for (int i=0; i<jugadores.size();i++){//Se utiliza el mismo metodo anterior para posicionar las balas.

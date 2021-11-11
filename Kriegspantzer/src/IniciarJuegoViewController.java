@@ -45,39 +45,30 @@ public class IniciarJuegoViewController implements Initializable {
     @FXML
     private boolean handleIngresar(ActionEvent event) {
         //por ahora se generan las posiciones aleatorias de los tanques
-        int valorDado = (int) Math.floor(Math.random()*700);
-        int[] pos={valorDado,10};
-        boolean flag=true;
-        for(int i=0;i<jugadores.size();i++){
-            if(cJugador.getValue().equals(jugadores.get(i).getTanque().getColor())){
-                flag=false;
-            }
-        }
-        if(flag){
+        if (jugadores.size()<cantJug){//mientras la cantidad de jugadores ingresados sea menor a la maxima puede ingresar más
+            int valorDado = (int) Math.floor(Math.random()*700);
+            int[] pos={valorDado,10};
+            String color=cJugador.getValue();
             Jugador jActual =  new Jugador(nJugador.getText().trim(),IA.isSelected());
             Bala bActual = new Bala(pos);
-            Tanque tActual =  new Tanque(cJugador.getValue(), pos,bActual);
+            Tanque tActual =  new Tanque(color, pos,bActual);
             jActual.setTanque(tActual);
             jugadores.add(jActual);
-            
+
             this.cJugador.getItems().removeAll(this.cJugador.getItems());
-            this.cJugador.getItems().addAll(colors);
+            this.cJugador.getItems().addAll(setColors(color));
             cJugador.setPromptText("Color Tanque "+(jugadores.size()+1)); 
             nJugador.setText(null);
             nJugador.setPromptText("- Nombre jugador "+(jugadores.size()+1)+" - ");
             IA.setSelected(false);
+           
+            return true;
         }
         else{
-            this.cJugador.getItems().removeAll(this.cJugador.getItems());
-            this.cJugador.getItems().addAll(colors);
-            cJugador.setPromptText("Color Tanque "+(jugadores.size()+1)); 
-            nJugador.setPromptText("- Nombre jugador "+(jugadores.size()+1)+" - ");
-            IA.setSelected(false);
-            
-            JOptionPane.showMessageDialog(null, "Ya existe un tanque con ese color.");
+            JOptionPane.showMessageDialog(null, "No puede agregar más jugadores, aprete jugar o reinicie configuraciones.");
             return false;
         }
-        return true;
+        
     }
     
     @FXML
@@ -92,60 +83,69 @@ public class IniciarJuegoViewController implements Initializable {
          * */
 
         //primero cargamos el mapa para ver los campos
-        Serializador serializador = new Serializador();
-        try {
-            mapa = serializador.cargarDataBase(map);
-        } catch (IOException e) {
-            JOptionPane.showMessageDialog(null, "ERROR: 004\nno se a podido cargar el mapa");
+        
+        if(jugadores.size() < 2){
+            JOptionPane.showMessageDialog(null, "Error: 006\n deben existir mínimo 2 jugadores");
+            return false;
         }
+        else{
+            Serializador serializador = new Serializador();
+            try {
+                mapa = serializador.cargarDataBase(map);
+            } catch (IOException e) {
+                JOptionPane.showMessageDialog(null, "ERROR: 004\nno se a podido cargar el mapa");
+            }
 
-        //cargamos los campos del mapa para encontrar posicion para los tanques
-        ArrayList<int[]> campos = mapa.getCampos();
+            //cargamos los campos del mapa para encontrar posicion para los tanques
+            ArrayList<int[]> campos = mapa.getCampos();
 
-        //Creamos un Array de solamente el campo x de las coordenadas
-        ArrayList<Integer> camposX = new ArrayList<Integer>();
-        for (int[] campo : campos) {
-            camposX.add(campo[0]);
+            //Creamos un Array de solamente el campo x de las coordenadas
+            ArrayList<Integer> camposX = new ArrayList<Integer>();
+            for (int[] campo : campos) {
+                camposX.add(campo[0]);
+            }
+            //convertimos a Array
+            Integer[] posiciones = camposX.stream().toArray(Integer[]::new);
+            Arrays.sort(posiciones);
+            int x1 = foundX(posiciones);
+            try {
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("JuegoView.fxml"));
+
+                Parent root = loader.load();
+                Scene scene = new Scene(root);
+                Stage stage = new Stage();
+
+                JuegoController controller = loader.getController();
+
+
+
+                stage.initModality(Modality.WINDOW_MODAL);
+                stage.setHeight(alto);
+                stage.setWidth(ancho);
+                stage.setResizable(true);
+                stage.setTitle("Kiegspanzer Game");
+                stage.getIcons().add(new Image(getClass().getResourceAsStream("img/icon.png")));
+                stage.setScene(scene);
+                stage.show();
+                close(event);
+
+                controller.setBoardSize(this.ancho*0.915106117, this.alto*0.75732899);//escala de proporcionalidada canvas/ventana
+                controller.setScale();
+                controller.setMap(mapa);
+                controller.ordenTurnos(jugadores);
+                controller.setJugadores(jugadores);
+                controller.actualizaCantBalas(municiones);
+                controller.addViews();
+                controller.posTank(campos);
+                controller.posBala();
+                controller.posBarras();
+
+            } catch (IOException e) {
+                JOptionPane.showMessageDialog(null, "Error: 006\nno se a podido cargar el juego");
+            }
         }
-        //convertimos a Array
-        Integer[] posiciones = camposX.stream().toArray(Integer[]::new);
-        Arrays.sort(posiciones);
-        int x1 = foundX(posiciones);
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("JuegoView.fxml"));
-
-            Parent root = loader.load();
-            Scene scene = new Scene(root);
-            Stage stage = new Stage();
-
-            JuegoController controller = loader.getController();
-
-            
-
-            stage.initModality(Modality.WINDOW_MODAL);
-            stage.setHeight(alto);
-            stage.setWidth(ancho);
-            stage.setResizable(true);
-            stage.setTitle("Kiegspanzer Game");
-            stage.getIcons().add(new Image(getClass().getResourceAsStream("img/icon.png")));
-            stage.setScene(scene);
-            stage.show();
-            close(event);
-
-            controller.setBoardSize(this.ancho*0.915106117, this.alto*0.75732899);//escala de proporcionalidada canvas/ventana
-            controller.setScale();
-            controller.setMap(mapa);
-            controller.ordenTurnos(jugadores);
-            controller.setJugadores(jugadores);
-            controller.actualizaCantBalas(municiones);
-            controller.addViews();
-            controller.posTank();
-            controller.posBala();
-            controller.posBarras();
-
-        } catch (IOException e) {
-            JOptionPane.showMessageDialog(null, "Error: 006\nno se a podido cargar el juego");
-        }
+        
+        
         return true;
     }
     @FXML
@@ -187,7 +187,8 @@ public class IniciarJuegoViewController implements Initializable {
             Scene scene = new Scene(root);
             Stage stage = new Stage();
 
-            //ConfingController controller = loader.getController();
+            ConfingController controller = loader.getController();
+            controller.guardaJugadores(jugadores); //para que no se pierdan los jugadores creados
             
             stage.initModality(Modality.APPLICATION_MODAL);
             stage.setResizable(false);
@@ -236,7 +237,21 @@ public class IniciarJuegoViewController implements Initializable {
         this.cJugador.getItems().removeAll(this.cJugador.getItems());
         this.cJugador.getItems().addAll(colors);
     }
-
+    public void recuperaJugadores(ArrayList<Jugador> jugList){
+        this.jugadores=jugList;
+    }
+    public String[] setColors(String color){
+        String[] aux = new String[colors.length-1];
+        int cont=0;
+        for (int i=0;i<colors.length;i++) {
+            if (!colors[i].equals(color)) {//si es igual lo agrego
+                aux[cont]=this.colors[i];
+                cont++;
+            } 
+        }
+        this.colors=aux;
+        return colors;
+    }
     // Esta funcion agrega un fondo al anchorPane del mapa
     public void setMap(){
         //Creamos un sb para saber cuantos mapas hay serializados
