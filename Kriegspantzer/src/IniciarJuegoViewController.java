@@ -136,6 +136,7 @@ public class IniciarJuegoViewController implements Initializable {
                 controller.setJugadores(jugadores);
                 controller.actualizaCantBalas(municiones);
                 controller.addViews();
+                //controller.posTank(campos);
                 controller.posTank();
                 controller.posBala();
                 controller.posBarras();
