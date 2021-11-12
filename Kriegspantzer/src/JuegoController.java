@@ -179,6 +179,7 @@ public class JuegoController implements Initializable {
         else{
             JOptionPane.showMessageDialog(null, "Tiro fuera de límite, intente de nuevo.");
         }
+        
     }  
     
     @FXML
