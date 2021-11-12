@@ -112,6 +112,7 @@ public class JuegoController implements Initializable {
                     cont_orden+=1;
                     if (cont_orden == arrayOrden.length){
                         cont_orden=0;
+                        ordenTurnos(jugadores);//desordena el orden nuevamente
                     }
                     turnoPanel.setText("Turno: "+jugadores.get(cont_orden).getName());
                     setJugadores(jugadores);
@@ -141,6 +142,7 @@ public class JuegoController implements Initializable {
                     cont_orden+=1;
                     if (cont_orden == arrayOrden.length){
                         cont_orden=0;
+                        ordenTurnos(jugadores);//desordena el orden nuevamente
                     }
                     turnoPanel.setText("Turno: "+jugadores.get(arrayOrden[cont_orden]).getName()); 
                     setJugadores(jugadores);
@@ -171,6 +173,7 @@ public class JuegoController implements Initializable {
                     cont_orden+=1;
                     if (cont_orden == arrayOrden.length){
                         cont_orden=0;
+                        ordenTurnos(jugadores);//desordena el orden nuevamente
                     }
                     turnoPanel.setText("Turno: "+jugadores.get(arrayOrden[cont_orden]).getName()); 
                     setJugadores(jugadores);
@@ -189,7 +192,8 @@ public class JuegoController implements Initializable {
             else{
                 JOptionPane.showMessageDialog(null, "Debe elegir un tipo de bala");
             }
-            if (jugadores.get(arrayOrden[cont_orden]).getTanque().getBala().verificaBalas() ){
+            if(jugadores.get(arrayOrden[cont_orden]).getTanque().getBala().verificaBalas() ){
+                System.out.println("entra a cargarEmpate en esta verificacion1");
                 cargarEmpate(event);
             }
         }
@@ -206,32 +210,40 @@ public class JuegoController implements Initializable {
                 }
             }
         }
-        
-        
-    } 
+    }
     
     @FXML
     public void verIA(ActionEvent event, int cont_orden,IA ia) throws InterruptedException{
         if (jugadores.get(arrayOrden[cont_orden]).isIA()){
-            ia.calcularLanzamiento();
-            int velocidad=ia.getVelocidad();
-            int angulo=ia.getAngulo();
-            vel.setText(""+velocidad);
-            ang.setText(""+angulo);
-
-            Random rn= new Random();
-            String tipBala=jugadores.get(arrayOrden[cont_orden]).getTanque().getBalasDisp()[rn.nextInt(3)];
-            tBalas.setValue(tipBala);
-
-            try {
-                pressShoot(event);
-            } catch (InterruptedException ex) {
-                Logger.getLogger(JuegoController.class.getName()).log(Level.SEVERE, null, ex);
+            if (jugadores.get(arrayOrden[cont_orden]).getTanque().getBala().verificaBalas() ){
+                //close(event);
+                cargarEmpate(event);
             }
+            else{
+                ia.calcularLanzamiento();
+                int velocidad=ia.getVelocidad();
+                int angulo=ia.getAngulo();
+                vel.setText(""+velocidad);
+                ang.setText(""+angulo);
+
+                Random rn= new Random();
+                String tipBala=jugadores.get(arrayOrden[cont_orden]).getTanque().getBalasDisp()[rn.nextInt(3)];
+                tBalas.setValue(tipBala);
+                if(ia.calcularRango(jugadores.get(arrayOrden[cont_orden]).getTanque().getBala().getPosBala(), velocidad, angulo, mapa)){//tiro no se sale de los rangos
+                    try {
+                        pressShoot(event);
+                    } catch (InterruptedException ex) {
+                        Logger.getLogger(JuegoController.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                }
+                else{
+                    verIA(event,cont_orden,ia);
+                }
+                
+            }
+            
         }
     }
-               
-        
     
     @FXML
     private void reset(ActionEvent event) {
@@ -377,7 +389,7 @@ public class JuegoController implements Initializable {
                 
                 altMax=0;//se reinicia la altura máxima para el siguiente jugador.
                 arrayBalasImagen.get(tipBala).get(arrayOrden[jug]).setVisible(false);
-                ia = new IA(jugadores);
+                
                 
                 try {
                     TimeUnit.SECONDS.sleep(1);
@@ -388,10 +400,18 @@ public class JuegoController implements Initializable {
                 if (aux == arrayOrden.length){
                     aux=0;
                 }
-                try {
-                    verIA(event,aux,ia);
-                } catch (InterruptedException ex) {
-                    Logger.getLogger(JuegoController.class.getName()).log(Level.SEVERE, null, ex);
+                if(jugadores.get(arrayOrden[aux]).getTanque().getBala().verificaBalas() ){
+                    System.out.println("entra a cargarEmpate en moverBala");
+                    close(event);
+                    cargarEmpate(event);
+                }
+                else{
+                    ia = new IA(jugadores);
+                    try {
+                        verIA(event,aux,ia);
+                    } catch (InterruptedException ex) {
+                        Logger.getLogger(JuegoController.class.getName()).log(Level.SEVERE, null, ex);
+                    }
                 }
             }else{
                 altMax=0;//se reinicia la altura máxima para el siguiente jugador.
@@ -409,15 +429,22 @@ public class JuegoController implements Initializable {
                 } catch (InterruptedException ex) {
                     Logger.getLogger(JuegoController.class.getName()).log(Level.SEVERE, null, ex);
                 }
-                ia = new IA(jugadores);
                 int aux=jug+1;
                 if (aux == arrayOrden.length){
                     aux=0;
                 }
-                try {
-                    verIA(event,aux,ia);
-                } catch (InterruptedException ex) {
-                    Logger.getLogger(JuegoController.class.getName()).log(Level.SEVERE, null, ex);
+                if(jugadores.get(arrayOrden[aux]).getTanque().getBala().verificaBalas() ){
+                    System.out.println("1 moverbala");
+                    close(event);
+                    cargarEmpate(event);
+                }
+                else{
+                    ia = new IA(jugadores);
+                    try {
+                        verIA(event,aux,ia);
+                    } catch (InterruptedException ex) {
+                        Logger.getLogger(JuegoController.class.getName()).log(Level.SEVERE, null, ex);
+                    }
                 }
             }
             

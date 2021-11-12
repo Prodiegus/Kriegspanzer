@@ -40,8 +40,8 @@ public class IA {
             this.velocidad=60;
         }
     }
-    /*
-    public boolean calcularLanzamiento(Bala bala,double velocidad, double angulo,Mapa mapa){
+    
+    public boolean calcularRango(int []posBala,double velocidad, double angulo,Mapa mapa){
         int i=0;
         double tiempo=0;
         double posX=posBala[0];
@@ -73,32 +73,27 @@ public class IA {
         if(angulo == 90){ //ocurren problemas con el angulo 90, por lo que no se requiere hacer una validacion si se sale del cuadro
             return true;
         }
-        while((pActX<732 && pActX>1)){
+        while((pActX<731 && pActX>1)){
             pActX=(posX+velocidad*Math.cos(Math.toRadians(angulo))*tiempo);
             pActY=(posY+velocidad*Math.sin(Math.toRadians(angulo))*tiempo-(0.5*9.81*(tiempo*tiempo)));
-            if (pActY<464 && pActX<732 && pActX>0 && pActY>0 && (angulo==90 || (posX!=pActX && posY!=pActY))){
-                if (!mapa.comprobarCoordenadaAire( (int)Math.round(pActX), (int)Math.round(467-pActY) )){ //mientras el recorrido sea aire no entrará aquí
+            if (pActY<464 && pActX<730 && pActX>0 && pActY>0 && (angulo==90 || (posX!=pActX && posY!=pActY))){
+                if (!mapa.comprobarCoordenadaAire( (int)Math.round(pActX), (int)Math.round(466-pActY) )){ //mientras el recorrido sea aire no entrará aquí
                     return true;   //si choca el suelo es un tiro válido
                 }
             }
             tiempo=tiempo+0.1;
         }
-       
         //    Llegará a esta parte en caso de que no haya tocado el suelo en su trayecto dentro del cuadro,
         //    sirve como una ayuda auxiliar para saber si es que se pasó de los otros límites
         
-        if (angulo>90){
-            tFinal=(posX)/(velocidad*Math.cos(Math.toRadians(180-angulo)));
-            posY=465-posBala[1]+(velocidad*Math.sin(Math.toRadians(180-angulo))*tFinal)-( 0.5*9.81*(tFinal)*(tFinal));
-            return (posY>(465-limIzq))?0:1;//si la altura pasa del limite retorna 0
+        if (400<pActX){
+            return ( pActY<(465-limIzq) );
         }
         else{
-            tFinal=(733-posX)/(velocidad*Math.cos(Math.toRadians(angulo)));
-            posY=465-posBala[1]+(velocidad*Math.sin(Math.toRadians(angulo))*tFinal)-( 0.5*9.81*(tFinal)*(tFinal)) ;
-            return (posY>(465-limDer)? 0:1);//si la altura pasa del limite retorna 0
+            return ( pActY<(465-limDer) );
         }
     }
-    */
+    
     public int getVelocidad(){
         Random r= new Random();
         this.velocidad=40+r.nextInt(40);
