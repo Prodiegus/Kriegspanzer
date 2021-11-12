@@ -41,7 +41,6 @@ public class Bala{
             pActY=(posY+velocidad*Math.sin(Math.toRadians(angulo))*tiempo-(0.5*9.81*(tiempo*tiempo)));
             if (pActY<464 && pActX<732 && pActX>0 && pActY>0 && (angulo==90 || (posX!=pActX && posY!=pActY))){
                 if (!mapa.comprobarCoordenadaAire( (int)Math.round(pActX), (int)Math.round(467-pActY) )){ //mientras el recorrido sea aire no entrará aquí
-                    //System.out.println("solido en la coordenada: "+(int)Math.round(pActX)+","+(int)Math.round(467-pActY));
                     return 1;   //si choca el suelo es un tiro válido
                 }
             }
@@ -51,7 +50,6 @@ public class Bala{
             Llegará a esta parte en caso de que no haya tocado el suelo en su trayecto dentro del cuadro,
             sirve como una ayuda auxiliar para saber si es que se pasó de los otros límites
         */
-        
         if (angulo>90){
             tFinal=(posX)/(velocidad*Math.cos(Math.toRadians(180-angulo)));
             posY=465-posBala[1]+(velocidad*Math.sin(Math.toRadians(180-angulo))*tFinal)-( 0.5*9.81*(tFinal)*(tFinal));

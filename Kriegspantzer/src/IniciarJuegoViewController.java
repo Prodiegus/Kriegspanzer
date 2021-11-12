@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Random;
 import java.util.ResourceBundle;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.swing.JOptionPane;
 
@@ -134,10 +136,15 @@ public class IniciarJuegoViewController implements Initializable {
                 controller.setJugadores(jugadores);
                 controller.actualizaCantBalas(municiones);
                 controller.addViews();
-                //controller.posTank(campos);
                 controller.posTank();
                 controller.posBala();
                 controller.posBarras();
+                try {
+                    IA ia=new IA(jugadores);
+                    controller.verIA(event,0,ia);
+                } catch (InterruptedException ex) {
+                    Logger.getLogger(IniciarJuegoViewController.class.getName()).log(Level.SEVERE, null, ex);
+                }
 
             } catch (IOException e) {
                 JOptionPane.showMessageDialog(null, "Error: 006\nno se a podido cargar el juego");
