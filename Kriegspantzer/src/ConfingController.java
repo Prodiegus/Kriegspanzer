@@ -1,5 +1,6 @@
 import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.ResourceBundle;
 
 import javax.swing.JOptionPane;
@@ -21,35 +22,65 @@ public class ConfingController implements Initializable {
     @FXML TextField balas60;
     @FXML TextField balasPe;
     @FXML TextField balas105;
-
+    @FXML TextField cantJug;
+    
+    int panAncho;
+    int panLargo;
+    int mun60;
+    int munPe;
+    int mun105;
+    int cantJ;
+    private ArrayList<Jugador> jugadores = new ArrayList<Jugador>();
+    
     @FXML
     private void aceptar(ActionEvent event) {
-        try {
-            FXMLLoader loader =new FXMLLoader(getClass().getResource("IniciarJuegoView.fxml"));
+        panAncho = Integer.parseInt(pAncho.getText().trim());
+        panLargo = Integer.parseInt(pLargo.getText().trim());
+        mun60 = Integer.parseInt(balas60.getText().trim());
+        munPe = Integer.parseInt(balasPe.getText().trim());
+        mun105 = Integer.parseInt(balas105.getText().trim());
+        cantJ = Integer.parseInt(cantJug.getText().trim());
+        if( (panAncho  <=1600 ) && (panLargo <=1600 ) && (cantJ>=2 && cantJ<=6) ){
+            if ( (mun60>= 0) && (mun60 <= 30) && (mun105>= 0) && (mun105 <= 30) && (munPe>= 0) && (munPe <= 100) ){
+                try {
+                    FXMLLoader loader =new FXMLLoader(getClass().getResource("IniciarJuegoView.fxml"));
 
-            Parent root = loader.load();
-            Scene scene = new Scene(root);
-            Stage stage = new Stage();
+                    Parent root = loader.load();
+                    Scene scene = new Scene(root);
+                    Stage stage = new Stage();
 
-            IniciarJuegoViewController controller = loader.getController();
+                    IniciarJuegoViewController controller = loader.getController();
+                    
+                    String[] colors = {"Azul", "Verde", "Amarillo", "Rojo", "Morado", "Naranja", "Negro"};
 
-            String[] colors = {"Azul", "Verde", "Amarillo", "Rojo", "Morado", "Naranja", "Negro"};
-
-            controller.setBoxes(colors);
-            controller.setAnchoAlto(Integer.parseInt(pAncho.getText().trim()), Integer.parseInt(pLargo.getText().trim())); //falta ver donde validar
-            controller.setMap();
-            controller.setCantBalasIni(Integer.parseInt(balas60.getText().trim()),Integer.parseInt(balasPe.getText().trim()),Integer.parseInt(balas105.getText().trim())); //falta ver donde validar
-            stage.setResizable(true);
-            stage.setTitle("Kriegspanzer Game");
-            stage.getIcons().add(new Image(getClass().getResourceAsStream("img/icon.png")));
-            stage.setScene(scene);
-            stage.show();
-            close(event);
-        } catch (IOException e) {
-            JOptionPane.showMessageDialog(null, "Error: 018\nNo se a podido volver a inicio");
+                    controller.setBoxes(colors);
+                    controller.setAnchoAlto(panAncho, panLargo); //falta ver donde validar
+                    controller.setMap();
+                    controller.setCantBalasIni(mun60,munPe,mun105); //falta ver donde validar
+                    controller.setCantJug(cantJ);
+                    controller.recuperaJugadores(jugadores);
+                    stage.setResizable(true);
+                    stage.setTitle("Kriegspanzer Game");
+                    stage.getIcons().add(new Image(getClass().getResourceAsStream("img/icon.png")));
+                    stage.setScene(scene);
+                    stage.show();
+                    close(event);
+                } catch (IOException e) {
+                    JOptionPane.showMessageDialog(null, "Error: 018\nNo se a podido volver a inicio");
+                }
+            }
+            else{
+                JOptionPane.showMessageDialog(null, "Datos inválidos, cantidad municiones.");
+            }
         }
+        else{
+                JOptionPane.showMessageDialog(null, "Datos inválidos, tamaño panel/cantidad jugadores");
+            }
     }
     
+    public void guardaJugadores(ArrayList<Jugador> jug){
+        this.jugadores=jug;
+    }
     //closer
     @FXML private void close(ActionEvent event) {
         Node source = (Node) event.getSource();
