@@ -4,11 +4,21 @@ public class Jugador{
     private boolean estado;
     private Tanque tanque;
     private boolean IA;
+    private int kills;
      
     public Jugador(String nombre, boolean IA){
         this.nombre = nombre;
         this.estado = true;
         this.IA=IA;
+        this.kills=0;
+    }
+
+    public int getKills() {
+        return kills;
+    }
+
+    public void masKill() {
+        this.kills++;
     }
     //metodo que hará el lanzamiento de la bala en la clase Bala
     public boolean lanzamiento(double velocidad, double angulo, Mapa mapa){

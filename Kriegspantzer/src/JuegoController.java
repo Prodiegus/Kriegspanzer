@@ -338,6 +338,7 @@ public class JuegoController implements Initializable {
     @FXML
     private boolean moverBala(double xI,double yI,double x,double y,int angulo,double velocidad,double tiempo,int jug,int tGanador, ActionEvent event,int tipBala)throws InterruptedException {
         Platform.runLater(()->{
+            int cont=0;
             try{
                 TimeUnit.MILLISECONDS.sleep(20);    
             }
