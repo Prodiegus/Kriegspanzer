@@ -377,7 +377,7 @@ public class JuegoController implements Initializable {
                 }
             }
             else if(mapa.comprobarCoordenadaTanque((int)Math.round(x),(int)Math.round(464-y))){ //entra al if si es que toca tanque
-                    
+                int win=0; 
                 for(int i=0;i<jugadores.size();i++){//revisa si el tanque por tanque si se encuentra en las coordenadas que cayó el misil
                     if (  ((int)Math.round(x)<=jugadores.get(i).getTanque().getPos()[0]+20) && ((int)Math.round(x)>=jugadores.get(i).getTanque().getPos()[0]-20)  ){ //+-20 representa el hitbox
                         //le quito vida al tanque que se encuentre en esa zona
@@ -385,10 +385,24 @@ public class JuegoController implements Initializable {
                         barras.get(i).setProgress(jugadores.get(i).getTanque().getVida()/100);
                         //***FALTA MODIFICAR QUIEN GANA***
                         if (jugadores.get(i).getTanque().getVida() <=0 ){ 
-                            cargarPantallaFinal(cont_orden,event);
+                            jugadores.get(i).setEstado(false);
+                            //jugadores.get(jug).masKill();
+                            //cargarPantallaFinal(cont_orden,event);
                         }
                     }
+                    if(jugadores.get(i).cheekTanque()==false){
+                        System.out.println("se encuentra uno tanque muerto");
+                        cont++;
+                    }
+                    if(jugadores.get(i).cheekTanque()==true){
+                        System.out.println("se encuentra un tanque vivo");
+                        win=i;
+                    }
+                    if(cont==(jugadores.size())-1){
+                    cargarPantallaFinal(win,event);
+                    }
                 }
+                
                 altMax=0;//se reinicia la altura máxima para el siguiente jugador.
                 arrayBalasImagen.get(tipBala).get(arrayOrden[jug]).setVisible(false);
                 //System.out.println("hace invisible la bala del turno: "+jugadores.get(arrayOrden[jug]).getName());
