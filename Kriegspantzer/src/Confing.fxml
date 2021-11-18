@@ -2,6 +2,7 @@
 
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -25,7 +26,7 @@
       <TextField fx:id="balas60" layoutX="29.0" layoutY="249.0" prefHeight="25.0" prefWidth="60.0" promptText="60mm" styleClass="backButton1" stylesheets="@Estilos.css" />
       <TextField fx:id="balasPe" layoutX="98.0" layoutY="249.0" prefHeight="25.0" prefWidth="74.0" promptText="Perforante" styleClass="backButton1" stylesheets="@Estilos.css" />
       <TextField fx:id="balas105" layoutX="179.0" layoutY="249.0" prefHeight="25.0" prefWidth="74.0" promptText="105mm" styleClass="backButton1" stylesheets="@Estilos.css" />
-      <CheckBox layoutX="31.0" layoutY="324.0" mnemonicParsing="false" text="Efectos de entorno" textFill="WHITE">
+      <CheckBox fx:id="checkEfectos" layoutX="31.0" layoutY="324.0" mnemonicParsing="false" text="Efectos de entorno" textFill="WHITE">
          <font>
             <Font name="Consolas" size="12.0" />
          </font>
@@ -35,5 +36,11 @@
       <Label layoutX="183.0" layoutY="280.0" text="max (30 ud.)" textFill="WHITE" />
       <Label layoutX="99.0" layoutY="280.0" text="max (100 ud.)" textFill="#ffe7e7" />
       <Label layoutX="26.0" layoutY="280.0" text="max (30 ud.)" textFill="WHITE" />
+      <TextField fx:id="gravedad" layoutX="29.0" layoutY="379.0" prefHeight="25.0" prefWidth="60.0" promptText="9.81" styleClass="backButton1" stylesheets="@Estilos.css" />
+      <Label layoutX="29.0" layoutY="355.0" text="Gravedad" textFill="WHITE" />
+      <TextField fx:id="viento" layoutX="149.0" layoutY="379.0" prefHeight="25.0" prefWidth="60.0" promptText="0" styleClass="backButton1" stylesheets="@Estilos.css" />
+      <Label layoutX="154.0" layoutY="355.0" text="Viento" textFill="WHITE" />
+      <ComboBox fx:id="direccion" layoutX="216.0" layoutY="379.0" prefHeight="25.0" prefWidth="108.0" promptText="Dirección" />
+      <Label layoutX="153.0" layoutY="409.0" text="(1,10)[m/s]" textFill="WHITE" />
    </children>
 </AnchorPane>
