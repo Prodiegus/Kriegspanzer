@@ -46,7 +46,7 @@ public class IniciarJuegoViewController implements Initializable {
     private boolean handleIngresar(ActionEvent event) {
         //por ahora se generan las posiciones aleatorias de los tanques
         if (jugadores.size()<cantJug){//mientras la cantidad de jugadores ingresados sea menor a la maxima puede ingresar más
-            int valorDado = (int) Math.floor(Math.random()*700);
+            int valorDado = (int) Math.floor((Math.random()*700));
             int[] pos={valorDado,10};
             String color=cJugador.getValue();
             Jugador jActual =  new Jugador(nJugador.getText().trim(),IA.isSelected());
@@ -270,7 +270,7 @@ public class IniciarJuegoViewController implements Initializable {
             JOptionPane.showMessageDialog(null, "Mapas no encontrados");
             this.map = 0;
         }
-        //this.map = 4;
+        this.map = 7;
         //System.out.println("Id de mapa: Mapa"+this.map);
         
         //ese valor dentro del nextint es la cantidad de mapas creados en existencia
