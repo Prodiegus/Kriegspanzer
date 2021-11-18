@@ -353,6 +353,9 @@ public class JuegoController implements Initializable {
                         if (jugadores.get(i).getTanque().getVida() <=0 ){ 
                             jugadores.get(i).setEstado(false);
                             quitarTanque(i);
+                            Tanque tanque = jugadores.get(i).getTanque();
+                            mapa.removeTank(tanque.getPos()[0], tanque.getPos()[1]);
+                            tanks.remove(i);
                             //jugadores.get(jug).masKill();
                             //cargarPantallaFinal(cont_orden,event);
                         }
@@ -410,6 +413,9 @@ public class JuegoController implements Initializable {
                 for (Integer i : impactados) {
                     jugadores.get(i).getTanque().setVida(jugadores.get(i).getTanque().getVida()-10);//danio colateral por alcanxe de proyectil
                     barras.get(i).setProgress(jugadores.get(i).getTanque().getVida()/100);
+                    if(jugadores.get(i).getTanque().getVida()<0){
+                        jugadores.get(arrayOrden[cont_orden]).masKill();
+                    }
                 }
 
                 posTank(true);
@@ -619,6 +625,7 @@ public class JuegoController implements Initializable {
      * @return Una lista con los tanques impactados por el area del daño de la bala
      */
     public ArrayList<Integer> impactados(int x, int y, int d){
+        d += 20;
         ArrayList<Integer> impactados = new ArrayList<Integer>();
         int i = 0;
         for (Jugador jugador : jugadores) {
@@ -670,6 +677,10 @@ public class JuegoController implements Initializable {
             Tanque tanque = jugadores.get(i).getTanque();
             tanque.setVida(tanque.getVida()-(caida/(double)4));//danio por caida
             barras.get(i).setProgress(tanque.getVida()/100);//se actualiza la barra de vida
+            if(tanque.getVida()<0){
+                jugadores.get(arrayOrden[cont_orden]).masKill();
+            }
+            
         }
     }
     public void setBoardSize(double alto, double ancho){
