@@ -12,17 +12,23 @@ import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.CheckBox;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
 public class ConfingController implements Initializable {
-    @FXML TextField pAncho;
-    @FXML TextField pLargo;
-    @FXML TextField balas60;
-    @FXML TextField balasPe;
-    @FXML TextField balas105;
-    @FXML TextField cantJug;
+    @FXML private TextField pAncho;
+    @FXML private TextField pLargo;
+    @FXML private TextField balas60;
+    @FXML private TextField balasPe;
+    @FXML private TextField balas105;
+    @FXML private TextField cantJug;
+    @FXML private TextField gravedad;
+    @FXML private TextField viento;
+    @FXML private CheckBox checkEfectos;
+    @FXML private ComboBox<String> direccion;
     
     int panAncho;
     int panLargo;
@@ -30,7 +36,10 @@ public class ConfingController implements Initializable {
     int munPe;
     int mun105;
     int cantJ;
+    int wind;
+    double gravity;
     private ArrayList<Jugador> jugadores = new ArrayList<Jugador>();
+    String[] direc={"Izquierda","Derecha"};
     
     @FXML
     private void aceptar(ActionEvent event) {
@@ -52,13 +61,22 @@ public class ConfingController implements Initializable {
                     IniciarJuegoViewController controller = loader.getController();
                     
                     String[] colors = {"Azul", "Verde", "Amarillo", "Rojo", "Morado", "Naranja", "Negro"};
-
+                    
+                    if(checkEfectos.isSelected()){//si acepta los efectos de entorno se setean los cambios
+                        wind=Integer.parseInt(viento.getText().trim());
+                        gravity=Double.parseDouble(gravedad.getText().trim());
+                        if (wind>=1 && wind<=10){
+                            controller.setGravity(gravity);
+                            controller.setWind(wind);
+                        }
+                    }
                     controller.setBoxes(colors);
                     controller.setAnchoAlto(panAncho, panLargo); //falta ver donde validar
                     controller.setMap();
                     controller.setCantBalasIni(mun60,munPe,mun105); //falta ver donde validar
                     controller.setCantJug(cantJ);
                     controller.recuperaJugadores(jugadores);
+                    controller.setGravity(10);
                     stage.setResizable(true);
                     stage.setTitle("Kriegspanzer Game");
                     stage.getIcons().add(new Image(getClass().getResourceAsStream("img/icon.png")));
@@ -89,7 +107,8 @@ public class ConfingController implements Initializable {
     }
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        
+        this.direccion.getItems().removeAll(this.direccion.getItems());
+        this.direccion.getItems().addAll(direc);
     }    
     
 }

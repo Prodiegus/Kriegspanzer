@@ -25,10 +25,10 @@ public class Jugador{
         this.estado = estado;
     }
     //metodo que hará el lanzamiento de la bala en la clase Bala
-    public boolean lanzamiento(double velocidad, double angulo, Mapa mapa){
+    public boolean lanzamiento(double velocidad, double angulo, Mapa mapa, double gravedad, int viento){
         if ( (velocidad>=0 && velocidad<150) && (angulo>=0 && angulo<=180) ){
             //se trabaja con el tanque del jugador
-            return(tanque.disparo(velocidad, angulo,mapa));
+            return(tanque.disparo(velocidad, angulo,mapa, gravedad, viento));
         }
         return false;
     }

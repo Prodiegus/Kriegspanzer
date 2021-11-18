@@ -41,7 +41,7 @@ public class IA {
         }
     }
     
-    public boolean calcularRango(int []posBala,double velocidad, double angulo,Mapa mapa){
+    public boolean calcularRango(int []posBala,double velocidad, double angulo,Mapa mapa, double gravity){
         int i=0;
         double tiempo=0;
         double posX=posBala[0];
@@ -75,7 +75,7 @@ public class IA {
         }
         while((pActX<731 && pActX>1)){
             pActX=(posX+velocidad*Math.cos(Math.toRadians(angulo))*tiempo);
-            pActY=(posY+velocidad*Math.sin(Math.toRadians(angulo))*tiempo-(0.5*9.81*(tiempo*tiempo)));
+            pActY=(posY+velocidad*Math.sin(Math.toRadians(angulo))*tiempo-(0.5*gravity*(tiempo*tiempo)));
             if (pActY<464 && pActX<730 && pActX>0 && pActY>0 && (angulo==90 || (posX!=pActX && posY!=pActY))){
                 if (!mapa.comprobarCoordenadaAire( (int)Math.round(pActX), (int)Math.round(466-pActY) )){ //mientras el recorrido sea aire no entrará aquí
                     return true;   //si choca el suelo es un tiro válido
