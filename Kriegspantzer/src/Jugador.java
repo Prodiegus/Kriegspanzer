@@ -20,7 +20,9 @@ public class Jugador{
     public void masKill() {
         this.kills++;
     }
-    
+    public void quitarKills(){
+        this.kills=0;
+    }
     public void setEstado(boolean estado) {
         this.estado = estado;
     }
