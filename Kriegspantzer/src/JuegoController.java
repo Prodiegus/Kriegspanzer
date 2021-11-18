@@ -342,6 +342,7 @@ public class JuegoController implements Initializable {
             }
             else if(mapa.comprobarCoordenadaTanque((int)Math.round(x),(int)Math.round(464-y))){ //entra al if si es que toca tanque
                 int win=0; 
+                arrayBalasImagen.get(tipBala).get(arrayOrden[jug]).setVisible(false);
                 for(int i=0;i<jugadores.size();i++){//revisa si el tanque por tanque si se encuentra en las coordenadas que cayó el misil
                     if (  ((int)Math.round(x)<=jugadores.get(i).getTanque().getPos()[0]+20) && ((int)Math.round(x)>=jugadores.get(i).getTanque().getPos()[0]-20)  ){ //+-20 representa el hitbox
                         //le quito vida al tanque que se encuentre en esa zona
@@ -350,6 +351,7 @@ public class JuegoController implements Initializable {
                         //***FALTA MODIFICAR QUIEN GANA***
                         if (jugadores.get(i).getTanque().getVida() <=0 ){ 
                             jugadores.get(i).setEstado(false);
+                            quitarTanque(i);
                             //jugadores.get(jug).masKill();
                             //cargarPantallaFinal(cont_orden,event);
                         }
@@ -365,7 +367,7 @@ public class JuegoController implements Initializable {
                     }
                 }
                 altMax=0;//se reinicia la altura máxima para el siguiente jugador.
-                arrayBalasImagen.get(tipBala).get(arrayOrden[jug]).setVisible(false);
+                //arrayBalasImagen.get(tipBala).get(arrayOrden[jug]).setVisible(false);
                 //System.out.println("hace invisible la bala del turno: "+jugadores.get(arrayOrden[jug]).getName());
                 
                 
@@ -489,9 +491,9 @@ public class JuegoController implements Initializable {
         }
     }
     public void nuevosTurnos(){
-        int[] aux = new int[jugadores.size()];
-        for(int i=0;i<jugadores.size();i++){
-            aux[i]=i;
+        int[] aux = new int[arrayOrden.length];
+        for(int i=0;i<arrayOrden.length;i++){
+            aux[i]=arrayOrden[i];
         }
         Random r=new Random();
         for (int i=0; i<aux.length; i++) {
@@ -507,6 +509,23 @@ public class JuegoController implements Initializable {
         }
     }
     
+    public void quitarTanque(int jugMuerto){
+        System.out.println("jugador muerto= "+jugMuerto);
+        int[] aux = new int [arrayOrden.length-1];
+        int cont=0;
+        for(int i=0;i<arrayOrden.length;i++){
+            if(arrayOrden[i]!=jugMuerto){
+                aux[cont]=arrayOrden[i];
+                cont++;
+            }
+        }
+        
+        this.arrayOrden=aux;
+        System.out.print("nuevo orden: ");
+        for(int j=0;j<arrayOrden.length;j++){
+            System.out.print(jugadores.get(arrayOrden[j]).getName()+" "+arrayOrden[j]+",");
+        }
+    }
     //si se realiza un cambio en configuraciones, acá se aplican el el juego
     public void actualizaCantBalas(int[] balas){
         if (balas[0] != 0 || balas[1] != 0 || balas[2] != 0){   //si lo q recibio son solo ceros es porque se usará las municiones por default

@@ -3,6 +3,19 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
+<<<<<<< HEAD
+            <file>file:/C:/Users/omaii/Documents/Proyecto%20Git/Kriegspanzer/Kriegspantzer/src/Bala.java</file>
+            <file>file:/C:/Users/omaii/Documents/Proyecto%20Git/Kriegspanzer/Kriegspantzer/src/IniciarJuegoViewController.java</file>
+            <file>file:/C:/Users/omaii/Documents/Proyecto%20Git/Kriegspanzer/Kriegspantzer/src/JuegoController.java</file>
+            <file>file:/C:/Users/omaii/Documents/Proyecto%20Git/Kriegspanzer/Kriegspantzer/src/Kriegspantzer.java</file>
+            <file>file:/C:/Users/omaii/Documents/Proyecto%20Git/Kriegspanzer/Kriegspantzer/src/Mapa.java</file>
+            <file>file:/C:/Users/omaii/Documents/Proyecto%20Git/Kriegspanzer/Kriegspantzer/src/IA.java</file>
+            <file>file:/C:/Users/omaii/Documents/Proyecto%20Git/Kriegspanzer/Kriegspantzer/src/EmpateViewController.java</file>
+            <file>file:/C:/Users/omaii/Documents/Proyecto%20Git/Kriegspanzer/Kriegspantzer/src/Jugador.java</file>
+            <file>file:/C:/Users/omaii/Documents/Proyecto%20Git/Kriegspanzer/Kriegspantzer/src/SeguirJugandoViewController.java</file>
+            <file>file:/C:/Users/omaii/Documents/Proyecto%20Git/Kriegspanzer/Kriegspantzer/src/Tanque.java</file>
+            <file>file:/C:/Users/omaii/Documents/Proyecto%20Git/Kriegspanzer/Kriegspantzer/src/EditorMapaController.java</file>
+=======
             <file>file:/C:/Users/basti/Documents/Proyecto/Kriegspanzer/Kriegspantzer/src/JuegoController.java</file>
             <file>file:/C:/Users/basti/Documents/Proyecto/Kriegspanzer/Kriegspantzer/src/Jugador.java</file>
             <file>file:/C:/Users/basti/Documents/Proyecto/Kriegspanzer/Kriegspantzer/src/Bala.java</file>
@@ -10,6 +23,7 @@
             <file>file:/C:/Users/basti/Documents/Proyecto/Kriegspanzer/Kriegspantzer/src/IA.java</file>
             <file>file:/C:/Users/basti/Documents/Proyecto/Kriegspanzer/Kriegspantzer/src/Tanque.java</file>
             <file>file:/C:/Users/basti/Documents/Proyecto/Kriegspanzer/Kriegspantzer/src/Kriegspantzer.java</file>
+>>>>>>> basti
         </group>
     </open-files>
 </project-private>
