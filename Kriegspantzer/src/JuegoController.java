@@ -55,6 +55,7 @@ public class JuegoController implements Initializable {
     
     int cont_orden=0;
     int []arrayOrden;
+
     //int cont_orden=0;
     private Mapa mapa;
     private ArrayList<Jugador> jugadores = new ArrayList<Jugador>();
@@ -405,7 +406,12 @@ public class JuegoController implements Initializable {
                 arrayBalasImagen.get(tipBala).get(arrayOrden[jug]).setX(xI);
                 arrayBalasImagen.get(tipBala).get(arrayOrden[jug]).setY(465-yI);//el 465 significa la posicion real en la matriz, ya que esta es invertida
                 mapa.destruir((int)Math.round(x),(int)Math.round(464-y), (int)Math.round(jugadores.get(arrayOrden[jug]).getTanque().getDamageBala()[tipBala]/3));
-                
+                ArrayList<Integer> impactados = impactados((int)Math.round(x),(int)Math.round(464-y), (int)Math.round(jugadores.get(arrayOrden[jug]).getTanque().getDamageBala()[tipBala]/3));
+                for (Integer i : impactados) {
+                    jugadores.get(i).getTanque().setVida(jugadores.get(i).getTanque().getVida()-10);//danio colateral por alcanxe de proyectil
+                    barras.get(i).setProgress(jugadores.get(i).getTanque().getVida()/100);
+                }
+
                 posTank(true);
                 setBoard();
                 
@@ -595,6 +601,35 @@ public class JuegoController implements Initializable {
         }
         return 0;
     }
+    public int pixelesY(int x, int y) {
+        for(int i = 0; y < 465; i++){//si y sobrepasa este numero el tanque caeria fuera del mapa
+            if(mapa.comprobarCoordenadaSolido(x+(int)Math.round(10/anchoScale), y)){
+                return i;// se retornan los pixeles movidos
+            }
+            y++;
+        }
+        return 400;//eso quiere decir que salio del mapa por lo que es destruido suelo es laba
+    }
+
+    /**
+     * El objetivo de este metodo es retornar una lista con los tanques impactados por el area de una bala
+     * @param x = pos x disparo
+     * @param y = pos y disparo
+     * @param d = es el daño a realizar al mapa
+     * @return Una lista con los tanques impactados por el area del daño de la bala
+     */
+    public ArrayList<Integer> impactados(int x, int y, int d){
+        ArrayList<Integer> impactados = new ArrayList<Integer>();
+        int i = 0;
+        for (Jugador jugador : jugadores) {
+            Tanque tanque = jugador.getTanque();
+            if((tanque.getPos()[0]> x-d/2 && tanque.getPos()[0] <= d/2+x) && (tanque.getPos()[1]> y-d/2 && tanque.getPos()[1]> d/2+y)){
+                impactados.add(i);
+            }
+            i++;
+        }
+        return impactados;
+    }
 
     public void posTank(){
         //ArrayList<int[]> campos = mapa.getCampos();
@@ -622,6 +657,7 @@ public class JuegoController implements Initializable {
     public void posTank(boolean v){//El metodo "posTank" posicionara los tanques en "mapaPanel"
         for (int i = 0; i<jugadores.size(); i++) {// se recorre el arraylist "jugadores", para proporcionarle cada tanque a su jugador.
             int x = jugadores.get(i).getTanque().getPos()[0];
+            int caida = pixelesY(x, jugadores.get(i).getTanque().getPos()[1]+10);//posicion en y actual del tanque los 10 corresponden a los pixeles del tanque
             int y = setYTank(x);
             mapa.removeTank(jugadores.get(i).getTanque().getPos()[0], jugadores.get(i).getTanque().getPos()[1]);
             tanks.get(i).setX(jugadores.get(i).getTanque().getPos()[0]*altoScale);
@@ -631,6 +667,9 @@ public class JuegoController implements Initializable {
             barras.get(i).setTranslateY( (jugadores.get(i).getTanque().getPos()[1]-25)*anchoScale );//reposiciono la barras con su respectiba escala
             mapa.addTank(x, y);
             //se setean los tanques con el pocisionamiento respectivo y se multiplica con su reescalado.
+            Tanque tanque = jugadores.get(i).getTanque();
+            tanque.setVida(tanque.getVida()-(caida/(double)4));//danio por caida
+            barras.get(i).setProgress(tanque.getVida()/100);//se actualiza la barra de vida
         }
     }
     public void setBoardSize(double alto, double ancho){
