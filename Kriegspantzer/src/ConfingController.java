@@ -59,6 +59,7 @@ public class ConfingController implements Initializable {
                     controller.setCantBalasIni(mun60,munPe,mun105); //falta ver donde validar
                     controller.setCantJug(cantJ);
                     controller.recuperaJugadores(jugadores);
+                    controller.setGravity(10);
                     stage.setResizable(true);
                     stage.setTitle("Kriegspanzer Game");
                     stage.getIcons().add(new Image(getClass().getResourceAsStream("img/icon.png")));
