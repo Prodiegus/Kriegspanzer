@@ -40,6 +40,7 @@ public class IniciarJuegoViewController implements Initializable {
     
     int[] municiones = {3,3,10}; 
     double gravedad=9.81;
+    int viento=0;
     private ArrayList<Jugador> jugadores = new ArrayList<Jugador>();
     String[] colors = {"Azul", "Verde", "Amarillo", "Rojo", "Morado", "Naranja", "Negro"};//colores disponibles
     
@@ -244,6 +245,9 @@ public class IniciarJuegoViewController implements Initializable {
     }
     public void setGravity(double gravity){
         this.gravedad=gravity;
+    }
+    public void setWind(int wind){
+        this.viento=wind;
     }
     public void setBoxes(String[] colors){
         this.cJugador.getItems().removeAll(this.cJugador.getItems());

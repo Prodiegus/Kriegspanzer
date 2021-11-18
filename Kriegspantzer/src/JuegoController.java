@@ -63,6 +63,7 @@ public class JuegoController implements Initializable {
     double altMax=0;
     double disMax=0;
     double gravedad=9.81;   //gravedad por default
+    int viento=0;
     IA ia;
     boolean disparo = false; //mientras la bala esta en aire no se puede disparar
     String[] balasDisp = { "Proyectil 60mm: 3 balas","Proyectil 105mm: 3 balas", "Proyectil Perforador: 10 balas"};
@@ -91,7 +92,7 @@ public class JuegoController implements Initializable {
         int turno=this.arrayOrden[cont_orden];
         double tiempo=0;
         int tGanador=cont_orden;
-        if (jugadores.get(turno).lanzamiento(Integer.parseInt(vel.getText()), Integer.parseInt(ang.getText()), this.mapa, gravedad)){
+        if (jugadores.get(turno).lanzamiento(Integer.parseInt(vel.getText()), Integer.parseInt(ang.getText()), this.mapa, gravedad, viento)){
             //musica de disparo
             String path = "audio/5.mp3";
             Media media = new Media(new File(path).toURI().toString());
