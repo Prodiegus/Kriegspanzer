@@ -84,7 +84,7 @@ public class JuegoController implements Initializable {
         /* Al presionar el botón de disparo lo primero que debemos hacer es verificar
         qué jugador es, para así poder hacer los lanzamientos por separados
         */
-        int turno=arrayOrden[cont_orden];
+        int turno=this.arrayOrden[cont_orden];
         double tiempo=0;
         int tGanador=cont_orden;
         if (jugadores.get(turno).lanzamiento(Integer.parseInt(vel.getText()), Integer.parseInt(ang.getText()), this.mapa)){
@@ -105,22 +105,17 @@ public class JuegoController implements Initializable {
                     jugadores.get(turno).getTanque().setBalasDisp(("Proyectil 60mm: "+jugadores.get(turno).getTanque().getBala().getTipoBalas()[0]+ " balas"), 0);
                         
                     arrayBalasImagen.get(0).get(turno).setVisible(true);
+                    //System.out.println("hace visible la bala del turno: "+jugadores.get(turno).getName());
                     //se le suman valores a las posiciones para que salga desde arriba y al medio del tanque y no desde una esquina
                     moverBala(posBala[0]+10,(470-posBala[1]),posBala[0]+10,(470-posBala[1]),Integer.parseInt(ang.getText()),Integer.parseInt(vel.getText()),tiempo,cont_orden,tGanador, event,0);
-                        
-                    //actualizamos los turnos
-                    cont_orden+=1;
-                    if (cont_orden == arrayOrden.length){
-                        cont_orden=0;
-                    }
-                    turnoPanel.setText("Turno: "+jugadores.get(cont_orden).getName());
-                    setJugadores(jugadores);
-                    this.tBalas.getItems().removeAll(this.tBalas.getItems());
-                    this.tBalas.getItems().addAll(jugadores.get(arrayOrden[cont_orden]).getTanque().getBalasDisp());
+                    
+                    ang.setText(null);
+                    vel.setText(null);
+                    
                 }
                 else{
                     if (jugadores.get(arrayOrden[cont_orden]).isIA()){
-                        verIA(event,cont_orden,ia);
+                        verIA(new ActionEvent(),cont_orden,ia);
                     }
                     else{
                         JOptionPane.showMessageDialog(null, "No queda de este tipo de munición"); 
@@ -134,22 +129,16 @@ public class JuegoController implements Initializable {
                     jugadores.get(turno).getTanque().setBalasDisp(("Proyectil 105mm: "+jugadores.get(turno).getTanque().getBala().getTipoBalas()[1]+ " balas"), 1);
                         
                     arrayBalasImagen.get(1).get(turno).setVisible(true);
+                    //System.out.println("hace visible la bala del turno: "+jugadores.get(turno).getName());
                     //se le suman valores a las posiciones para que salga desde arriba y al medio del tanque y no desde una esquina
                     moverBala(posBala[0]+10,(470-posBala[1]),posBala[0]+10,(470-posBala[1]),Integer.parseInt(ang.getText()),Integer.parseInt(vel.getText()),tiempo,cont_orden,tGanador, event,1);
-                        
-                    //actualizamos los turnos
-                    cont_orden+=1;
-                    if (cont_orden == arrayOrden.length){
-                        cont_orden=0;
-                    }
-                    turnoPanel.setText("Turno: "+jugadores.get(arrayOrden[cont_orden]).getName()); 
-                    setJugadores(jugadores);
-                    this.tBalas.getItems().removeAll(this.tBalas.getItems());
-                    this.tBalas.getItems().addAll(jugadores.get(arrayOrden[cont_orden]).getTanque().getBalasDisp());
+                    
+                    ang.setText(null);
+                    vel.setText(null);
                 }
                 else{
                     if (jugadores.get(arrayOrden[cont_orden]).isIA()){
-                        verIA(event,cont_orden,ia);
+                        verIA(new ActionEvent(),cont_orden,ia);
                     }
                     else{
                         JOptionPane.showMessageDialog(null, "No queda de este tipo de munición"); 
@@ -164,22 +153,16 @@ public class JuegoController implements Initializable {
                     jugadores.get(turno).getTanque().setBalasDisp(("Proyectil Perforador: "+jugadores.get(turno).getTanque().getBala().getTipoBalas()[2]+ " balas"), 2);
                         
                     arrayBalasImagen.get(2).get(turno).setVisible(true);
+                    //System.out.println("hace visible la bala del turno: "+jugadores.get(turno).getName());
                     //se le suman valores a las posiciones para que salga desde arriba y al medio del tanque y no desde una esquina
                     moverBala(posBala[0]+10,(470-posBala[1]),posBala[0]+10,(470-posBala[1]),Integer.parseInt(ang.getText()),Integer.parseInt(vel.getText()),tiempo,cont_orden,tGanador, event,2);
                     
-                    //actualizamos los turnos
-                    cont_orden+=1;
-                    if (cont_orden == arrayOrden.length){
-                        cont_orden=0;
-                    }
-                    turnoPanel.setText("Turno: "+jugadores.get(arrayOrden[cont_orden]).getName()); 
-                    setJugadores(jugadores);
-                    this.tBalas.getItems().removeAll(this.tBalas.getItems());
-                    this.tBalas.getItems().addAll(jugadores.get(arrayOrden[cont_orden]).getTanque().getBalasDisp());
+                    ang.setText(null);
+                    vel.setText(null);
                 }
                 else{
                     if (jugadores.get(arrayOrden[cont_orden]).isIA()){
-                        verIA(event,cont_orden,ia);
+                        verIA(new ActionEvent(),cont_orden,ia);
                     }
                     else{
                         JOptionPane.showMessageDialog(null, "No queda de este tipo de munición"); 
@@ -189,9 +172,10 @@ public class JuegoController implements Initializable {
             else{
                 JOptionPane.showMessageDialog(null, "Debe elegir un tipo de bala");
             }
-            if (jugadores.get(arrayOrden[cont_orden]).getTanque().getBala().verificaBalas() ){
+            /*if(jugadores.get(arrayOrden[cont_orden]).getTanque().getBala().verificaBalas() ){
+                System.out.println("entra a cargarEmpate en esta verificacion1");
                 cargarEmpate(event);
-            }
+            }*/
         }
         else{ //en caso de que la IA no realize un calculo mal
             if (jugadores.get(arrayOrden[cont_orden]).getTanque().getBala().verificaBalas() ){
@@ -199,38 +183,47 @@ public class JuegoController implements Initializable {
             }
             else{
                 if (jugadores.get(arrayOrden[cont_orden]).isIA()){
-                    verIA(event,cont_orden,ia);
+                    verIA(new ActionEvent(),cont_orden,ia);
                 }
                 else{
                     JOptionPane.showMessageDialog(null, "Tiro fuera de límite, intente de nuevo.");
                 }
             }
         }
-        
-    }  
+    }
     
     @FXML
     public void verIA(ActionEvent event, int cont_orden,IA ia) throws InterruptedException{
         if (jugadores.get(arrayOrden[cont_orden]).isIA()){
-            ia.calcularLanzamiento();
-            int velocidad=ia.getVelocidad();
-            int angulo=ia.getAngulo();
-            vel.setText(""+velocidad);
-            ang.setText(""+angulo);
-
-            Random rn= new Random();
-            String tipBala=jugadores.get(arrayOrden[cont_orden]).getTanque().getBalasDisp()[rn.nextInt(3)];
-            tBalas.setValue(tipBala);
-
-            try {
-                pressShoot(event);
-            } catch (InterruptedException ex) {
-                Logger.getLogger(JuegoController.class.getName()).log(Level.SEVERE, null, ex);
+            if (jugadores.get(arrayOrden[cont_orden]).getTanque().getBala().verificaBalas() ){
+                //close(event);
+                cargarEmpate(event);
             }
+            else{
+                ia.calcularLanzamiento();
+                int velocidad=ia.getVelocidad();
+                int angulo=ia.getAngulo();
+                vel.setText(""+velocidad);
+                ang.setText(""+angulo);
+
+                Random rn= new Random();
+                String tipBala=jugadores.get(arrayOrden[cont_orden]).getTanque().getBalasDisp()[rn.nextInt(3)];
+                tBalas.setValue(tipBala);
+                if(ia.calcularRango(jugadores.get(arrayOrden[cont_orden]).getTanque().getBala().getPosBala(), velocidad, angulo, mapa)){//tiro no se sale de los rangos
+                    try {
+                        pressShoot(new ActionEvent());
+                    } catch (InterruptedException ex) {
+                        Logger.getLogger(JuegoController.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                }
+                else{
+                    verIA(new ActionEvent(),cont_orden,ia);
+                }
+                
+            }
+            
         }
     }
-               
-        
     
     @FXML
     private void reset(ActionEvent event) {
@@ -274,7 +267,7 @@ public class JuegoController implements Initializable {
             stage.getIcons().add(new Image(getClass().getResourceAsStream("img/icon.png")));
             stage.setScene(scene);
             stage.show();
-            close(event);
+            //close(event);
             
         } catch (IOException e) {
             //en caso de que algo salga mal mostraremos el siguiente mensaje
@@ -309,6 +302,7 @@ public class JuegoController implements Initializable {
     @FXML
     private boolean moverBala(double xI,double yI,double x,double y,int angulo,double velocidad,double tiempo,int jug,int tGanador, ActionEvent event,int tipBala)throws InterruptedException {
         Platform.runLater(()->{
+            int cont=0;
             try{
                 TimeUnit.MILLISECONDS.sleep(20);    
             }
@@ -347,54 +341,64 @@ public class JuegoController implements Initializable {
                 }
             }
             else if(mapa.comprobarCoordenadaTanque((int)Math.round(x),(int)Math.round(464-y))){ //entra al if si es que toca tanque
-                
-                // se verifica que si el lanzamiento de la bala llega a la zona del tanque se pega a sí mismo (posx-10,posx+10)
-                if( ( (int)Math.round(x)<=jugadores.get(jug).getTanque().getPos()[0] + 10 ) && ((int)Math.round(x)>=jugadores.get(jug).getTanque().getPos()[0] - 10) ){
-                    jugadores.get(jug).getTanque().setVida(jugadores.get(jug).getTanque().getVida()-jugadores.get(jug).getTanque().getDamageBala()[tipBala] );
-                    barras.get(jug).setProgress(jugadores.get(jug).getTanque().getVida()/100);
-                    if (jugadores.get(jug).getTanque().getVida() <=0 ){ //corresponderia al turno del otro tanque
-                        cargarPantallaFinal(cont_orden,event);
-                    }
-                } 
-                else{ //si no se pega así mismo le pega al otro tanque
-                    /*falta mejorar esta parte por si se presentan futuros tanques, 
-                        Lo óptimo sería recorrer todos los tanques de cada jugador, primero se parte con un jugador, obtenemos sus tanques y verificamos uno por uno si su tanque
-                        se encuentra en la posición de la bala
-                    
-                    for(int i=0;i<jugadores.size();i++){
-                        if (  ((int)Math.round(x)<=jugadores.get(i).getTanque().getPos()[0]+15) && ((int)Math.round(x)>=jugadores.get(i).getTanque().getPos()[0]+15)  ){ //
-                            jugadores.get(i).getTanque().setVida( jugadores.get(i).getTanque().getVida()-jugadores.get(i).getBala().getDamageBala[tipBala])
+                int win=0; 
+                for(int i=0;i<jugadores.size();i++){//revisa si el tanque por tanque si se encuentra en las coordenadas que cayó el misil
+                    if (  ((int)Math.round(x)<=jugadores.get(i).getTanque().getPos()[0]+20) && ((int)Math.round(x)>=jugadores.get(i).getTanque().getPos()[0]-20)  ){ //+-20 representa el hitbox
+                        //le quito vida al tanque que se encuentre en esa zona
+                        jugadores.get(i).getTanque().setVida( jugadores.get(i).getTanque().getVida()-jugadores.get(i).getTanque().getDamageBala()[tipBala]);
+                        barras.get(i).setProgress(jugadores.get(i).getTanque().getVida()/100);
+                        //***FALTA MODIFICAR QUIEN GANA***
+                        if (jugadores.get(i).getTanque().getVida() <=0 ){ 
+                            jugadores.get(i).setEstado(false);
+                            //jugadores.get(jug).masKill();
+                            //cargarPantallaFinal(cont_orden,event);
                         }
                     }
-                    */
-                    jugadores.get(cont_orden).getTanque().setVida(jugadores.get(cont_orden).getTanque().getVida()-jugadores.get(cont_orden).getTanque().getDamageBala()[tipBala] );
-                    barras.get(cont_orden).setProgress(jugadores.get(cont_orden).getTanque().getVida()/100);
-                    if (jugadores.get(cont_orden).getTanque().getVida() <=0 ){ //si la vida es menor, gana el turno del otro tanque.
-                        cargarPantallaFinal(tGanador,event);
+                    if(!jugadores.get(i).cheekTanque()){//si el estado es falso es tanque destruido
+                        cont++;
                     }
-                }   
-                
+                    else{//si el estado es true es tanque vivo
+                        win=i;
+                    }
+                    if(cont==(jugadores.size())-1){
+                        cargarPantallaFinal(win,event);
+                    }
+                }
                 altMax=0;//se reinicia la altura máxima para el siguiente jugador.
                 arrayBalasImagen.get(tipBala).get(arrayOrden[jug]).setVisible(false);
-                ia = new IA(jugadores);
+                //System.out.println("hace invisible la bala del turno: "+jugadores.get(arrayOrden[jug]).getName());
+                
                 
                 try {
                     TimeUnit.SECONDS.sleep(1);
                 } catch (InterruptedException ex) {
                     Logger.getLogger(JuegoController.class.getName()).log(Level.SEVERE, null, ex);
                 }
-                int aux=jug+1;
-                if (aux == arrayOrden.length){
-                    aux=0;
+                cont_orden+=1;
+                if (cont_orden == arrayOrden.length){
+                    cont_orden=0;
+                    nuevosTurnos();//desordena el orden nuevamente **ESTO DEBO HACERLO EN OTRA PARTE, PORQUE SE ESCONDE LA BALA 
                 }
-                try {
-                    verIA(event,aux,ia);
-                } catch (InterruptedException ex) {
-                    Logger.getLogger(JuegoController.class.getName()).log(Level.SEVERE, null, ex);
+                turnoPanel.setText("Turno: "+jugadores.get(cont_orden).getName());
+                setJugadores(jugadores);
+                this.tBalas.getItems().removeAll(this.tBalas.getItems());
+                this.tBalas.getItems().addAll(jugadores.get(arrayOrden[cont_orden]).getTanque().getBalasDisp());
+                if(jugadores.get(arrayOrden[cont_orden]).getTanque().getBala().verificaBalas() ){
+                    System.out.println("entra a cargarEmpate en moverBala");
+                    cargarEmpate(event);
+                }
+                else{
+                    ia = new IA(jugadores);
+                    try {
+                        verIA(new ActionEvent(),cont_orden,ia);
+                    } catch (InterruptedException ex) {
+                        Logger.getLogger(JuegoController.class.getName()).log(Level.SEVERE, null, ex);
+                    }
                 }
             }else{
                 altMax=0;//se reinicia la altura máxima para el siguiente jugador.
                 arrayBalasImagen.get(tipBala).get(arrayOrden[jug]).setVisible(false);
+                //System.out.println("hace invisible la bala del turno: "+jugadores.get(arrayOrden[jug]).getName());
                 //se reinicia la posicion de la bala, en la del tanque
                 arrayBalasImagen.get(tipBala).get(arrayOrden[jug]).setX(xI);
                 arrayBalasImagen.get(tipBala).get(arrayOrden[jug]).setY(465-yI);//el 465 significa la posicion real en la matriz, ya que esta es invertida
@@ -408,15 +412,26 @@ public class JuegoController implements Initializable {
                 } catch (InterruptedException ex) {
                     Logger.getLogger(JuegoController.class.getName()).log(Level.SEVERE, null, ex);
                 }
-                ia = new IA(jugadores);
-                int aux=jug+1;
-                if (aux == arrayOrden.length){
-                    aux=0;
+                cont_orden+=1;
+                if (cont_orden == arrayOrden.length){
+                    cont_orden=0;
+                    nuevosTurnos();//desordena el orden nuevamente **ESTO DEBO HACERLO EN OTRA PARTE, PORQUE SE ESCONDE LA BALA 
                 }
-                try {
-                    verIA(event,aux,ia);
-                } catch (InterruptedException ex) {
-                    Logger.getLogger(JuegoController.class.getName()).log(Level.SEVERE, null, ex);
+                turnoPanel.setText("Turno: "+jugadores.get(cont_orden).getName());
+                setJugadores(jugadores);
+                this.tBalas.getItems().removeAll(this.tBalas.getItems());
+                this.tBalas.getItems().addAll(jugadores.get(arrayOrden[cont_orden]).getTanque().getBalasDisp());
+                if(jugadores.get(arrayOrden[cont_orden]).getTanque().getBala().verificaBalas() ){
+                    System.out.println("1 moverbala");
+                    cargarEmpate(event);
+                }
+                else{
+                    ia = new IA(jugadores);
+                    try {
+                        verIA(new ActionEvent(),cont_orden,ia);
+                    } catch (InterruptedException ex) {
+                        Logger.getLogger(JuegoController.class.getName()).log(Level.SEVERE, null, ex);
+                    }
                 }
             }
             
@@ -472,10 +487,26 @@ public class JuegoController implements Initializable {
             this.arrayOrden[i] = this.arrayOrden[posAleatoria];
             this.arrayOrden[posAleatoria] = aux;
         }
-        /*for(int j=0;j<orden.length;j++){
-            System.out.println(orden[j]+",");
-        }*/
     }
+    public void nuevosTurnos(){
+        int[] aux = new int[jugadores.size()];
+        for(int i=0;i<jugadores.size();i++){
+            aux[i]=i;
+        }
+        Random r=new Random();
+        for (int i=0; i<aux.length; i++) {
+            int posAleatoria = r.nextInt(aux.length);
+            int temp = aux[i];
+            aux[i] = aux[posAleatoria];
+            aux[posAleatoria] = temp;
+        }
+        this.arrayOrden=aux;
+        System.out.print("nuevo orden: ");
+        for(int j=0;j<arrayOrden.length;j++){
+            System.out.print(arrayOrden[j]+",");
+        }
+    }
+    
     //si se realiza un cambio en configuraciones, acá se aplican el el juego
     public void actualizaCantBalas(int[] balas){
         if (balas[0] != 0 || balas[1] != 0 || balas[2] != 0){   //si lo q recibio son solo ceros es porque se usará las municiones por default
