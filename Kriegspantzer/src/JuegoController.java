@@ -53,6 +53,9 @@ public class JuegoController implements Initializable {
     @FXML private ComboBox<String> tBalas;
     @FXML private ArrayList<ProgressBar> barras = new ArrayList<ProgressBar>();
     @FXML private ActionEvent eventGlobal;
+    @FXML private AnchorPane tanqueActual;
+    @FXML private Label vidaTanque;
+    @FXML private AnchorPane balaSeleccionada;
     
     int cont_orden=0;
     int []arrayOrden;
@@ -379,6 +382,7 @@ public class JuegoController implements Initializable {
                 if (cont_orden == arrayOrden.length){
                     cont_orden=0;
                     nuevosTurnos();//desordena el orden nuevamente **ESTO DEBO HACERLO EN OTRA PARTE, PORQUE SE ESCONDE LA BALA 
+                    setPanelUsuario();
                 }
                 turnoPanel.setText("Turno: "+jugadores.get(cont_orden).getName());
                 setJugadores(jugadores);
@@ -407,8 +411,11 @@ public class JuegoController implements Initializable {
                 for (Integer i : impactados) {
                     jugadores.get(i).getTanque().setVida(jugadores.get(i).getTanque().getVida()-10);//danio colateral por alcanxe de proyectil
                     barras.get(i).setProgress(jugadores.get(i).getTanque().getVida()/100);
-                    if(jugadores.get(i).getTanque().getVida()<0){
+                    Tanque tanque = jugadores.get(i).getTanque();
+                    if(tanque.getVida()<=0){
                         jugadores.get(arrayOrden[cont_orden]).masKill();
+                        mapa.removeTank(tanque.getPos()[0], tanque.getPos()[1]);
+                        quitarViews(i);
                     }
                 }
 
@@ -678,8 +685,10 @@ public class JuegoController implements Initializable {
             Tanque tanque = jugadores.get(i).getTanque();
             tanque.setVida(tanque.getVida()-(caida/(double)4));//danio por caida
             barras.get(i).setProgress(tanque.getVida()/100);//se actualiza la barra de vida
-            if(tanque.getVida()<0){
+            if(tanque.getVida()<=0){
                 jugadores.get(arrayOrden[cont_orden]).masKill();
+                mapa.removeTank(tanque.getPos()[0], tanque.getPos()[1]);
+                quitarViews(i);
             }
             
         }
@@ -687,6 +696,50 @@ public class JuegoController implements Initializable {
     public void setBoardSize(double alto, double ancho){
         this.board.setWidth(alto);
         this.board.setHeight(ancho);
+    }
+    @FXML
+    public void setPanelUsuario(ActionEvent event){
+        Tanque tanque = jugadores.get(arrayOrden[cont_orden]).getTanque();
+        this.tanqueActual.getStyleClass().removeAll();
+        this.vidaTanque.getStyleClass().removeAll();
+        this.balaSeleccionada.getStyleClass().removeAll();
+        this.tanqueActual.getStyleClass().add(tanque.getColor());
+        this.vidaTanque.setText((int)Math.round(tanque.getVida())+"%");
+        if(tBalas.getValue()!=null){
+            if(tBalas.getValue().equals(balasDisp[0])){
+                this.balaSeleccionada.getStyleClass().add("bala60mm");
+            }
+            if(tBalas.getValue().equals(balasDisp[1])){
+                this.balaSeleccionada.getStyleClass().add("bala105mm");
+            }
+            if(tBalas.getValue().equals(balasDisp[2])){
+                this.balaSeleccionada.getStyleClass().add("Perforante");
+            }
+        }else{
+            this.balaSeleccionada.getStyleClass().add("box");
+        }
+    }
+    @FXML
+    public void setPanelUsuario(){
+        Tanque tanque = jugadores.get(arrayOrden[cont_orden]).getTanque();
+        this.tanqueActual.getStyleClass().removeAll();
+        this.vidaTanque.getStyleClass().removeAll();
+        this.balaSeleccionada.getStyleClass().removeAll();
+        this.tanqueActual.getStyleClass().add(tanque.getColor());
+        this.vidaTanque.setText((int)Math.round(tanque.getVida())+"%");
+        if(tBalas.getValue()!=null){
+            if(tBalas.getValue().equals(balasDisp[0])){
+                this.balaSeleccionada.getStyleClass().add("bala60mm");
+            }
+            if(tBalas.getValue().equals(balasDisp[1])){
+                this.balaSeleccionada.getStyleClass().add("Perforante");
+            }
+            if(tBalas.getValue().equals(balasDisp[2])){
+                this.balaSeleccionada.getStyleClass().add("bala105mm");
+            }
+        }else{
+            this.balaSeleccionada.getStyleClass().add("box");
+        }
     }
     //posiciona las balas incialmente arriba de los tanques
     public void  posBarras(){
