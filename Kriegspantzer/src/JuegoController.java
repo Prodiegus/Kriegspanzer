@@ -29,6 +29,7 @@ import javafx.scene.paint.Color;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.application.Platform;
+import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.ProgressBar;
 import javafx.scene.control.TextField;
@@ -53,6 +54,10 @@ public class JuegoController implements Initializable {
     @FXML private ComboBox<String> tBalas;
     @FXML private ArrayList<ProgressBar> barras = new ArrayList<ProgressBar>();
     @FXML private ActionEvent eventGlobal;
+    @FXML private AnchorPane tanqueActual;
+    @FXML private Label vidaTanque;
+    @FXML private AnchorPane balaSeleccionada;
+    @FXML private Button disparar;
     
     int cont_orden=0;
     int []arrayOrden;
@@ -76,9 +81,9 @@ public class JuegoController implements Initializable {
         }
     }
     //closer
-    @FXML private void close(ActionEvent event) {
-        Node source = (Node) event.getSource();
-        Stage stage = (Stage) source.getScene().getWindow();
+    @FXML private void close(ActionEvent event){
+        //Node source = (Node) event.getSource();
+        Stage stage = (Stage) disparar.getScene().getWindow();
         stage.close();
     }
     public void setEventG(ActionEvent event){
@@ -89,6 +94,7 @@ public class JuegoController implements Initializable {
         /* Al presionar el botón de disparo lo primero que debemos hacer es verificar
         qué jugador es, para así poder hacer los lanzamientos por separados
         */
+        setEventG(event);
         int turno=this.arrayOrden[cont_orden];
         double tiempo=0;
         int tGanador=cont_orden;
@@ -143,7 +149,7 @@ public class JuegoController implements Initializable {
                 }
                 else{
                     if (jugadores.get(arrayOrden[cont_orden]).isIA()){
-                        verIA(new ActionEvent(),cont_orden,ia);
+                        verIA(new ActionEvent(), cont_orden,ia);
                     }
                     else{
                         JOptionPane.showMessageDialog(null, "No queda de este tipo de munición"); 
@@ -224,6 +230,7 @@ public class JuegoController implements Initializable {
     
     @FXML
     private void reset(ActionEvent event) {
+        close(event);
         try {
             FXMLLoader loader =new FXMLLoader(getClass().getResource("IniciarJuegoView.fxml"));
 
@@ -242,13 +249,14 @@ public class JuegoController implements Initializable {
             stage.getIcons().add(new Image(getClass().getResourceAsStream("img/icon.png")));
             stage.setScene(scene);
             stage.show();
-            close(event);
+           
         } catch (IOException e) {
             JOptionPane.showMessageDialog(null, "Error: 013\nNo se a podido cargar una nueva partida");
         }
     }
     @FXML
     private void cargarEmpate(ActionEvent event){
+        close(event);
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("EmpateView.fxml"));
 
@@ -264,7 +272,7 @@ public class JuegoController implements Initializable {
             stage.getIcons().add(new Image(getClass().getResourceAsStream("img/icon.png")));
             stage.setScene(scene);
             stage.show();
-            close(event);
+            
             
         } catch (IOException e) {
             //en caso de que algo salga mal mostraremos el siguiente mensaje
@@ -272,7 +280,8 @@ public class JuegoController implements Initializable {
         }
     }
     @FXML
-    private void cargarPantallaFinal(int tGanador,ActionEvent event){
+    private void cargarPantallaFinal(int tGanador, ActionEvent event){
+        close(event);
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("seguirJugandoView.fxml"));
 
@@ -289,7 +298,6 @@ public class JuegoController implements Initializable {
             stage.getIcons().add(new Image(getClass().getResourceAsStream("img/icon.png")));
             stage.setScene(scene);
             stage.show();
-            close(event);
             
         } catch (IOException e) {
             //en caso de que algo salga mal mostraremos el siguiente mensaje
@@ -378,6 +386,7 @@ public class JuegoController implements Initializable {
                 if (cont_orden == arrayOrden.length){
                     cont_orden=0;
                     nuevosTurnos();//desordena el orden nuevamente **ESTO DEBO HACERLO EN OTRA PARTE, PORQUE SE ESCONDE LA BALA 
+                    setPanelUsuario();
                 }
                 turnoPanel.setText("Turno: "+jugadores.get(cont_orden).getName());
                 setJugadores(jugadores);
@@ -406,6 +415,12 @@ public class JuegoController implements Initializable {
                 for (Integer i : impactados) {
                     jugadores.get(i).getTanque().setVida(jugadores.get(i).getTanque().getVida()-10);//danio colateral por alcanxe de proyectil
                     barras.get(i).setProgress(jugadores.get(i).getTanque().getVida()/100);
+                    Tanque tanque = jugadores.get(i).getTanque();
+                    if(tanque.getVida()<=0){
+                        jugadores.get(arrayOrden[cont_orden]).masKill();
+                        mapa.removeTank(tanque.getPos()[0], tanque.getPos()[1]);
+                        quitarViews(i);
+                    }
                 }
 
                 posTank(true);
@@ -444,9 +459,6 @@ public class JuegoController implements Initializable {
 
     //le asigna la hoja de estilos al fondo del panel y la da la clase con la imagen del mapa
     public void setMap(Mapa mapa){
-        //mapaPanel.getStylesheets().clear();
-        //mapaPanel.getStylesheets().add("Estilos.css");
-       // mapaPanel.getStyleClass().add("map"+(mapa.getId()));
         this.mapa = mapa;
         setBoard();
     }
@@ -616,6 +628,7 @@ public class JuegoController implements Initializable {
      * @return Una lista con los tanques impactados por el area del daño de la bala
      */
     public ArrayList<Integer> impactados(int x, int y, int d){
+        d += 20;
         ArrayList<Integer> impactados = new ArrayList<Integer>();
         int i = 0;
         for (Jugador jugador : jugadores) {
@@ -667,11 +680,61 @@ public class JuegoController implements Initializable {
             Tanque tanque = jugadores.get(i).getTanque();
             tanque.setVida(tanque.getVida()-(caida/(double)4));//danio por caida
             barras.get(i).setProgress(tanque.getVida()/100);//se actualiza la barra de vida
+            if(tanque.getVida()<=0){
+                jugadores.get(arrayOrden[cont_orden]).masKill();
+                mapa.removeTank(tanque.getPos()[0], tanque.getPos()[1]);
+                quitarViews(i);
+            }
+            
         }
     }
     public void setBoardSize(double alto, double ancho){
         this.board.setWidth(alto);
         this.board.setHeight(ancho);
+    }
+    @FXML
+    public void setPanelUsuario(ActionEvent event){
+        Tanque tanque = jugadores.get(arrayOrden[cont_orden]).getTanque();
+        this.tanqueActual.getStyleClass().removeAll();
+        this.vidaTanque.getStyleClass().removeAll();
+        this.balaSeleccionada.getStyleClass().removeAll();
+        this.tanqueActual.getStyleClass().add(tanque.getColor());
+        this.vidaTanque.setText((int)Math.round(tanque.getVida())+"%");
+        if(tBalas.getValue()!=null){
+            if(tBalas.getValue().equals(balasDisp[0])){
+                this.balaSeleccionada.getStyleClass().add("bala60mm");
+            }
+            if(tBalas.getValue().equals(balasDisp[1])){
+                this.balaSeleccionada.getStyleClass().add("bala105mm");
+            }
+            if(tBalas.getValue().equals(balasDisp[2])){
+                this.balaSeleccionada.getStyleClass().add("Perforante");
+            }
+        }else{
+            this.balaSeleccionada.getStyleClass().add("box");
+        }
+    }
+    @FXML
+    public void setPanelUsuario(){
+        Tanque tanque = jugadores.get(arrayOrden[cont_orden]).getTanque();
+        this.tanqueActual.getStyleClass().removeAll();
+        this.vidaTanque.getStyleClass().removeAll();
+        this.balaSeleccionada.getStyleClass().removeAll();
+        this.tanqueActual.getStyleClass().add(tanque.getColor());
+        this.vidaTanque.setText((int)Math.round(tanque.getVida())+"%");
+        if(tBalas.getValue()!=null){
+            if(tBalas.getValue().equals(balasDisp[0])){
+                this.balaSeleccionada.getStyleClass().add("bala60mm");
+            }
+            if(tBalas.getValue().equals(balasDisp[1])){
+                this.balaSeleccionada.getStyleClass().add("Perforante");
+            }
+            if(tBalas.getValue().equals(balasDisp[2])){
+                this.balaSeleccionada.getStyleClass().add("bala105mm");
+            }
+        }else{
+            this.balaSeleccionada.getStyleClass().add("box");
+        }
     }
     //posiciona las balas incialmente arriba de los tanques
     public void  posBarras(){
