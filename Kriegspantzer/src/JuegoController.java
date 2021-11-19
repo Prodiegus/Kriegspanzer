@@ -302,7 +302,7 @@ public class JuegoController implements Initializable {
     @FXML
     private boolean moverBala(double xI,double yI,double x,double y,int angulo,double velocidad,double tiempo,int jug,int tGanador, ActionEvent event,int tipBala)throws InterruptedException {
         Platform.runLater(()->{
-            int cont=0;
+            int cont=0;//esta variable contador sirve para verificar cuantos tanque muertos hay.
             try{
                 TimeUnit.MILLISECONDS.sleep(20);    
             }
@@ -341,31 +341,30 @@ public class JuegoController implements Initializable {
                 }
             }
             else if(mapa.comprobarCoordenadaTanque((int)Math.round(x),(int)Math.round(464-y))){ //entra al if si es que toca tanque
-                int win=0; 
+                int win=0;// nuestra variable win guardara el numero que identifica al jugador ganador. 
                 arrayBalasImagen.get(tipBala).get(arrayOrden[jug]).setVisible(false);
                 for(int i=0;i<jugadores.size();i++){//revisa si el tanque por tanque si se encuentra en las coordenadas que cayó el misil
                     if (  ((int)Math.round(x)<=jugadores.get(i).getTanque().getPos()[0]+15) && ((int)Math.round(x)>=jugadores.get(i).getTanque().getPos()[0]-15)  ){ //+-15 representa el hitbox
                         //le quito vida al tanque que se encuentre en esa zona
                         jugadores.get(i).getTanque().setVida( jugadores.get(i).getTanque().getVida()-jugadores.get(i).getTanque().getDamageBala()[tipBala]);
                         barras.get(i).setProgress(jugadores.get(i).getTanque().getVida()/100);
-                        //***FALTA MODIFICAR QUIEN GANA***
-                        if (jugadores.get(i).getTanque().getVida() <=0 ){ 
-                            jugadores.get(i).setEstado(false);
-                            quitarViews(i);
-                            Tanque tanque = jugadores.get(i).getTanque();
-                            mapa.removeTank(tanque.getPos()[0], tanque.getPos()[1]);
-                            //jugadores.get(jug).masKill();
-                            //cargarPantallaFinal(cont_orden,event);
+                        if (jugadores.get(i).getTanque().getVida() <=0 ){// si el jugador al que le cae la bala pierde toda la vida. 
+                            jugadores.get(jug).masKill();// se le suma la kill al tanque que lo elimino.
+                            jugadores.get(i).quitarKills();// el tanque que muere pierde todas sus kills acumuladas.
+                            jugadores.get(i).setEstado(false);// su estado cambia de vivo a muerto.
+                            quitarTanque(i);// se eliminara el jugador muerto del sistema de turnos.
+                            mapa.removeTank(jugadores.get(i).getTanque().getPos()[0],jugadores.get(i).getTanque().getPos()[1]);// se remueve el tanque en ambito de matriz del mapa.
+                            quitarViews(i);// se elimina el tanque en ambito de views.
                         }
                     }
                     if(!jugadores.get(i).cheekTanque()){//si el estado es falso es tanque destruido
-                        cont++;
+                        cont++;// el contador de tanque destruidos aumentara. 
                     }
                     else{//si el estado es true es tanque vivo
-                        win=i;
+                        win=i;// si encuentra un tanque vivo lo designara como ganador.
                     }
-                    if(cont==(jugadores.size())-1){
-                        cargarPantallaFinal(win,eventGlobal);
+                    if(cont==(jugadores.size())-1){// al identificar que quede un tanque vivo "jugador.size()-1".
+                        cargarPantallaFinal(win,eventGlobal);// identificara como al unico tanque vivo como el ganador
                     }
                 }
                 altMax=0;//se reinicia la altura máxima para el siguiente jugador.
@@ -529,22 +528,16 @@ public class JuegoController implements Initializable {
         mapaPanel.getChildren().remove(barras.get(num));    //se borra la barra del tanque en pantalla
     }
     
-    public void quitarTanque(int jugMuerto){
-        System.out.println("jugador muerto= "+jugMuerto);
-        int[] aux = new int [arrayOrden.length-1];
+    public void quitarTanque(int jugMuerto){// este metodo servira para eliminar al tanque muerto del sistema de turnos.
+        int[] aux = new int [arrayOrden.length-1];// se creara un arreglo auxiliar para guardar el nuevo arreglo de turnos.
         int cont=0;
-        for(int i=0;i<arrayOrden.length;i++){
-            if(arrayOrden[i]!=jugMuerto){
-                aux[cont]=arrayOrden[i];
+        for(int i=0;i<arrayOrden.length;i++){//se recorrera el arreglo de sistema de turnos.
+            if(arrayOrden[i]!=jugMuerto){//al encontrar un tanque que no sea el eliminado actualmente.
+                aux[cont]=arrayOrden[i];// este se integrara al sistema de turnos.
                 cont++;
             }
         }
-        
-        this.arrayOrden=aux;
-        System.out.print("nuevo orden: ");
-        for(int j=0;j<arrayOrden.length;j++){
-            System.out.print(jugadores.get(arrayOrden[j]).getName()+" "+arrayOrden[j]+",");
-        }
+        this.arrayOrden=aux;//finalmente reemplazando el arreglo de turnos viejos con el nuevo.
     }
     //si se realiza un cambio en configuraciones, acá se aplican el el juego
     public void actualizaCantBalas(int[] balas){
