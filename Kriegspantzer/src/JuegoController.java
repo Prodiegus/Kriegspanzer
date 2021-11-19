@@ -29,6 +29,7 @@ import javafx.scene.paint.Color;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.application.Platform;
+import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.ProgressBar;
 import javafx.scene.control.TextField;
@@ -56,6 +57,7 @@ public class JuegoController implements Initializable {
     @FXML private AnchorPane tanqueActual;
     @FXML private Label vidaTanque;
     @FXML private AnchorPane balaSeleccionada;
+    @FXML private Button disparar;
     
     int cont_orden=0;
     int []arrayOrden;
@@ -79,9 +81,9 @@ public class JuegoController implements Initializable {
         }
     }
     //closer
-    @FXML private void close(ActionEvent event) {
-        Node source = (Node) event.getSource();
-        Stage stage = (Stage) source.getScene().getWindow();
+    @FXML private void close(ActionEvent event){
+        //Node source = (Node) event.getSource();
+        Stage stage = (Stage) disparar.getScene().getWindow();
         stage.close();
     }
     public void setEventG(ActionEvent event){
@@ -92,6 +94,7 @@ public class JuegoController implements Initializable {
         /* Al presionar el botón de disparo lo primero que debemos hacer es verificar
         qué jugador es, para así poder hacer los lanzamientos por separados
         */
+        setEventG(event);
         int turno=this.arrayOrden[cont_orden];
         double tiempo=0;
         int tGanador=cont_orden;
@@ -146,7 +149,7 @@ public class JuegoController implements Initializable {
                 }
                 else{
                     if (jugadores.get(arrayOrden[cont_orden]).isIA()){
-                        verIA(new ActionEvent(),cont_orden,ia);
+                        verIA(new ActionEvent(), cont_orden,ia);
                     }
                     else{
                         JOptionPane.showMessageDialog(null, "No queda de este tipo de munición"); 
@@ -227,6 +230,7 @@ public class JuegoController implements Initializable {
     
     @FXML
     private void reset(ActionEvent event) {
+        close(event);
         try {
             FXMLLoader loader =new FXMLLoader(getClass().getResource("IniciarJuegoView.fxml"));
 
@@ -245,13 +249,14 @@ public class JuegoController implements Initializable {
             stage.getIcons().add(new Image(getClass().getResourceAsStream("img/icon.png")));
             stage.setScene(scene);
             stage.show();
-            close(event);
+           
         } catch (IOException e) {
             JOptionPane.showMessageDialog(null, "Error: 013\nNo se a podido cargar una nueva partida");
         }
     }
     @FXML
     private void cargarEmpate(ActionEvent event){
+        close(event);
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("EmpateView.fxml"));
 
@@ -267,7 +272,7 @@ public class JuegoController implements Initializable {
             stage.getIcons().add(new Image(getClass().getResourceAsStream("img/icon.png")));
             stage.setScene(scene);
             stage.show();
-            close(event);
+            
             
         } catch (IOException e) {
             //en caso de que algo salga mal mostraremos el siguiente mensaje
@@ -275,7 +280,8 @@ public class JuegoController implements Initializable {
         }
     }
     @FXML
-    private void cargarPantallaFinal(int tGanador,ActionEvent event){
+    private void cargarPantallaFinal(int tGanador, ActionEvent event){
+        close(event);
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("seguirJugandoView.fxml"));
 
@@ -292,7 +298,6 @@ public class JuegoController implements Initializable {
             stage.getIcons().add(new Image(getClass().getResourceAsStream("img/icon.png")));
             stage.setScene(scene);
             stage.show();
-            close(event);
             
         } catch (IOException e) {
             //en caso de que algo salga mal mostraremos el siguiente mensaje
