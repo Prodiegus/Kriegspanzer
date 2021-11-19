@@ -11,7 +11,6 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
@@ -118,7 +117,7 @@ public class JuegoController implements Initializable {
                     arrayBalasImagen.get(0).get(turno).setVisible(true);
                     //System.out.println("hace visible la bala del turno: "+jugadores.get(turno).getName());
                     //se le suman valores a las posiciones para que salga desde arriba y al medio del tanque y no desde una esquina
-                    moverBala(posBala[0]+10,(470-posBala[1]),posBala[0]+10,(470-posBala[1]),Integer.parseInt(ang.getText()),Integer.parseInt(vel.getText()),tiempo,cont_orden,tGanador, event,0);
+                    moverBala(posBala[0]+(double)10,(470-posBala[1]),posBala[0]+(double)10,(470-posBala[1]),Integer.parseInt(ang.getText()),Integer.parseInt(vel.getText()),tiempo,cont_orden,tGanador, event,0);
                     
                     ang.setText(null);
                     vel.setText(null);
@@ -142,7 +141,7 @@ public class JuegoController implements Initializable {
                     arrayBalasImagen.get(1).get(turno).setVisible(true);
                     //System.out.println("hace visible la bala del turno: "+jugadores.get(turno).getName());
                     //se le suman valores a las posiciones para que salga desde arriba y al medio del tanque y no desde una esquina
-                    moverBala(posBala[0]+10,(470-posBala[1]),posBala[0]+10,(470-posBala[1]),Integer.parseInt(ang.getText()),Integer.parseInt(vel.getText()),tiempo,cont_orden,tGanador, event,1);
+                    moverBala(posBala[0]+(double)10,(470-posBala[1]),posBala[0]+(double)10,(470-posBala[1]),Integer.parseInt(ang.getText()),Integer.parseInt(vel.getText()),tiempo,cont_orden,tGanador, event,1);
                     
                     ang.setText(null);
                     vel.setText(null);
@@ -166,7 +165,7 @@ public class JuegoController implements Initializable {
                     arrayBalasImagen.get(2).get(turno).setVisible(true);
                     //System.out.println("hace visible la bala del turno: "+jugadores.get(turno).getName());
                     //se le suman valores a las posiciones para que salga desde arriba y al medio del tanque y no desde una esquina
-                    moverBala(posBala[0]+10,(470-posBala[1]),posBala[0]+10,(470-posBala[1]),Integer.parseInt(ang.getText()),Integer.parseInt(vel.getText()),tiempo,cont_orden,tGanador, event,2);
+                    moverBala(posBala[0]+(double)10,(470-posBala[1]),posBala[0]+(double)10,(470-posBala[1]),Integer.parseInt(ang.getText()),Integer.parseInt(vel.getText()),tiempo,cont_orden,tGanador, event,2);
                     
                     ang.setText(null);
                     vel.setText(null);
@@ -204,8 +203,8 @@ public class JuegoController implements Initializable {
     }
     
     @FXML
-    public void verIA(ActionEvent event, int cont_orden,IA ia) throws InterruptedException{
-        if (jugadores.get(arrayOrden[cont_orden]).isIA()){
+    public void verIA(ActionEvent event, int contOrden,IA ia) throws InterruptedException{
+        if (jugadores.get(arrayOrden[contOrden]).isIA()){
             ia.calcularLanzamiento();
             int velocidad=ia.getVelocidad();
             int angulo=ia.getAngulo();
@@ -213,9 +212,9 @@ public class JuegoController implements Initializable {
             ang.setText(""+angulo);
 
             Random rn= new Random();
-            String tipBala=jugadores.get(arrayOrden[cont_orden]).getTanque().getBalasDisp()[rn.nextInt(3)];
+            String tipBala=jugadores.get(arrayOrden[contOrden]).getTanque().getBalasDisp()[rn.nextInt(3)];
             tBalas.setValue(tipBala);
-            if(ia.calcularRango(jugadores.get(arrayOrden[cont_orden]).getTanque().getBala().getPosBala(), velocidad, angulo, mapa, gravedad)){//tiro no se sale de los rangos
+            if(ia.calcularRango(jugadores.get(arrayOrden[contOrden]).getTanque().getBala().getPosBala(), velocidad, angulo, mapa, gravedad)){//tiro no se sale de los rangos
                 try {
                     pressShoot(new ActionEvent());
                 } catch (InterruptedException ex) {
@@ -614,11 +613,13 @@ public class JuegoController implements Initializable {
         return 0;
     }
     public int pixelesY(int x, int y) {
-        for(int i = 0; y < 465; i++){//si y sobrepasa este numero el tanque caeria fuera del mapa
+        int i = 0;
+        while(y < 465){//si y sobrepasa este numero el tanque caeria fuera del mapa
             if(mapa.comprobarCoordenadaSolido(x+(int)Math.round(10/anchoScale), y)){
                 return i;// se retornan los pixeles movidos
             }
             y++;
+            i++;
         }
         return 400;//eso quiere decir que salio del mapa por lo que es destruido suelo es laba
     }
