@@ -4,17 +4,33 @@ public class Jugador{
     private boolean estado;
     private Tanque tanque;
     private boolean IA;
+    private int kills;
      
     public Jugador(String nombre, boolean IA){
         this.nombre = nombre;
         this.estado = true;
         this.IA=IA;
+        this.kills=0;
+    }
+
+    public int getKills() {
+        return kills;
+    }
+
+    public void masKill() {
+        this.kills++;
+    }
+    public void quitarKills(){
+        this.kills=0;
+    }
+    public void setEstado(boolean estado) {
+        this.estado = estado;
     }
     //metodo que hará el lanzamiento de la bala en la clase Bala
-    public boolean lanzamiento(double velocidad, double angulo, Mapa mapa){
+    public boolean lanzamiento(double velocidad, double angulo, Mapa mapa, double gravedad, int viento){
         if ( (velocidad>=0 && velocidad<150) && (angulo>=0 && angulo<=180) ){
             //se trabaja con el tanque del jugador
-            return(tanque.disparo(velocidad, angulo,mapa));
+            return(tanque.disparo(velocidad, angulo,mapa, gravedad, viento));
         }
         return false;
     }

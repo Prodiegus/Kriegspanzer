@@ -1,0 +1,53 @@
+.Rojo{
+    -fx-background-image: url("img/Tanque_Rojo.png");
+    -fx-background-size: contain;
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: center;
+    -fx-background-size: 100% 100%;
+    
+}
+.Azul{
+    -fx-background-image: url("img/Tanque_Azul.png");
+    -fx-background-size: contain;
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: center;
+    -fx-background-size: 100% 100%;
+}
+.Amarillo{
+    -fx-background-image: url("img/Tanque_Amarillo.png");
+    -fx-background-size: contain;
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: center;
+    -fx-background-size: 100% 100%;
+}
+.Morado{
+    -fx-background-image: url("img/Tanque_Morado.png");
+    -fx-background-size: contain;
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: center;
+    -fx-background-size: 100% 100%;
+}
+.Naraja{
+    -fx-background-image: url("img/Tanque_Naranja.png");
+    -fx-background-size: contain;
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: center;
+    -fx-background-size: 100% 100%;
+}
+.Negro{
+    -fx-background-image: url("img/Tanque_Negro.png");
+    -fx-background-size: contain;
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: center;
+    -fx-background-size: 100% 100%;
+}
+.Verde{
+    -fx-background-image: url("img/Tanque_Verde.png");
+    -fx-background-size: contain;
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: center;
+    -fx-background-size: 100% 100%;
+}
+.fondoStats{
+    -fx-background-color: #41552e;
+}
