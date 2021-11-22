@@ -42,6 +42,8 @@ public class JuegoController implements Initializable {
     @FXML private Canvas board = new Canvas();
     @FXML private Label turnoPanel;
     @FXML private Label alturaPanel;
+    @FXML private Label vientoPanel;
+    @FXML private Label gravedadPanel;
     @FXML private Label distanciaPanel;
     @FXML private ArrayList<ArrayList<ImageView> > arrayBalasImagen = new ArrayList<ArrayList<ImageView> >();
     @FXML private ArrayList<ImageView> balasPredImagen = new ArrayList<ImageView>();
@@ -68,6 +70,10 @@ public class JuegoController implements Initializable {
     double disMax=0;
     double gravedad=9.81;   //gravedad por default
     int viento=0;
+    int limSup=464;//limites de la matriz
+    int limInf=2;
+    int limIzq=2;
+    int limDer=730;
     IA ia;
     boolean disparo = false; //mientras la bala esta en aire no se puede disparar
     String[] balasDisp = { "Proyectil 60mm: 3 balas","Proyectil 105mm: 3 balas", "Proyectil Perforador: 10 balas"};
@@ -331,21 +337,21 @@ public class JuegoController implements Initializable {
                 son correctas, es decir que no sobre pasen los límites laterales, y que no pasen más abajo del solido.
             
             */   
-            if ( (x>=0 &&  x<730) && (y>=0) && (y>464 || mapa.comprobarCoordenadaAire((int)Math.round(x),(int)Math.round(464-y)) )){
+            if ( (x>=limIzq &&  x<limDer) && (y>=limInf) && (y>limSup || mapa.comprobarCoordenadaAire((int)Math.round(x),(int)Math.round(limSup-y)) )){
                 //se setean las imagenes en pantalla
                 if (xI!=x){
                     arrayBalasImagen.get(tipBala).get(arrayOrden[jug]).setX(x*altoScale);
                 }
-                arrayBalasImagen.get(tipBala).get(arrayOrden[jug]).setY((465-y)*anchoScale);//el 465 significa la posicion real en la matriz, ya que esta es invertida
+                arrayBalasImagen.get(tipBala).get(arrayOrden[jug]).setY((limSup-y)*anchoScale);//el 465 significa la posicion real en la matriz, ya que esta es invertida
                 try{//Se realiza la recursión hasta llegar al caso base 
-                    moverBala(xI,yI,(xI+velocidad*Math.cos(Math.toRadians(angulo))*tiempo),(yI+velocidad*Math.sin(Math.toRadians(angulo))*tiempo-(0.5*gravedad*(tiempo*tiempo))),angulo,velocidad,(tiempo+0.05),jug,tGanador, event,tipBala);      
+                    moverBala(xI,yI,(xI+velocidad*Math.cos(Math.toRadians(angulo))*tiempo-0.5*viento*tiempo*tiempo),(yI+velocidad*Math.sin(Math.toRadians(angulo))*tiempo-(0.5*gravedad*(tiempo*tiempo))),angulo,velocidad,(tiempo+0.05),jug,tGanador, event,tipBala);      
                 }
                 catch(InterruptedException e2){
                     e2.printStackTrace();
                 }
             }
-            else if(mapa.comprobarCoordenadaTanque((int)Math.round(x),(int)Math.round(464-y))){ //entra al if si es que toca tanque
-                int win=0;// nuestra variable win guardara el numero que identifica al jugador ganador. 
+            else if(mapa.comprobarCoordenadaTanque((int)Math.round(x),(int)Math.round(limSup-y))){ //entra al if si es que toca tanque
+                int win=0; 
                 arrayBalasImagen.get(tipBala).get(arrayOrden[jug]).setVisible(false);
                 for(int i=0;i<jugadores.size();i++){//revisa si el tanque por tanque si se encuentra en las coordenadas que cayó el misil
                     if (  ((int)Math.round(x)<=jugadores.get(i).getTanque().getPos()[0]+15) && ((int)Math.round(x)>=jugadores.get(i).getTanque().getPos()[0]-15)  ){ //+-15 representa el hitbox
@@ -408,7 +414,7 @@ public class JuegoController implements Initializable {
                 //System.out.println("hace invisible la bala del turno: "+jugadores.get(arrayOrden[jug]).getName());
                 //se reinicia la posicion de la bala, en la del tanque
                 arrayBalasImagen.get(tipBala).get(arrayOrden[jug]).setX(xI);
-                arrayBalasImagen.get(tipBala).get(arrayOrden[jug]).setY(465-yI);//el 465 significa la posicion real en la matriz, ya que esta es invertida
+                arrayBalasImagen.get(tipBala).get(arrayOrden[jug]).setY(limSup-yI);//el 465 significa la posicion real en la matriz, ya que esta es invertida
                 mapa.destruir((int)Math.round(x),(int)Math.round(464-y), (int)Math.round(jugadores.get(arrayOrden[jug]).getTanque().getDamageBala()[tipBala]/3));
                 ArrayList<Integer> impactados = impactados((int)Math.round(x),(int)Math.round(464-y), (int)Math.round(jugadores.get(arrayOrden[jug]).getTanque().getDamageBala()[tipBala]/3));
                 for (Integer i : impactados) {
@@ -470,6 +476,12 @@ public class JuegoController implements Initializable {
     }
     public void setGravedad(double gravity){
         this.gravedad=gravity;
+    }
+    public void setWind(int wind){
+        this.viento=wind;
+        vientoPanel.setText("Viento: "+viento);
+        gravedadPanel.setText("Gravedad: "+gravedad);
+        
     }
     public void setBoard(){
         // a la hora de recorrer el ciclo se multiplica por sus escalas los valores

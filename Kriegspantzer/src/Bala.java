@@ -37,14 +37,14 @@ public class Bala{
             return 1;
         }
         while((pActX<732 && pActX>1)){
-            pActX=(posX+velocidad*Math.cos(Math.toRadians(angulo))*tiempo  );  //- (0.5*viento*tiempo*tiempo)
+            pActX=(posX+velocidad*Math.cos(Math.toRadians(angulo))*tiempo - (0.5*viento*tiempo*tiempo) );  //- (0.5*viento*tiempo*tiempo)
             pActY=(posY+velocidad*Math.sin(Math.toRadians(angulo))*tiempo - (0.5*gravedad*(tiempo*tiempo)));
             if (pActY<464 && pActX<732 && pActX>0 && pActY>0 && (angulo==90 || (posX!=pActX && posY!=pActY))){
                 if (!mapa.comprobarCoordenadaAire( (int)Math.round(pActX), (int)Math.round(467-pActY) )){ //mientras el recorrido sea aire no entrará aquí
                     return 1;   //si choca el suelo es un tiro válido
                 }
             }
-            tiempo=tiempo+0.1;
+            tiempo=tiempo+0.05;
         }
         /*
             Llegará a esta parte en caso de que no haya tocado el suelo en su trayecto dentro del cuadro,
@@ -52,11 +52,13 @@ public class Bala{
         */
         if (angulo>90){
             tFinal=(posX)/(velocidad*Math.cos(Math.toRadians(180-angulo) ));
+            //calculaTiempo(viento,velocidad*Math.cos(Math.toRadians(180-angulo)),posX );
             posY=465-posBala[1]+(velocidad*Math.sin(Math.toRadians(180-angulo))*tFinal)-( 0.5*gravedad*(tFinal)*(tFinal));
             return (posY>(465-limIzq))?0:1;//si la altura pasa del limite retorna 0
         }
         else{
             tFinal=(733-posX)/(velocidad*Math.cos(Math.toRadians(angulo)));
+            //calculaTiempo(viento,velocidad*Math.cos(Math.toRadians(180-angulo)),(733-posX) );
             posY=465-posBala[1]+(velocidad*Math.sin(Math.toRadians(angulo))*tFinal)-( 0.5*gravedad*(tFinal)*(tFinal)) ;
             return (posY>(465-limDer)? 0:1);//si la altura pasa del limite retorna 0
         }
@@ -78,11 +80,6 @@ public class Bala{
     }
     public boolean verificaBalas(){ //metodo que retorna true si no existen balas
         return (this.cantBalas[0]==0 && this.cantBalas[1]==0 && this.cantBalas[2]==0);
-    }
-    public void calculaTiempo(int a, int b, int c){
-        //double discri= Math.sqrt( (b*b)-(double)4*a*c );
-        //double resultado1=(-b)/(double)2*a;
-        
     }
     public void actualizaMuniciones(int[] balas){
         this.cantBalas[0]=balas[0];
