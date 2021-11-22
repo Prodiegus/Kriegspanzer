@@ -7,6 +7,7 @@
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.effect.InnerShadow?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onKeyPressed="#scale" prefHeight="614.0" prefWidth="800.0" styleClass="Game" stylesheets="@Estilos.css" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="JuegoController">
    <children>
@@ -19,20 +20,44 @@
             <Label fx:id="alturaPanel" layoutX="516.0" layoutY="14.0" prefHeight="25.0" prefWidth="173.0" text="Altura máxima: " AnchorPane.rightAnchor="43.39999999999998" AnchorPane.topAnchor="14.0" />
             <Label fx:id="distanciaPanel" layoutX="516.0" layoutY="40.0" prefHeight="25.0" prefWidth="173.0" text="Distancia máxima: " AnchorPane.rightAnchor="43.39999999999998" AnchorPane.topAnchor="40.0" />
          </children></AnchorPane>
-      <AnchorPane layoutX="34.0" layoutY="471.0" prefHeight="129.0" prefWidth="733.0" AnchorPane.bottomAnchor="14.0" AnchorPane.leftAnchor="34.0" AnchorPane.rightAnchor="34.0">
+      <AnchorPane layoutX="34.0" layoutY="471.0" prefHeight="119.0" prefWidth="732.0" AnchorPane.bottomAnchor="14.0" AnchorPane.leftAnchor="34.0" AnchorPane.rightAnchor="34.0">
          <children>
-            <Button fx:id="disparar" layoutX="254.0" layoutY="81.0" mnemonicParsing="false" onAction="#pressShoot" styleClass="backButton" stylesheets="@Estilos.css" text="Disparar" textFill="WHITE" AnchorPane.bottomAnchor="23.0" AnchorPane.rightAnchor="418.0" />
-            <Label fx:id="turnoPanel" layoutX="14.0" layoutY="14.0" prefHeight="17.0" prefWidth="453.0" text="Turno:" textFill="WHITE" AnchorPane.bottomAnchor="98.0" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="265.0" AnchorPane.topAnchor="14.0" />
-            <Label layoutX="141.0" layoutY="44.0" text="[Grados°]" textFill="#e8e8e8" AnchorPane.bottomAnchor="68.0" AnchorPane.leftAnchor="141.0" />
-            <Label layoutX="150.0" layoutY="85.0" text="[mt/s]" textFill="WHITE" AnchorPane.bottomAnchor="27.0" AnchorPane.leftAnchor="150.0" />
-            <Label layoutX="321.0" layoutY="85.0" text="Precione &quot;R&quot; para Reposicionar" textFill="WHITE" AnchorPane.bottomAnchor="27.0" AnchorPane.rightAnchor="248.0" />
-            <TextField fx:id="ang" layoutX="54.0" layoutY="40.0" opacity="0.77" prefHeight="25.0" prefWidth="70.0" promptText="60" styleClass="backButton2" stylesheets="@Estilos.css" AnchorPane.bottomAnchor="64.0" AnchorPane.leftAnchor="54.0" />
-            <TextField fx:id="vel" layoutX="54.0" layoutY="81.0" opacity="0.77" prefHeight="25.0" prefWidth="70.0" promptText="60" styleClass="backButton2" stylesheets="@Estilos.css" AnchorPane.bottomAnchor="23.0" AnchorPane.leftAnchor="54.0" />
-            <Button layoutX="611.0" layoutY="32.0" mnemonicParsing="false" onAction="#reset" opacity="0.77" prefHeight="25.0" prefWidth="94.0" styleClass="backButton2" stylesheets="@Estilos.css" text="Reiniciar" textFill="WHITE" AnchorPane.bottomAnchor="72.0" AnchorPane.rightAnchor="28.0" />
-            <Button layoutX="611.0" layoutY="73.0" mnemonicParsing="false" onAction="#close" opacity="0.77" styleClass="backButton2" stylesheets="@Estilos.css" text="Finalizar Juego" textFill="WHITE" AnchorPane.bottomAnchor="31.0" AnchorPane.rightAnchor="28.0" />
-            <ComboBox fx:id="tBalas" layoutX="254.0" layoutY="40.0" prefHeight="26.0" prefWidth="200.0" promptText="Tipo de Municion" styleClass="backButton" stylesheets="@Estilos.css" AnchorPane.bottomAnchor="63.0" AnchorPane.rightAnchor="279.0" />
+            <Button fx:id="disparar" layoutX="88.0" layoutY="78.0" mnemonicParsing="false" onAction="#pressShoot" prefHeight="25.0" prefWidth="130.0" styleClass="backButton" stylesheets="@Estilos.css" text="Disparar" textFill="WHITE" AnchorPane.bottomAnchor="23.0" AnchorPane.leftAnchor="88.0">
+               <font>
+                  <Font name="Consolas" size="16.0" />
+               </font>
+            </Button>
+            <TextField fx:id="ang" alignment="CENTER" layoutX="19.0" layoutY="34.0" opacity="0.77" prefHeight="25.0" prefWidth="60.0" promptText="Grados°" styleClass="backButton2" stylesheets="@Estilos.css" AnchorPane.bottomAnchor="70.0" AnchorPane.leftAnchor="19.0" />
+            <TextField fx:id="vel" alignment="CENTER" layoutX="19.0" layoutY="79.0" opacity="0.77" prefHeight="25.0" prefWidth="60.0" promptText="mt/s" styleClass="backButton2" stylesheets="@Estilos.css" AnchorPane.bottomAnchor="25.0" AnchorPane.leftAnchor="19.0" />
+            <Button layoutX="624.0" layoutY="32.0" mnemonicParsing="false" onAction="#reset" opacity="0.77" prefHeight="25.0" prefWidth="94.0" styleClass="backButton2" stylesheets="@Estilos.css" text="Reiniciar" textFill="WHITE" AnchorPane.bottomAnchor="72.0" AnchorPane.rightAnchor="14.0" />
+            <Button layoutX="624.0" layoutY="74.0" mnemonicParsing="false" onAction="#close" opacity="0.77" styleClass="backButton2" stylesheets="@Estilos.css" text="Finalizar Juego" textFill="WHITE" AnchorPane.bottomAnchor="30.0" AnchorPane.rightAnchor="14.0" />
+            <ComboBox fx:id="tBalas" layoutX="88.0" layoutY="34.0" onAction="#setPanelUsuario" prefHeight="26.0" prefWidth="204.0" promptText="Tipo de Municion" styleClass="backButton" stylesheets="@Estilos.css" AnchorPane.bottomAnchor="69.0" AnchorPane.leftAnchor="88.0" />
+            <AnchorPane layoutX="329.0" layoutY="22.0" nodeOrientation="LEFT_TO_RIGHT" prefHeight="84.0" prefWidth="215.0" styleClass="fondoStats" stylesheets="@Estilos2.css" AnchorPane.bottomAnchor="13.0" AnchorPane.leftAnchor="329.0">
+               <children>
+                  <AnchorPane fx:id="balaSeleccionada" layoutX="137.0" layoutY="26.0" prefHeight="45.0" prefWidth="45.0" styleClass="box" stylesheets="@Balas.css" AnchorPane.bottomAnchor="13.0" AnchorPane.leftAnchor="137.0">
+                     <effect>
+                        <InnerShadow />
+                     </effect>
+                  </AnchorPane>
+                  <AnchorPane fx:id="tanqueActual" layoutX="43.0" layoutY="30.0" prefHeight="25.0" prefWidth="39.0" styleClass="Rojo" stylesheets="@Estilos2.css" AnchorPane.bottomAnchor="29.0" AnchorPane.leftAnchor="43.0" />
+                  <Label fx:id="vidaTanque" alignment="CENTER" contentDisplay="CENTER" layoutX="42.0" layoutY="55.0" text="100%" textFill="WHITE" AnchorPane.bottomAnchor="7.0" AnchorPane.leftAnchor="42.0">
+                     <font>
+                        <Font name="Consolas" size="19.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="turnoPanel" alignment="CENTER" layoutX="11.0" layoutY="14.0" prefHeight="18.0" prefWidth="196.0" text="Turno: " textFill="WHITE" AnchorPane.bottomAnchor="61.0" AnchorPane.leftAnchor="11.0">
+                     <font>
+                        <Font name="Consolas Bold" size="16.0" />
+                     </font>
+                  </Label>
+               </children>
+               <effect>
+                  <InnerShadow choke="1.0" height="5.0" radius="2.0" width="5.0" />
+               </effect>
+            </AnchorPane>
          </children>
       </AnchorPane>
+      <Label layoutX="622.0" layoutY="592.0" text="Precione &quot;R&quot; para Reposicionar" textFill="WHITE" AnchorPane.bottomAnchor="5.0" AnchorPane.rightAnchor="14.0" />
    </children>
    <effect>
       <InnerShadow choke="1.0" height="6.17" radius="2.585" width="6.17" />

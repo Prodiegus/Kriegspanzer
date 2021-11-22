@@ -80,8 +80,8 @@ public class Bala{
         return (this.cantBalas[0]==0 && this.cantBalas[1]==0 && this.cantBalas[2]==0);
     }
     public void calculaTiempo(int a, int b, int c){
-        double discri= Math.sqrt( (b*b)-4*a*c );
-        double resultado1=(-b)/2*a;
+        //double discri= Math.sqrt( (b*b)-(double)4*a*c );
+        //double resultado1=(-b)/(double)2*a;
         
     }
     public void actualizaMuniciones(int[] balas){

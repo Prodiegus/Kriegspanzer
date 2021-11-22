@@ -41,6 +41,7 @@ public class Tanque {
     }
     public void setVida(double vida) {
         this.vida = vida;
+        System.out.println("vida actual: "+vida);
     }
     public double getVida() {
         return vida;

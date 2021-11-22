@@ -6,7 +6,6 @@ public class IA {
     private int velocidad;
     private int angulo;
     private double gravedad;
-    private double rose;
     private int objetivo;
     private int intentos;
     private ArrayList<Jugador> jugadores;
@@ -14,14 +13,12 @@ public class IA {
     IA(ArrayList<Jugador> jugadores){
         this.jugadores = jugadores;
         this.gravedad = 9.81;
-        this.rose = 1;
         this.intentos=0;
         calcularLanzamiento();
     }
     IA(ArrayList<Jugador> jugadores, double gravedad, double rose){
         this.jugadores = jugadores;
         this.gravedad = gravedad;
-        this.rose = rose;
         this.intentos=0;
         calcularLanzamiento();
     }
@@ -45,7 +42,7 @@ public class IA {
         int i=0;
         double tiempo=0;
         double posX=posBala[0];
-        double tFinal;
+        //double tFinal;
         double posY= (double)465 - posBala[1];
         double pActX=posX;
         double pActY=posY;
@@ -95,29 +92,30 @@ public class IA {
     }
     
     public int getVelocidad(){
-        Random r= new Random();
-        this.velocidad=40+r.nextInt(40);
+        Random random = new Random();
+        this.velocidad = random.nextInt(40)+40;
         return this.velocidad;
     }
 
     public int getAngulo() {
-        Random r= new Random();
-        this.angulo=30+r.nextInt(130);
+        Random random = new Random();
+        this.angulo = random.nextInt(100)+30;
         return this.angulo;
     }
 
     public static void main(String[] args) throws InterruptedException{
         ArrayList<Jugador> jugadores = new ArrayList<Jugador>();
-        int valorDado = (int) Math.floor(Math.random()*700);
-        int[] pos1={valorDado,10};
+        Random random = new Random();
+        int valorDado = random.nextInt(700);
+        int[] pos1={valorDado,300};
         Jugador j1 =  new Jugador("juan",true);
         Bala b1 = new Bala(pos1);
         Tanque t1 =  new Tanque("rojo", pos1,b1);
         t1.setPos(pos1[0], pos1[1]);
         j1.setTanque(t1);
         jugadores.add(j1);
-        valorDado = (int) Math.floor(Math.random()*700);
-        int[] pos2={valorDado,10};
+        valorDado = random.nextInt(700);
+        int[] pos2={valorDado,433};
         Jugador j2 =  new Jugador("pedro",true);
         Bala b2 = new Bala(pos2);
         Tanque t2 =  new Tanque("azul", pos2,b2);
@@ -133,12 +131,13 @@ public class IA {
         int angulo = ia.getAngulo();
         int[] objetivo = jugadores.get(ia.objetivo).getTanque().getPos();
         System.out.println("Velocidad: "+velocidad+" Angulo: "+angulo);
-        while(disparo!=objetivo){
+        TimeUnit.SECONDS.sleep(5 );
+        while(disparo[1]>0 && disparo!=objetivo && disparo[0]<800){
             disparo[0] = (int)(xi+velocidad*Math.cos(Math.toRadians(angulo))*tiempo);
             disparo[1] = (int)(yi+velocidad*Math.sin(Math.toRadians(angulo))*tiempo-(0.5*ia.gravedad*(tiempo*tiempo)));
             
             System.out.println("("+disparo[0]+", "+disparo[1]+") to ("+objetivo[0]+", "+objetivo[1]+")");
-            TimeUnit.SECONDS.sleep(1);
+            
             tiempo++;
         } 
     }

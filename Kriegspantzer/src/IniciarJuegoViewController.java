@@ -48,7 +48,7 @@ public class IniciarJuegoViewController implements Initializable {
     private boolean handleIngresar(ActionEvent event) {
         //por ahora se generan las posiciones aleatorias de los tanques
         if (jugadores.size()<cantJug){//mientras la cantidad de jugadores ingresados sea menor a la maxima puede ingresar más
-            int valorDado = (int) Math.floor(Math.random()*700);
+            int valorDado = (int) Math.floor((Math.random()*700));
             int[] pos={valorDado,10};
             String color=cJugador.getValue();
             Jugador jActual =  new Jugador(nJugador.getText().trim(),IA.isSelected());
@@ -142,6 +142,7 @@ public class IniciarJuegoViewController implements Initializable {
                 controller.posBala();
                 controller.posBarras();
                 controller.setGravedad(gravedad);
+                controller.setPanelUsuario();
                 controller.setEventG(event);
                 try {
                     IA ia=new IA(jugadores);
@@ -224,21 +225,7 @@ public class IniciarJuegoViewController implements Initializable {
         stage.close();
     }
 
-    private int foundX(Integer[] posiciones){
-        try{
-            Random r = new Random();
-            int x1;
-            //verificamos que las x sean campos admisibles
-            for (x1 = r.nextInt(733/2);true;x1 = r.nextInt(733/2)){//x1 = LargoMapa/2 Asi se consigue la mitad del mapa de distancia
-                if(Arrays.binarySearch(posiciones, x1)>0 && Arrays.binarySearch(posiciones, (x1+(733/2)))>0){
-                    return x1;  
-                }
-            }
-        }catch(Exception e){
-            foundX(posiciones);
-        }
-        return 200;//en caso de error se toma una distancia cualquiera
-    }
+    
     public void setAnchoAlto(int ancho, int alto) {
         this.alto = alto;
         this.ancho = ancho;
@@ -280,7 +267,7 @@ public class IniciarJuegoViewController implements Initializable {
             JOptionPane.showMessageDialog(null, "Mapas no encontrados");
             this.map = 0;
         }
-        //this.map = 4;
+        this.map = 7;
         //System.out.println("Id de mapa: Mapa"+this.map);
         
         //ese valor dentro del nextint es la cantidad de mapas creados en existencia
