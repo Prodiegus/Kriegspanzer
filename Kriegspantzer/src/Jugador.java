@@ -5,12 +5,16 @@ public class Jugador{
     private Tanque tanque;
     private boolean IA;
     private int kills;
+    private int guardaAng;
+    private int guardaVel;
      
     public Jugador(String nombre, boolean IA){
         this.nombre = nombre;
         this.estado = true;
         this.IA=IA;
         this.kills=0;
+        this.guardaAng=0;
+        this.guardaVel=0;
     }
 
     public int getKills() {
@@ -54,6 +58,17 @@ public class Jugador{
     public boolean cheekTanque(){
         return estado;
     }
-    
+    public void setAng(int angulo){
+        this.guardaAng=angulo;
+    }
+    public void setVel(int velocidad){
+        this.guardaVel=velocidad;
+    }
+    public int getAng(){
+        return this.guardaAng;
+    }
+    public int getVel(){
+        return this.guardaVel;
+    }
 }
 
