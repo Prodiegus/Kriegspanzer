@@ -142,6 +142,7 @@ public class IniciarJuegoViewController implements Initializable {
                 controller.posBala();
                 controller.posBarras();
                 controller.setGravedad(gravedad);
+                controller.setWind(viento);
                 controller.setPanelUsuario();
                 controller.setEventG(event);
                 try {
