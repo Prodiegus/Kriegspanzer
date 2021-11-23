@@ -17,8 +17,24 @@
          </effect>
          <children>
             <Canvas fx:id="board" height="465.0" layoutY="7.0" width="733.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0" />
-            <Label fx:id="alturaPanel" layoutX="516.0" layoutY="14.0" prefHeight="25.0" prefWidth="173.0" text="Altura máxima: " AnchorPane.rightAnchor="43.39999999999998" AnchorPane.topAnchor="14.0" />
-            <Label fx:id="distanciaPanel" layoutX="516.0" layoutY="40.0" prefHeight="25.0" prefWidth="173.0" text="Distancia máxima: " AnchorPane.rightAnchor="43.39999999999998" AnchorPane.topAnchor="40.0" />
+            <Label fx:id="alturaPanel" layoutX="516.0" layoutY="14.0" prefHeight="25.0" prefWidth="215.0" text="Altura máxima: " AnchorPane.rightAnchor="1.0" AnchorPane.topAnchor="14.0">
+               <font>
+                  <Font name="Consolas Bold" size="14.0" />
+               </font></Label>
+            <Label fx:id="distanciaPanel" layoutX="516.0" layoutY="40.0" prefHeight="25.0" prefWidth="215.0" text="Distancia máxima: " AnchorPane.rightAnchor="1.0" AnchorPane.topAnchor="40.0">
+               <font>
+                  <Font name="Consolas Bold" size="14.0" />
+               </font></Label>
+            <Label fx:id="gravedadPanel" layoutX="14.0" layoutY="14.0" prefHeight="25.0" prefWidth="173.0" text="Gravedad:" AnchorPane.leftAnchor="14.0" AnchorPane.topAnchor="14.0">
+               <font>
+                  <Font name="Consolas Bold" size="16.0" />
+               </font>
+            </Label>
+            <Label fx:id="vientoPanel" layoutX="14.0" layoutY="40.0" prefHeight="25.0" prefWidth="173.0" text="Viento: " AnchorPane.leftAnchor="14.0" AnchorPane.topAnchor="40.0">
+               <font>
+                  <Font name="Consolas Bold" size="16.0" />
+               </font>
+            </Label>
          </children></AnchorPane>
       <AnchorPane layoutX="34.0" layoutY="471.0" prefHeight="119.0" prefWidth="732.0" AnchorPane.bottomAnchor="14.0" AnchorPane.leftAnchor="34.0" AnchorPane.rightAnchor="34.0">
          <children>

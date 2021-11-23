@@ -6,7 +6,6 @@ public class IA {
     private int velocidad;
     private int angulo;
     private double gravedad;
-    private double rose;
     private int objetivo;
     private int intentos;
     private ArrayList<Jugador> jugadores;
@@ -14,14 +13,12 @@ public class IA {
     IA(ArrayList<Jugador> jugadores){
         this.jugadores = jugadores;
         this.gravedad = 9.81;
-        this.rose = 1;
         this.intentos=0;
         calcularLanzamiento();
     }
     IA(ArrayList<Jugador> jugadores, double gravedad, double rose){
         this.jugadores = jugadores;
         this.gravedad = gravedad;
-        this.rose = rose;
         this.intentos=0;
         calcularLanzamiento();
     }
@@ -45,7 +42,7 @@ public class IA {
         int i=0;
         double tiempo=0;
         double posX=posBala[0];
-        double tFinal;
+        //double tFinal;
         double posY= (double)465 - posBala[1];
         double pActX=posX;
         double pActY=posY;
@@ -108,7 +105,8 @@ public class IA {
 
     public static void main(String[] args) throws InterruptedException{
         ArrayList<Jugador> jugadores = new ArrayList<Jugador>();
-        int valorDado = (int) Math.floor(Math.random()*700);
+        Random random = new Random();
+        int valorDado = random.nextInt(700);
         int[] pos1={valorDado,300};
         Jugador j1 =  new Jugador("juan",true);
         Bala b1 = new Bala(pos1);
@@ -116,7 +114,7 @@ public class IA {
         t1.setPos(pos1[0], pos1[1]);
         j1.setTanque(t1);
         jugadores.add(j1);
-        valorDado = (int) Math.floor(Math.random()*700);
+        valorDado = random.nextInt(700);
         int[] pos2={valorDado,433};
         Jugador j2 =  new Jugador("pedro",true);
         Bala b2 = new Bala(pos2);
