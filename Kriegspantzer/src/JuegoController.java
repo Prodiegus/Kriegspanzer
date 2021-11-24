@@ -188,8 +188,26 @@ public class JuegoController implements Initializable {
             }*/
         }
         else{ //en caso de que la IA no realize un calculo mal
-            if (jugadores.get(arrayOrden[contOrden]).getTanque().getBala().verificaBalas() ){
-                cargarEmpate(eventGlobal);
+            if (jugadores.get(arrayOrden[contOrden]).getTanque().getBala().verificaBalas() && jugadores.get(arrayOrden[contOrden]).cheekTanque() ){
+                int maxbala=jugadores.get(0).getKills();
+                int jugwin=0;
+                for(int i=0;i<jugadores.size();i++){
+                    if(jugadores.get(i).getKills()>maxbala){
+                        maxbala=jugadores.get(i).getKills();
+                        jugwin=i;
+                    }
+                }
+                for(int a=0;a<jugadores.size();a++){
+                    if(jugwin!=a){
+                        if(jugadores.get(a).getKills()==maxbala){
+                            cargarEmpate(eventGlobal);
+                        }
+                    }
+                }
+                for(int p=0;p<jugadores.size();p++){
+                    System.out.println("jugador: "+jugadores.get(p).getName()+" kills: "+jugadores.get(p).getKills());
+                }
+                cargarPantallaFinal(jugwin,eventGlobal);
             }
             else{
                 if (jugadores.get(arrayOrden[contOrden]).isIA()){
@@ -346,6 +364,7 @@ public class JuegoController implements Initializable {
             }
             else if(mapa.comprobarCoordenadaTanque((int)Math.round(x),(int)Math.round(limSup-y))){ //entra al if si es que toca tanque
                 int win=0; 
+
                 arrayBalasImagen.get(tipBala).get(arrayOrden[jug]).setVisible(false);
                 for(int i=0;i<jugadores.size();i++){//revisa si el tanque por tanque si se encuentra en las coordenadas que cayó el misil
                     if (  ((int)Math.round(x)<=jugadores.get(i).getTanque().getPos()[0]+15) && ((int)Math.round(x)>=jugadores.get(i).getTanque().getPos()[0]-15)  ){ //+-15 representa el hitbox
@@ -353,7 +372,9 @@ public class JuegoController implements Initializable {
                         jugadores.get(i).getTanque().setVida( jugadores.get(i).getTanque().getVida()-jugadores.get(i).getTanque().getDamageBala()[tipBala]);
                         barras.get(i).setProgress(jugadores.get(i).getTanque().getVida()/100);
                         if (jugadores.get(i).getTanque().getVida() <=0 ){// si el jugador al que le cae la bala pierde toda la vida. 
-                            jugadores.get(jug).masKill();// se le suma la kill al tanque que lo elimino.
+                            System.out.println("Agrega Kills por eliminacion a jugador "+jugadores.get(arrayOrden[jug]).getName());
+                            jugadores.get(arrayOrden[jug]).masKill();// se le suma la kill al tanque que lo elimino.
+                            System.out.println("Al jugador "+  jugadores.get(arrayOrden[jug]).getName()+ " "+ jugadores.get(arrayOrden[jug]).getKills());
                             jugadores.get(i).quitarKills();// el tanque que muere pierde todas sus kills acumuladas.
                             jugadores.get(i).setEstado(false);// su estado cambia de vivo a muerto.
                             quitarTanque(i);// se eliminara el jugador muerto del sistema de turnos.
@@ -386,14 +407,28 @@ public class JuegoController implements Initializable {
                     nuevosTurnos();//desordena el orden nuevamente **ESTO DEBO HACERLO EN OTRA PARTE, PORQUE SE ESCONDE LA BALA 
                     setPanelUsuario();
                 }
-                turnoPanel.setText("Turno: "+jugadores.get(contOrden).getName());
                 setJugadores(jugadores);
                 this.tBalas.getItems().removeAll(this.tBalas.getItems());
                 this.tBalas.getItems().addAll(jugadores.get(arrayOrden[contOrden]).getTanque().getBalasDisp());
                 ang.setText( ""+jugadores.get(arrayOrden[contOrden]).getAng() );
                 vel.setText( ""+jugadores.get(arrayOrden[contOrden]).getVel());
-                if(jugadores.get(arrayOrden[contOrden]).getTanque().getBala().verificaBalas() ){
-                    cargarEmpate(eventGlobal);
+                if (jugadores.get(arrayOrden[contOrden]).getTanque().getBala().verificaBalas() && jugadores.get(arrayOrden[contOrden]).cheekTanque() ){
+                    int maxbala=jugadores.get(0).getKills();
+                    int jugwin=0;
+                    for(int i=0;i<jugadores.size();i++){
+                        if(jugadores.get(i).getKills()>maxbala){
+                            maxbala=jugadores.get(i).getKills();
+                            jugwin=i;
+                        }
+                    }
+                    for(int a=0;a<jugadores.size();a++){
+                        if(jugwin!=a){
+                            if(jugadores.get(a).getKills()==maxbala){
+                                cargarEmpate(eventGlobal);
+                            }
+                        }
+                    }
+                    cargarPantallaFinal(jugwin,eventGlobal);
                 }
                 else{
                     ia = new IA(jugadores);
@@ -417,7 +452,8 @@ public class JuegoController implements Initializable {
                     barras.get(i).setProgress(jugadores.get(i).getTanque().getVida()/100);
                     Tanque tanque = jugadores.get(i).getTanque();
                     if(tanque.getVida()<=0){
-                        jugadores.get(arrayOrden[contOrden]).masKill();
+                        System.out.println("Agrega Kills por caida a jugador "+jugadores.get(arrayOrden[jug]).getName());
+                        jugadores.get(arrayOrden[jug]).masKill();
                         mapa.removeTank(tanque.getPos()[0], tanque.getPos()[1]);
                     }
                 }
@@ -435,14 +471,28 @@ public class JuegoController implements Initializable {
                     contOrden=0;
                     nuevosTurnos();//desordena el orden nuevamente **ESTO DEBO HACERLO EN OTRA PARTE, PORQUE SE ESCONDE LA BALA 
                 }
-                turnoPanel.setText("Turno: "+jugadores.get(contOrden).getName());
                 setJugadores(jugadores);
                 this.tBalas.getItems().removeAll(this.tBalas.getItems());
                 this.tBalas.getItems().addAll(jugadores.get(arrayOrden[contOrden]).getTanque().getBalasDisp());
                 ang.setText( ""+jugadores.get(arrayOrden[contOrden]).getAng() );
                 vel.setText( ""+jugadores.get(arrayOrden[contOrden]).getVel());
-                if(jugadores.get(arrayOrden[contOrden]).getTanque().getBala().verificaBalas() ){
-                    cargarEmpate(eventGlobal);
+                if (jugadores.get(arrayOrden[contOrden]).getTanque().getBala().verificaBalas() && jugadores.get(arrayOrden[contOrden]).cheekTanque() ){
+                    int maxbala=jugadores.get(0).getKills();
+                    int jugwin=0;
+                    for(int i=0;i<jugadores.size();i++){
+                        if(jugadores.get(i).getKills()>maxbala){
+                            maxbala=jugadores.get(i).getKills();
+                            jugwin=i;
+                        }
+                    }
+                    for(int a=0;a<jugadores.size();a++){
+                        if(jugwin!=a){
+                            if(jugadores.get(a).getKills()==maxbala){
+                                cargarEmpate(eventGlobal);
+                            }
+                        }
+                    }
+                    cargarPantallaFinal(jugwin,eventGlobal);
                 }
                 else{
                     ia = new IA(jugadores);
@@ -686,6 +736,7 @@ public class JuegoController implements Initializable {
             tanque.setVida(tanque.getVida()-(caida/(double)4));//danio por caida
             barras.get(i).setProgress(tanque.getVida()/100);//se actualiza la barra de vida
             if(tanque.getVida()<=0){
+                System.out.println("Agrega kill por caida");
                 jugadores.get(arrayOrden[contOrden]).masKill();
                 mapa.removeTank(tanque.getPos()[0], tanque.getPos()[1]);
                 mapaPanel.getChildren().remove(tanks.get(i));     //se borra la imagen del tanque en pantalla
