@@ -37,6 +37,7 @@ public class ConfingController implements Initializable {
     int mun105;
     int cantJ;
     int wind;
+    String dir;
     double gravity;
     private ArrayList<Jugador> jugadores = new ArrayList<Jugador>();
     String[] direc={"Izquierda","Derecha"};
@@ -49,6 +50,7 @@ public class ConfingController implements Initializable {
         munPe = Integer.parseInt(balasPe.getText().trim());
         mun105 = Integer.parseInt(balas105.getText().trim());
         cantJ = Integer.parseInt(cantJug.getText().trim());
+        dir = direccion.getValue();
         if( (panAncho  <=1600 ) && (panLargo <=1600 ) && (cantJ>=2 && cantJ<=6) ){
             if ( (mun60>= 0) && (mun60 <= 30) && (mun105>= 0) && (mun105 <= 30) && (munPe>= 0) && (munPe <= 100) ){
                 try {
@@ -67,7 +69,15 @@ public class ConfingController implements Initializable {
                         gravity=Double.parseDouble(gravedad.getText().trim());
                         if (wind>=1 && wind<=10){
                             controller.setGravity(gravity);
-                            controller.setWind(wind);
+                            if("Izquierda" == dir){ //si el viento que se eligió va a la izquierda nuestra formula no varía
+                                controller.setWind(wind,1);
+                            }
+                            else if ("Derecha" == dir){//si se elige derecha nuestra formula si varía
+                                controller.setWind(wind,-1);
+                            }
+                            else{
+                                JOptionPane.showMessageDialog(null, "Datos inválidos, seleccione una dirección");
+                            }
                         }
                     }
                     controller.setBoxes(colors);
@@ -76,7 +86,6 @@ public class ConfingController implements Initializable {
                     controller.setCantBalasIni(mun60,munPe,mun105); //falta ver donde validar
                     controller.setCantJug(cantJ);
                     controller.recuperaJugadores(jugadores);
-                    controller.setGravity(10);
                     stage.setResizable(true);
                     stage.setTitle("Kriegspanzer Game");
                     stage.getIcons().add(new Image(getClass().getResourceAsStream("img/icon.png")));

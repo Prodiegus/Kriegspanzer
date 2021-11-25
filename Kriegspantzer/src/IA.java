@@ -38,7 +38,7 @@ public class IA {
         }
     }
     
-    public boolean calcularRango(int []posBala,double velocidad, double angulo,Mapa mapa, double gravity){
+    public boolean calcularRango(int []posBala,double velocidad, double angulo,Mapa mapa, double gravity, int viento, int dirViento){
         int i=0;
         double tiempo=0;
         double posX=posBala[0];
@@ -71,14 +71,14 @@ public class IA {
             return true;
         }
         while((pActX<731 && pActX>1)){
-            pActX=(posX+velocidad*Math.cos(Math.toRadians(angulo))*tiempo);
+            pActX=(posX+velocidad*Math.cos(Math.toRadians(angulo))*tiempo - (0.5*viento*dirViento*tiempo*tiempo));
             pActY=(posY+velocidad*Math.sin(Math.toRadians(angulo))*tiempo-(0.5*gravity*(tiempo*tiempo)));
             if (pActY<464 && pActX<730 && pActX>0 && pActY>0 && (angulo==90 || (posX!=pActX && posY!=pActY))){
                 if (!mapa.comprobarCoordenadaAire( (int)Math.round(pActX), (int)Math.round(466-pActY) )){ //mientras el recorrido sea aire no entrará aquí
                     return true;   //si choca el suelo es un tiro válido
                 }
             }
-            tiempo=tiempo+0.1;
+            tiempo=tiempo+0.05;
         }
         //    Llegará a esta parte en caso de que no haya tocado el suelo en su trayecto dentro del cuadro,
         //    sirve como una ayuda auxiliar para saber si es que se pasó de los otros límites
