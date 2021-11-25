@@ -41,6 +41,7 @@ public class IniciarJuegoViewController implements Initializable {
     int[] municiones = {3,3,10}; 
     double gravedad=9.81;
     int viento=0;
+    int direccion=0;
     private ArrayList<Jugador> jugadores = new ArrayList<Jugador>();
     String[] colors = {"Azul", "Verde", "Amarillo", "Rojo", "Morado", "Naranja", "Negro"};//colores disponibles
     
@@ -142,7 +143,7 @@ public class IniciarJuegoViewController implements Initializable {
                 controller.posBala();
                 controller.posBarras();
                 controller.setGravedad(gravedad);
-                controller.setWind(viento);
+                controller.setWind(viento,direccion);
                 controller.setPanelUsuario();
                 controller.setEventG(event);
                 try {
@@ -234,8 +235,9 @@ public class IniciarJuegoViewController implements Initializable {
     public void setGravity(double gravity){
         this.gravedad=gravity;
     }
-    public void setWind(int wind){
+    public void setWind(int wind, int direc){
         this.viento=wind;
+        this.direccion=direc;
     }
     public void setBoxes(String[] colors){
         this.cJugador.getItems().removeAll(this.cJugador.getItems());
