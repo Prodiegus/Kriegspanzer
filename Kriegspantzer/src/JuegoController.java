@@ -64,6 +64,7 @@ public class JuegoController implements Initializable {
     int []arrayOrden;
     private Mapa mapa;
     private ArrayList<Jugador> jugadores = new ArrayList<Jugador>();
+    private int destruccionMapa = 3;// valores del 1 al inifinito, mientras menor sea mayor sera la destruccion visible en el mapa
     double altoScale;//la division de ambos anchos de una proporcion de la ventana actual.
     double anchoScale;//la division de ambas alturas de una proporcion de la ventana actual.    
     double altMax=0;
@@ -409,8 +410,8 @@ public class JuegoController implements Initializable {
                 //se reinicia la posicion de la bala, en la del tanque
                 arrayBalasImagen.get(tipBala).get(arrayOrden[jug]).setX(xI);
                 arrayBalasImagen.get(tipBala).get(arrayOrden[jug]).setY(limSup-yI);//el 465 significa la posicion real en la matriz, ya que esta es invertida
-                mapa.destruir((int)Math.round(x),(int)Math.round(464-y), (int)Math.round(jugadores.get(arrayOrden[jug]).getTanque().getDamageBala()[tipBala]/3));
-                ArrayList<Integer> impactados = impactados((int)Math.round(x),(int)Math.round(464-y), (int)Math.round(jugadores.get(arrayOrden[jug]).getTanque().getDamageBala()[tipBala]/3));
+                mapa.destruir((int)Math.round(x),(int)Math.round(464-y), (int)Math.round(jugadores.get(arrayOrden[jug]).getTanque().getDamageBala()[tipBala]/destruccionMapa));
+                ArrayList<Integer> impactados = impactados((int)Math.round(x),(int)Math.round(464-y), (int)Math.round(jugadores.get(arrayOrden[jug]).getTanque().getDamageBala()[tipBala]/destruccionMapa));
                 for (Integer i : impactados) {
                     jugadores.get(i).getTanque().setVida(jugadores.get(i).getTanque().getVida()-10);//danio colateral por alcanxe de proyectil
                     barras.get(i).setProgress(jugadores.get(i).getTanque().getVida()/100);
@@ -540,7 +541,7 @@ public class JuegoController implements Initializable {
         this.arrayOrden=aux;
         /*
         System.out.print("nuevo orden: ");
-        for(int j=0;j<arrayOrden.length;j++){
+        for(int j=0;j<arrayOrden.length;j++){ 
             System.out.print(arrayOrden[j]+",");
         }
         */
