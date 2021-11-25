@@ -55,15 +55,16 @@ public class JuegoController implements Initializable {
     @FXML private ComboBox<String> tBalas;
     @FXML private ArrayList<ProgressBar> barras = new ArrayList<ProgressBar>();
     @FXML private ActionEvent eventGlobal;
-    @FXML private AnchorPane tanqueActual;
+    @FXML private ImageView tanqueActual;
     @FXML private Label vidaTanque;
-    @FXML private AnchorPane balaSeleccionada;
+    @FXML private ImageView balaSeleccionada;
     @FXML private Button disparar;
     
     int contOrden=0;
     int []arrayOrden;
     private Mapa mapa;
     private ArrayList<Jugador> jugadores = new ArrayList<Jugador>();
+    private int destruccionMapa = 3;// valores del 1 al inifinito, mientras menor sea mayor sera la destruccion visible en el mapa
     double altoScale;//la division de ambos anchos de una proporcion de la ventana actual.
     double anchoScale;//la division de ambas alturas de una proporcion de la ventana actual.    
     double altMax=0;
@@ -74,6 +75,7 @@ public class JuegoController implements Initializable {
     int limInf=2;
     int limIzq=2;
     int limDer=730;
+    int dirViento=0;
     IA ia;
     boolean disparo = false; //mientras la bala esta en aire no se puede disparar
     String[] balasDisp = { "Proyectil 60mm: 3 balas","Proyectil 105mm: 3 balas", "Proyectil Perforador: 10 balas"};
@@ -105,7 +107,7 @@ public class JuegoController implements Initializable {
         int velocidad=Integer.parseInt(vel.getText());
         double tiempo=0;
         int tGanador=contOrden;
-        if (jugadores.get(turno).lanzamiento(velocidad,angulo, this.mapa, gravedad, viento)){
+        if (jugadores.get(turno).lanzamiento(velocidad,angulo, this.mapa, gravedad, viento, dirViento)){
             //musica de disparo
             String path = "audio/5.mp3";
             Media media = new Media(new File(path).toURI().toString());
@@ -126,7 +128,7 @@ public class JuegoController implements Initializable {
                     arrayBalasImagen.get(0).get(turno).setVisible(true);
                     //System.out.println("hace visible la bala del turno: "+jugadores.get(turno).getName());
                     //se le suman valores a las posiciones para que salga desde arriba y al medio del tanque y no desde una esquina
-                    moverBala(posBala[0]+(double)10,(470-posBala[1]),posBala[0]+(double)10,(470-posBala[1]),Integer.parseInt(ang.getText()),Integer.parseInt(vel.getText()),tiempo,contOrden,tGanador, event,0);
+                    moverBala(posBala[0]+(double)10,(470-posBala[1]),posBala[0]+(double)10,(470-posBala[1]),angulo,velocidad,tiempo,contOrden,tGanador, event,0);
                 }
                 else{
                     if (jugadores.get(arrayOrden[contOrden]).isIA()){
@@ -147,7 +149,7 @@ public class JuegoController implements Initializable {
                     arrayBalasImagen.get(1).get(turno).setVisible(true);
                     //System.out.println("hace visible la bala del turno: "+jugadores.get(turno).getName());
                     //se le suman valores a las posiciones para que salga desde arriba y al medio del tanque y no desde una esquina
-                    moverBala(posBala[0]+(double)10,(470-posBala[1]),posBala[0]+(double)10,(470-posBala[1]),Integer.parseInt(ang.getText()),Integer.parseInt(vel.getText()),tiempo,contOrden,tGanador, event,1);
+                    moverBala(posBala[0]+(double)10,(470-posBala[1]),posBala[0]+(double)10,(470-posBala[1]),angulo,velocidad,tiempo,contOrden,tGanador, event,1);
                 }
                 else{
                     if (jugadores.get(arrayOrden[contOrden]).isIA()){
@@ -168,7 +170,7 @@ public class JuegoController implements Initializable {
                     arrayBalasImagen.get(2).get(turno).setVisible(true);
                     //System.out.println("hace visible la bala del turno: "+jugadores.get(turno).getName());
                     //se le suman valores a las posiciones para que salga desde arriba y al medio del tanque y no desde una esquina
-                    moverBala(posBala[0]+(double)10,(470-posBala[1]),posBala[0]+(double)10,(470-posBala[1]),Integer.parseInt(ang.getText()),Integer.parseInt(vel.getText()),tiempo,contOrden,tGanador, event,2);
+                    moverBala(posBala[0]+(double)10,(470-posBala[1]),posBala[0]+(double)10,(470-posBala[1]),angulo,velocidad,tiempo,contOrden,tGanador, event,2);
                 }
                 else{
                     if (jugadores.get(arrayOrden[contOrden]).isIA()){
@@ -232,7 +234,7 @@ public class JuegoController implements Initializable {
             Random rn= new Random();
             String tipBala=jugadores.get(arrayOrden[contOrden]).getTanque().getBalasDisp()[rn.nextInt(3)];
             tBalas.setValue(tipBala);
-            if(ia.calcularRango(jugadores.get(arrayOrden[contOrden]).getTanque().getBala().getPosBala(), velocidad, angulo, mapa, gravedad)){//tiro no se sale de los rangos
+            if(ia.calcularRango(jugadores.get(arrayOrden[contOrden]).getTanque().getBala().getPosBala(), velocidad, angulo, mapa, gravedad,viento, dirViento)){//tiro no se sale de los rangos
                 try {
                     pressShoot(new ActionEvent());
                 } catch (InterruptedException ex) {
@@ -356,7 +358,7 @@ public class JuegoController implements Initializable {
                 }
                 arrayBalasImagen.get(tipBala).get(arrayOrden[jug]).setY((limSup-y)*anchoScale);//el 465 significa la posicion real en la matriz, ya que esta es invertida
                 try{//Se realiza la recursión hasta llegar al caso base 
-                    moverBala(xI,yI,(xI+velocidad*Math.cos(Math.toRadians(angulo))*tiempo-0.5*viento*tiempo*tiempo),(yI+velocidad*Math.sin(Math.toRadians(angulo))*tiempo-(0.5*gravedad*(tiempo*tiempo))),angulo,velocidad,(tiempo+0.05),jug,tGanador, event,tipBala);      
+                    moverBala(xI,yI,(xI+velocidad*Math.cos(Math.toRadians(angulo))*tiempo-0.5*viento*dirViento*tiempo*tiempo),(yI+velocidad*Math.sin(Math.toRadians(angulo))*tiempo-(0.5*gravedad*(tiempo*tiempo))),angulo,velocidad,(tiempo+0.05),jug,tGanador, event,tipBala);      
                 }
                 catch(InterruptedException e2){
                     e2.printStackTrace();
@@ -392,8 +394,7 @@ public class JuegoController implements Initializable {
                     }
                 }
                 altMax=0;//se reinicia la altura máxima para el siguiente jugador.
-                //arrayBalasImagen.get(tipBala).get(arrayOrden[jug]).setVisible(false);
-                //System.out.println("hace invisible la bala del turno: "+jugadores.get(arrayOrden[jug]).getName());
+                arrayBalasImagen.get(tipBala).get(arrayOrden[jug]).setVisible(false);
                 
                 
                 try {
@@ -445,8 +446,8 @@ public class JuegoController implements Initializable {
                 //se reinicia la posicion de la bala, en la del tanque
                 arrayBalasImagen.get(tipBala).get(arrayOrden[jug]).setX(xI);
                 arrayBalasImagen.get(tipBala).get(arrayOrden[jug]).setY(limSup-yI);//el 465 significa la posicion real en la matriz, ya que esta es invertida
-                mapa.destruir((int)Math.round(x),(int)Math.round(464-y), (int)Math.round(jugadores.get(arrayOrden[jug]).getTanque().getDamageBala()[tipBala]/3));
-                ArrayList<Integer> impactados = impactados((int)Math.round(x),(int)Math.round(464-y), (int)Math.round(jugadores.get(arrayOrden[jug]).getTanque().getDamageBala()[tipBala]/3));
+                mapa.destruir((int)Math.round(x),(int)Math.round(464-y), (int)Math.round(jugadores.get(arrayOrden[jug]).getTanque().getDamageBala()[tipBala]/destruccionMapa));
+                ArrayList<Integer> impactados = impactados((int)Math.round(x),(int)Math.round(464-y), (int)Math.round(jugadores.get(arrayOrden[jug]).getTanque().getDamageBala()[tipBala]/destruccionMapa));
                 for (Integer i : impactados) {
                     jugadores.get(i).getTanque().setVida(jugadores.get(i).getTanque().getVida()-10);//danio colateral por alcanxe de proyectil
                     barras.get(i).setProgress(jugadores.get(i).getTanque().getVida()/100);
@@ -469,7 +470,8 @@ public class JuegoController implements Initializable {
                 contOrden+=1;
                 if (contOrden == arrayOrden.length){
                     contOrden=0;
-                    nuevosTurnos();//desordena el orden nuevamente **ESTO DEBO HACERLO EN OTRA PARTE, PORQUE SE ESCONDE LA BALA 
+                    nuevosTurnos();//desordena el orden nuevamente **ESTO DEBO HACERLO EN OTRA PARTE, PORQUE SE ESCONDE LA BALA
+                    setPanelUsuario();
                 }
                 setJugadores(jugadores);
                 this.tBalas.getItems().removeAll(this.tBalas.getItems());
@@ -520,10 +522,22 @@ public class JuegoController implements Initializable {
     public void setGravedad(double gravity){
         this.gravedad=gravity;
     }
-    public void setWind(int wind){
+    public void setWind(int wind, int direcc){
+        this.dirViento=direcc;
         this.viento=wind;
-        vientoPanel.setText("Viento: "+viento);
         gravedadPanel.setText("Gravedad: "+gravedad);
+        switch (direcc) {
+            case 1:
+                vientoPanel.setText("Viento: "+viento+" a la izquierda.");
+                break;
+            case -1:
+                vientoPanel.setText("Viento: "+viento+" a la derecha.");
+                break;
+            default:
+                vientoPanel.setText("Sin viento.");
+                break;
+        }
+             
     }
     public void setBoard(){
         // a la hora de recorrer el ciclo se multiplica por sus escalas los valores
@@ -576,7 +590,7 @@ public class JuegoController implements Initializable {
         this.arrayOrden=aux;
         /*
         System.out.print("nuevo orden: ");
-        for(int j=0;j<arrayOrden.length;j++){
+        for(int j=0;j<arrayOrden.length;j++){ 
             System.out.print(arrayOrden[j]+",");
         }
         */
@@ -752,23 +766,20 @@ public class JuegoController implements Initializable {
     @FXML
     public void setPanelUsuario(ActionEvent event){
         Tanque tanque = jugadores.get(arrayOrden[contOrden]).getTanque();
-        this.tanqueActual.getStyleClass().removeAll();
-        this.vidaTanque.getStyleClass().removeAll();
-        this.balaSeleccionada.getStyleClass().removeAll();
-        this.tanqueActual.getStyleClass().add(tanque.getColor());
+        this.tanqueActual.setImage(new Image("img/Tanque_"+tanque.getColor()+".png"));
         this.vidaTanque.setText((int)Math.round(tanque.getVida())+"%");
         if(tBalas.getValue()!=null){
             if(tBalas.getValue().equals(balasDisp[0])){
-                this.balaSeleccionada.getStyleClass().add("bala60mm");
+                this.balaSeleccionada.setImage(new Image("img/Box60.png"));
             }
             if(tBalas.getValue().equals(balasDisp[1])){
-                this.balaSeleccionada.getStyleClass().add("bala105mm");
+                this.balaSeleccionada.setImage(new Image("img/Box105.png"));
             }
             if(tBalas.getValue().equals(balasDisp[2])){
-                this.balaSeleccionada.getStyleClass().add("Perforante");
+                this.balaSeleccionada.setImage(new Image("img/BoxPerforante.png"));
             }
         }else{
-            this.balaSeleccionada.getStyleClass().add("box");
+            this.balaSeleccionada.setImage(new Image("img/Box.png"));
         }
     }
     @FXML

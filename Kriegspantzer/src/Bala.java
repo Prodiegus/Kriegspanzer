@@ -4,7 +4,7 @@ public class Bala{
     public Bala(int [] posBala){
         this.posBala=posBala;
     }
-    public int calcularLanzamiento(Bala bala,double velocidad, double angulo,Mapa mapa, double gravedad, int viento){
+    public int calcularLanzamiento(Bala bala,double velocidad, double angulo,Mapa mapa, double gravedad, int viento, int dirViento){
         int i=0;
         double tiempo=0;
         double posX=posBala[0];
@@ -37,7 +37,7 @@ public class Bala{
             return 1;
         }
         while((pActX<732 && pActX>1)){
-            pActX=(posX+velocidad*Math.cos(Math.toRadians(angulo))*tiempo - (0.5*viento*tiempo*tiempo) );  //- (0.5*viento*tiempo*tiempo)
+            pActX=(posX+velocidad*Math.cos(Math.toRadians(angulo))*tiempo - (0.5*viento*dirViento*tiempo*tiempo) );  //- (0.5*viento*tiempo*tiempo)
             pActY=(posY+velocidad*Math.sin(Math.toRadians(angulo))*tiempo - (0.5*gravedad*(tiempo*tiempo)));
             if (pActY<464 && pActX<732 && pActX>0 && pActY>0 && (angulo==90 || (posX!=pActX && posY!=pActY))){
                 if (!mapa.comprobarCoordenadaAire( (int)Math.round(pActX), (int)Math.round(467-pActY) )){ //mientras el recorrido sea aire no entrará aquí
