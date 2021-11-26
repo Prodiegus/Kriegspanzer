@@ -742,10 +742,10 @@ public class JuegoController implements Initializable {
                 this.balaSeleccionada.setImage(new Image("img/Box60.png"));
             }
             if(tBalas.getValue().equals(balasDisp[1])){
-                this.balaSeleccionada.setImage(new Image("img/BoxPerforante.png"));
+                this.balaSeleccionada.setImage(new Image("img/Box105.png"));
             }
             if(tBalas.getValue().equals(balasDisp[2])){
-                this.balaSeleccionada.setImage(new Image("img/Box105.png"));
+                this.balaSeleccionada.setImage(new Image("img/BoxPerforante.png"));
             }
         }else{
             this.balaSeleccionada.setImage(new Image("img/Box.png"));
