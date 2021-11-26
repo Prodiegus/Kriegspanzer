@@ -567,18 +567,22 @@ public class JuegoController implements Initializable {
     public void setJugadores(ArrayList<Jugador> jugadores){
         this.jugadores = jugadores;
         Random r=new Random();
-        this.dirViento = opcionesViento[r.nextInt(3)];
-        
-        switch (dirViento) {
-            case 1:
-                vientoPanel.setText("Viento: "+viento+" a la izquierda.");
-                break;
-            case -1:
-                vientoPanel.setText("Viento: "+viento+" a la derecha.");
-                break;
-            case 0:
-                vientoPanel.setText("Sin viento.");
-                break;
+        if (this.viento != 0){
+            this.dirViento = opcionesViento[r.nextInt(3)];
+            switch (dirViento) {
+                case 1:
+                    vientoPanel.setText("Viento: "+viento+" a la izquierda.");
+                    break;
+                case -1:
+                    vientoPanel.setText("Viento: "+viento+" a la derecha.");
+                    break;
+                case 0:
+                    vientoPanel.setText("Sin viento.");
+                    break;
+            }
+        }
+        else{
+            vientoPanel.setText("Sin viento.");
         }
         turnoPanel.setText("Turno: "+jugadores.get(arrayOrden[contOrden]).getName());
     }
@@ -609,12 +613,6 @@ public class JuegoController implements Initializable {
             aux[posAleatoria] = temp;
         }
         this.arrayOrden=aux;
-        /*
-        System.out.print("nuevo orden: ");
-        for(int j=0;j<arrayOrden.length;j++){ 
-            System.out.print(arrayOrden[j]+",");
-        }
-        */
     }
     public void quitarTanque(int jugMuerto){// este metodo servira para eliminar al tanque muerto del sistema de turnos.
         int[] aux = new int [arrayOrden.length-1];// se creara un arreglo auxiliar para guardar el nuevo arreglo de turnos.
