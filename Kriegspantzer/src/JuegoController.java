@@ -62,6 +62,7 @@ public class JuegoController implements Initializable {
     
     int contOrden=0;
     int []arrayOrden;
+    int []opcionesViento={-1,0,1};
     private Mapa mapa;
     private ArrayList<Jugador> jugadores = new ArrayList<Jugador>();
     private int destruccionMapa = 3;// valores del 1 al inifinito, mientras menor sea mayor sera la destruccion visible en el mapa
@@ -463,7 +464,6 @@ public class JuegoController implements Initializable {
                         mapa.removeTank(tanque.getPos()[0], tanque.getPos()[1]);
                     }
                 }
-
                 posTank(true);
                 setBoard();
                 
@@ -537,21 +537,9 @@ public class JuegoController implements Initializable {
     public void setGravedad(double gravity){
         this.gravedad=gravity;
     }
-    public void setWind(int wind, int direcc){
-        this.dirViento=direcc;
+    public void setWind(int wind){
         this.viento=wind;
         gravedadPanel.setText("Gravedad: "+gravedad);
-        switch (direcc) {
-            case 1:
-                vientoPanel.setText("Viento: "+viento+" a la izquierda.");
-                break;
-            case -1:
-                vientoPanel.setText("Viento: "+viento+" a la derecha.");
-                break;
-            default:
-                vientoPanel.setText("Sin viento.");
-                break;
-        }
              
     }
     public void setBoard(){
@@ -574,6 +562,24 @@ public class JuegoController implements Initializable {
     //setea el label al principio del juego
     public void setJugadores(ArrayList<Jugador> jugadores){
         this.jugadores = jugadores;
+        Random r=new Random();
+        if (this.viento != 0){
+            this.dirViento = opcionesViento[r.nextInt(3)];
+            switch (dirViento) {
+                case 1:
+                    vientoPanel.setText("Viento: "+viento+" a la izquierda.");
+                    break;
+                case -1:
+                    vientoPanel.setText("Viento: "+viento+" a la derecha.");
+                    break;
+                case 0:
+                    vientoPanel.setText("Sin viento.");
+                    break;
+            }
+        }
+        else{
+            vientoPanel.setText("Sin viento.");
+        }
         turnoPanel.setText("Turno: "+jugadores.get(arrayOrden[contOrden]).getName());
     }
     //se randomiza el orden de los turnos
@@ -603,12 +609,6 @@ public class JuegoController implements Initializable {
             aux[posAleatoria] = temp;
         }
         this.arrayOrden=aux;
-        /*
-        System.out.print("nuevo orden: ");
-        for(int j=0;j<arrayOrden.length;j++){ 
-            System.out.print(arrayOrden[j]+",");
-        }
-        */
     }
     public void quitarTanque(int jugMuerto){// este metodo servira para eliminar al tanque muerto del sistema de turnos.
         int[] aux = new int [arrayOrden.length-1];// se creara un arreglo auxiliar para guardar el nuevo arreglo de turnos.
