@@ -22,10 +22,10 @@ public class Jugador{
     }
 
     public void masKill() {
-        this.kills++;
+        this.kills+=1;
     }
     public void quitarKills(){
-        this.kills=0;
+        this.kills-=1;
     }
     public void setEstado(boolean estado) {
         this.estado = estado;

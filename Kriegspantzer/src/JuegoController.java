@@ -55,9 +55,9 @@ public class JuegoController implements Initializable {
     @FXML private ComboBox<String> tBalas;
     @FXML private ArrayList<ProgressBar> barras = new ArrayList<ProgressBar>();
     @FXML private ActionEvent eventGlobal;
-    @FXML private AnchorPane tanqueActual;
+    @FXML private ImageView tanqueActual;
     @FXML private Label vidaTanque;
-    @FXML private AnchorPane balaSeleccionada;
+    @FXML private ImageView balaSeleccionada;
     @FXML private Button disparar;
     
     int contOrden=0;
@@ -65,6 +65,7 @@ public class JuegoController implements Initializable {
     int []opcionesViento={-1,0,1};
     private Mapa mapa;
     private ArrayList<Jugador> jugadores = new ArrayList<Jugador>();
+    private int destruccionMapa = 3;// valores del 1 al inifinito, mientras menor sea mayor sera la destruccion visible en el mapa
     double altoScale;//la division de ambos anchos de una proporcion de la ventana actual.
     double anchoScale;//la division de ambas alturas de una proporcion de la ventana actual.    
     double altMax=0;
@@ -190,8 +191,30 @@ public class JuegoController implements Initializable {
             }*/
         }
         else{ //en caso de que la IA no realize un calculo mal
-            if (jugadores.get(arrayOrden[contOrden]).getTanque().getBala().verificaBalas() ){
-                cargarEmpate(eventGlobal);
+            if (jugadores.get(arrayOrden[contOrden]).getTanque().getBala().verificaBalas() && jugadores.get(arrayOrden[contOrden]).cheekTanque()){
+                boolean bandera=true;
+                int maxbala=jugadores.get(0).getKills();
+                int jugwin=0;
+                for(int i=0;i<jugadores.size();i++){
+                    if(jugadores.get(i).getKills()>maxbala){
+                        maxbala=jugadores.get(i).getKills();
+                        jugwin=i;
+                    }
+                }
+                for(int a=0;a<jugadores.size();a++){
+                    if(jugwin!=a){
+                        if(jugadores.get(a).getKills()==maxbala){
+                            bandera=false;
+                            cargarEmpate(eventGlobal);
+                        }
+                    }
+                }
+                for(int p=0;p<jugadores.size();p++){
+                    System.out.println("Jugador: "+jugadores.get(p).getName()+" kills:"+jugadores.get(p).getKills());
+                }
+                if(bandera){
+                    cargarPantallaFinal(jugwin, event);
+                }
             }
             else{
                 if (jugadores.get(arrayOrden[contOrden]).isIA()){
@@ -355,11 +378,12 @@ public class JuegoController implements Initializable {
                         jugadores.get(i).getTanque().setVida( jugadores.get(i).getTanque().getVida()-jugadores.get(i).getTanque().getDamageBala()[tipBala]);
                         barras.get(i).setProgress(jugadores.get(i).getTanque().getVida()/100);
                         if (jugadores.get(i).getTanque().getVida() <=0 ){// si el jugador al que le cae la bala pierde toda la vida. 
-                            jugadores.get(jug).masKill();// se le suma la kill al tanque que lo elimino.
+                            jugadores.get(arrayOrden[contOrden]).masKill();// se le suma la kill al tanque que lo elimino.
                             jugadores.get(i).quitarKills();// el tanque que muere pierde todas sus kills acumuladas.
                             jugadores.get(i).setEstado(false);// su estado cambia de vivo a muerto.
                             quitarTanque(i);// se eliminara el jugador muerto del sistema de turnos.
-                            mapa.removeTank(jugadores.get(i).getTanque().getPos()[0],jugadores.get(i).getTanque().getPos()[1]);// se remueve el tanque en ambito de matriz del mapa.
+                            Tanque tanque = jugadores.get(i).getTanque();
+                            mapa.removeTank(tanque.getPos()[0], tanque.getPos()[1]);// se remueve el tanque en ambito de matriz del mapa.
                         }
                     }
                     if(!jugadores.get(i).cheekTanque()){//si el estado es falso es tanque destruido
@@ -372,8 +396,7 @@ public class JuegoController implements Initializable {
                         cargarPantallaFinal(win,eventGlobal);// identificara como al unico tanque vivo como el ganador
                     }
                 }
-                altMax=0;//se reinicia la altura máxima para el siguiente jugador.||
-                
+                altMax=0;//se reinicia la altura máxima para el siguiente jugador.      
                 try {
                     TimeUnit.SECONDS.sleep(1);
                 } catch (InterruptedException ex) {
@@ -390,9 +413,31 @@ public class JuegoController implements Initializable {
                 this.tBalas.getItems().addAll(jugadores.get(arrayOrden[contOrden]).getTanque().getBalasDisp());
                 ang.setText( ""+jugadores.get(arrayOrden[contOrden]).getAng() );
                 vel.setText( ""+jugadores.get(arrayOrden[contOrden]).getVel());
-                if(jugadores.get(arrayOrden[contOrden]).getTanque().getBala().verificaBalas() ){
-                    cargarEmpate(eventGlobal);
-                }
+                if (jugadores.get(arrayOrden[contOrden]).getTanque().getBala().verificaBalas() && jugadores.get(arrayOrden[contOrden]).cheekTanque()){
+                    boolean bandera=true;
+                    int maxbala=jugadores.get(0).getKills();
+                    int jugwin=0;
+                    for(int i=0;i<jugadores.size();i++){
+                        if(jugadores.get(i).getKills()>maxbala){
+                            maxbala=jugadores.get(i).getKills();
+                            jugwin=i;
+                        }
+                    }
+                    for(int a=0;a<jugadores.size();a++){
+                        if(jugwin!=a){
+                            if(jugadores.get(a).getKills()==maxbala){
+                                bandera=false;
+                                cargarEmpate(eventGlobal);
+                            }
+                        }
+                    }
+                    for(int p=0;p<jugadores.size();p++){
+                        System.out.println("Jugador: "+jugadores.get(p).getName()+" kills:"+jugadores.get(p).getKills());
+                    }
+                    if(bandera){
+                        cargarPantallaFinal(jugwin, event);
+                    }
+            }
                 else{
                     ia = new IA(jugadores);
                     try {
@@ -408,8 +453,8 @@ public class JuegoController implements Initializable {
                 //se reinicia la posicion de la bala, en la del tanque
                 arrayBalasImagen.get(tipBala).get(arrayOrden[jug]).setX(xI);
                 arrayBalasImagen.get(tipBala).get(arrayOrden[jug]).setY(limSup-yI);//el 465 significa la posicion real en la matriz, ya que esta es invertida
-                mapa.destruir((int)Math.round(x),(int)Math.round(464-y), (int)Math.round(jugadores.get(arrayOrden[jug]).getTanque().getDamageBala()[tipBala]/3));
-                ArrayList<Integer> impactados = impactados((int)Math.round(x),(int)Math.round(464-y), (int)Math.round(jugadores.get(arrayOrden[jug]).getTanque().getDamageBala()[tipBala]/3));
+                mapa.destruir((int)Math.round(x),(int)Math.round(464-y), (int)Math.round(jugadores.get(arrayOrden[jug]).getTanque().getDamageBala()[tipBala]/destruccionMapa));
+                ArrayList<Integer> impactados = impactados((int)Math.round(x),(int)Math.round(464-y), (int)Math.round(jugadores.get(arrayOrden[jug]).getTanque().getDamageBala()[tipBala]/destruccionMapa));
                 for (Integer i : impactados) {
                     jugadores.get(i).getTanque().setVida(jugadores.get(i).getTanque().getVida()-10);//danio colateral por alcanxe de proyectil
                     barras.get(i).setProgress(jugadores.get(i).getTanque().getVida()/100);
@@ -438,9 +483,31 @@ public class JuegoController implements Initializable {
                 this.tBalas.getItems().addAll(jugadores.get(arrayOrden[contOrden]).getTanque().getBalasDisp());
                 ang.setText( ""+jugadores.get(arrayOrden[contOrden]).getAng() );
                 vel.setText( ""+jugadores.get(arrayOrden[contOrden]).getVel());
-                if(jugadores.get(arrayOrden[contOrden]).getTanque().getBala().verificaBalas() ){
-                    cargarEmpate(eventGlobal);
-                }
+                if (jugadores.get(arrayOrden[contOrden]).getTanque().getBala().verificaBalas() && jugadores.get(arrayOrden[contOrden]).cheekTanque()){
+                    boolean bandera=true;
+                    int maxbala=jugadores.get(0).getKills();
+                    int jugwin=0;
+                    for(int i=0;i<jugadores.size();i++){
+                        if(jugadores.get(i).getKills()>maxbala){
+                            maxbala=jugadores.get(i).getKills();
+                            jugwin=i;
+                        }
+                    }
+                    for(int a=0;a<jugadores.size();a++){
+                        if(jugwin!=a){
+                            if(jugadores.get(a).getKills()==maxbala){
+                                bandera=false;
+                                cargarEmpate(eventGlobal);
+                            }
+                        }
+                    }
+                    for(int p=0;p<jugadores.size();p++){
+                        System.out.println("Jugador: "+jugadores.get(p).getName()+" kills:"+jugadores.get(p).getKills());
+                    }
+                    if(bandera){
+                        cargarPantallaFinal(jugwin, event);
+                    }
+            }
                 else{
                     ia = new IA(jugadores);
                     try {
@@ -540,7 +607,7 @@ public class JuegoController implements Initializable {
         this.arrayOrden=aux;
         /*
         System.out.print("nuevo orden: ");
-        for(int j=0;j<arrayOrden.length;j++){
+        for(int j=0;j<arrayOrden.length;j++){ 
             System.out.print(arrayOrden[j]+",");
         }
         */
@@ -700,7 +767,7 @@ public class JuegoController implements Initializable {
             tanque.setVida(tanque.getVida()-(caida/(double)4));//danio por caida
             barras.get(i).setProgress(tanque.getVida()/100);//se actualiza la barra de vida
             if(tanque.getVida()<=0){
-                jugadores.get(arrayOrden[contOrden]).masKill();
+                //jugadores.get(arrayOrden[contOrden]).quitarKills();
                 mapa.removeTank(tanque.getPos()[0], tanque.getPos()[1]);
                 mapaPanel.getChildren().remove(tanks.get(i));     //se borra la imagen del tanque en pantalla
                 mapaPanel.getChildren().remove(barras.get(i));    //se borra la barra del tanque en pantalla
@@ -715,45 +782,39 @@ public class JuegoController implements Initializable {
     @FXML
     public void setPanelUsuario(ActionEvent event){
         Tanque tanque = jugadores.get(arrayOrden[contOrden]).getTanque();
-        this.tanqueActual.getStyleClass().removeAll();
-        this.vidaTanque.getStyleClass().removeAll();
-        this.balaSeleccionada.getStyleClass().removeAll();
-        this.tanqueActual.getStyleClass().add(tanque.getColor());
+        this.tanqueActual.setImage(new Image("img/Tanque_"+tanque.getColor()+".png"));
         this.vidaTanque.setText((int)Math.round(tanque.getVida())+"%");
         if(tBalas.getValue()!=null){
             if(tBalas.getValue().equals(balasDisp[0])){
-                this.balaSeleccionada.getStyleClass().add("bala60mm");
+                this.balaSeleccionada.setImage(new Image("img/Box60.png"));
             }
             if(tBalas.getValue().equals(balasDisp[1])){
-                this.balaSeleccionada.getStyleClass().add("bala105mm");
+                this.balaSeleccionada.setImage(new Image("img/Box105.png"));
             }
             if(tBalas.getValue().equals(balasDisp[2])){
-                this.balaSeleccionada.getStyleClass().add("Perforante");
+                this.balaSeleccionada.setImage(new Image("img/BoxPerforante.png"));
             }
         }else{
-            this.balaSeleccionada.getStyleClass().add("box");
+            this.balaSeleccionada.setImage(new Image("img/Box.png"));
         }
     }
     @FXML
     public void setPanelUsuario(){
         Tanque tanque = jugadores.get(arrayOrden[contOrden]).getTanque();
-        this.tanqueActual.getStyleClass().removeAll();
-        this.vidaTanque.getStyleClass().removeAll();
-        this.balaSeleccionada.getStyleClass().removeAll();
-        this.tanqueActual.getStyleClass().add(tanque.getColor());
+        this.tanqueActual.setImage(new Image("img/Tanque_"+tanque.getColor()+".png"));
         this.vidaTanque.setText((int)Math.round(tanque.getVida())+"%");
         if(tBalas.getValue()!=null){
             if(tBalas.getValue().equals(balasDisp[0])){
-                this.balaSeleccionada.getStyleClass().add("bala60mm");
+                this.balaSeleccionada.setImage(new Image("img/Box60.png"));
             }
             if(tBalas.getValue().equals(balasDisp[1])){
-                this.balaSeleccionada.getStyleClass().add("Perforante");
+                this.balaSeleccionada.setImage(new Image("img/Box105.png"));
             }
             if(tBalas.getValue().equals(balasDisp[2])){
-                this.balaSeleccionada.getStyleClass().add("bala105mm");
+                this.balaSeleccionada.setImage(new Image("img/BoxPerforante.png"));
             }
         }else{
-            this.balaSeleccionada.getStyleClass().add("box");
+            this.balaSeleccionada.setImage(new Image("img/Box.png"));
         }
     }
     //posiciona las balas incialmente arriba de los tanques
