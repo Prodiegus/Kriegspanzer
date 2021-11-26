@@ -809,16 +809,16 @@ public class JuegoController implements Initializable {
         this.vidaTanque.setText((int)Math.round(tanque.getVida())+"%");
         if(tBalas.getValue()!=null){
             if(tBalas.getValue().equals(balasDisp[0])){
-                this.balaSeleccionada.setImage(new Image("img/Box60.png"));
+                this.balaSeleccionada.setImage(bala60);
             }
             if(tBalas.getValue().equals(balasDisp[1])){
-                this.balaSeleccionada.setImage(new Image("img/Box105.png"));
+                this.balaSeleccionada.setImage(bala105);
             }
             if(tBalas.getValue().equals(balasDisp[2])){
-                this.balaSeleccionada.setImage(new Image("img/BoxPerforante.png"));
+                this.balaSeleccionada.setImage(balaPerforante);
             }
         }else{
-            this.balaSeleccionada.setImage(new Image("img/Box.png"));
+            this.balaSeleccionada.setImage(balaBox);
         }
     }
     //posiciona las balas incialmente arriba de los tanques
