@@ -41,7 +41,6 @@ public class IniciarJuegoViewController implements Initializable {
     int[] municiones = {3,3,10}; 
     double gravedad=9.81;
     int viento=0;
-    int direccion=0;
     private ArrayList<Jugador> jugadores = new ArrayList<Jugador>();
     String[] colors = {"Azul", "Verde", "Amarillo", "Rojo", "Morado", "Naranja", "Negro"};//colores disponibles
     
@@ -135,6 +134,7 @@ public class IniciarJuegoViewController implements Initializable {
                 controller.setBoardSize(this.ancho*0.915106117, this.alto*0.75732899);//escala de proporcionalidada canvas/ventana
                 controller.setScale();
                 controller.setMap(mapa);
+                controller.setWind(viento);
                 controller.ordenTurnos(jugadores);
                 controller.setJugadores(jugadores);
                 controller.actualizaCantBalas(municiones);
@@ -143,7 +143,6 @@ public class IniciarJuegoViewController implements Initializable {
                 controller.posBala();
                 controller.posBarras();
                 controller.setGravedad(gravedad);
-                controller.setWind(viento,direccion);
                 controller.setPanelUsuario();
                 controller.setEventG(event);
                 try {
@@ -235,9 +234,8 @@ public class IniciarJuegoViewController implements Initializable {
     public void setGravity(double gravity){
         this.gravedad=gravity;
     }
-    public void setWind(int wind, int direc){
+    public void setWind(int wind){
         this.viento=wind;
-        this.direccion=direc;
     }
     public void setBoxes(String[] colors){
         this.cJugador.getItems().removeAll(this.cJugador.getItems());

@@ -62,6 +62,7 @@ public class JuegoController implements Initializable {
     
     int contOrden=0;
     int []arrayOrden;
+    int []opcionesViento={-1,0,1};
     private Mapa mapa;
     private ArrayList<Jugador> jugadores = new ArrayList<Jugador>();
     private int destruccionMapa = 3;// valores del 1 al inifinito, mientras menor sea mayor sera la destruccion visible en el mapa
@@ -376,9 +377,7 @@ public class JuegoController implements Initializable {
                         cargarPantallaFinal(win,eventGlobal);// identificara como al unico tanque vivo como el ganador
                     }
                 }
-                altMax=0;//se reinicia la altura máxima para el siguiente jugador.
-                arrayBalasImagen.get(tipBala).get(arrayOrden[jug]).setVisible(false);
-                
+                altMax=0;//se reinicia la altura máxima para el siguiente jugador.||
                 
                 try {
                     TimeUnit.SECONDS.sleep(1);
@@ -425,7 +424,6 @@ public class JuegoController implements Initializable {
                         mapa.removeTank(tanque.getPos()[0], tanque.getPos()[1]);
                     }
                 }
-
                 posTank(true);
                 setBoard();
                 
@@ -477,21 +475,9 @@ public class JuegoController implements Initializable {
     public void setGravedad(double gravity){
         this.gravedad=gravity;
     }
-    public void setWind(int wind, int direcc){
-        this.dirViento=direcc;
+    public void setWind(int wind){
         this.viento=wind;
         gravedadPanel.setText("Gravedad: "+gravedad);
-        switch (direcc) {
-            case 1:
-                vientoPanel.setText("Viento: "+viento+" a la izquierda.");
-                break;
-            case -1:
-                vientoPanel.setText("Viento: "+viento+" a la derecha.");
-                break;
-            default:
-                vientoPanel.setText("Sin viento.");
-                break;
-        }
              
     }
     public void setBoard(){
@@ -514,6 +500,20 @@ public class JuegoController implements Initializable {
     //setea el label al principio del juego
     public void setJugadores(ArrayList<Jugador> jugadores){
         this.jugadores = jugadores;
+        Random r=new Random();
+        this.dirViento = opcionesViento[r.nextInt(3)];
+        
+        switch (dirViento) {
+            case 1:
+                vientoPanel.setText("Viento: "+viento+" a la izquierda.");
+                break;
+            case -1:
+                vientoPanel.setText("Viento: "+viento+" a la derecha.");
+                break;
+            case 0:
+                vientoPanel.setText("Sin viento.");
+                break;
+        }
         turnoPanel.setText("Turno: "+jugadores.get(arrayOrden[contOrden]).getName());
     }
     //se randomiza el orden de los turnos
