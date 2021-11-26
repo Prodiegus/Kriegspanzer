@@ -1,0 +1,30 @@
+.box{
+    -fx-background-image: url("img/Box.png");
+    -fx-background-size: contain;
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: center;
+    -fx-background-size: 100% 100%; 
+}
+
+.Perforante{
+    -fx-background-image: url("img/BoxPerforante.png");
+    -fx-background-size: contain;
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: center;
+    -fx-background-size: 100% 100%;
+}
+.bala60mm{
+    -fx-background-image: url("img/Box60.png");
+    -fx-background-size: contain;
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: center;
+    -fx-background-size: 100% 100%;
+}
+
+.bala105mm{
+    -fx-background-image: url("img/Box105.png");
+    -fx-background-size: contain;
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: center;
+    -fx-background-size: 100% 100%;
+}

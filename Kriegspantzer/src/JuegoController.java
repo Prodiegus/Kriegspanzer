@@ -395,10 +395,7 @@ public class JuegoController implements Initializable {
                         cargarPantallaFinal(win,eventGlobal);// identificara como al unico tanque vivo como el ganador
                     }
                 }
-                altMax=0;//se reinicia la altura máxima para el siguiente jugador.
-                arrayBalasImagen.get(tipBala).get(arrayOrden[jug]).setVisible(false);
-                
-                
+                altMax=0;//se reinicia la altura máxima para el siguiente jugador.      
                 try {
                     TimeUnit.SECONDS.sleep(1);
                 } catch (InterruptedException ex) {
