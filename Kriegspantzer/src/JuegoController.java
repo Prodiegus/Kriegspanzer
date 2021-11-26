@@ -65,6 +65,10 @@ public class JuegoController implements Initializable {
     private Mapa mapa;
     private ArrayList<Jugador> jugadores = new ArrayList<Jugador>();
     private int destruccionMapa = 3;// valores del 1 al inifinito, mientras menor sea mayor sera la destruccion visible en el mapa
+    private Image bala60 = new Image("img/Box60.png");
+    private Image bala105 = new Image("img/Box105.png");
+    private Image balaPerforante = new Image("img/BoxPerforante.png");
+    private Image balaBox = new Image("img/Box.png");
     double altoScale;//la division de ambos anchos de una proporcion de la ventana actual.
     double anchoScale;//la division de ambas alturas de una proporcion de la ventana actual.    
     double altMax=0;
@@ -720,16 +724,16 @@ public class JuegoController implements Initializable {
         this.vidaTanque.setText((int)Math.round(tanque.getVida())+"%");
         if(tBalas.getValue()!=null){
             if(tBalas.getValue().equals(balasDisp[0])){
-                this.balaSeleccionada.setImage(new Image("img/Box60.png"));
+                this.balaSeleccionada.setImage(bala60);
             }
             if(tBalas.getValue().equals(balasDisp[1])){
-                this.balaSeleccionada.setImage(new Image("img/Box105.png"));
+                this.balaSeleccionada.setImage(bala105);
             }
             if(tBalas.getValue().equals(balasDisp[2])){
-                this.balaSeleccionada.setImage(new Image("img/BoxPerforante.png"));
+                this.balaSeleccionada.setImage(balaPerforante);
             }
         }else{
-            this.balaSeleccionada.setImage(new Image("img/Box.png"));
+            this.balaSeleccionada.setImage(balaBox);
         }
     }
     @FXML
