@@ -27,8 +27,8 @@ public class ConfingController implements Initializable {
     @FXML private TextField cantJug;
     @FXML private TextField gravedad;
     @FXML private TextField viento;
-    @FXML private CheckBox checkEfectos;
-    @FXML private ComboBox<String> direccion;
+    @FXML private CheckBox checkGravedad;
+    @FXML private CheckBox checkViento;
     
     int panAncho;
     int panLargo;
@@ -40,7 +40,6 @@ public class ConfingController implements Initializable {
     String dir;
     double gravity;
     private ArrayList<Jugador> jugadores = new ArrayList<Jugador>();
-    String[] direc={"Izquierda","Derecha"};
     
     @FXML
     private void aceptar(ActionEvent event) {
@@ -50,7 +49,6 @@ public class ConfingController implements Initializable {
         munPe = Integer.parseInt(balasPe.getText().trim());
         mun105 = Integer.parseInt(balas105.getText().trim());
         cantJ = Integer.parseInt(cantJug.getText().trim());
-        dir = direccion.getValue();
         if( (panAncho  <=1600 ) && (panLargo <=1600 ) && (cantJ>=2 && cantJ<=6) ){
             if ( (mun60>= 0) && (mun60 <= 30) && (mun105>= 0) && (mun105 <= 30) && (munPe>= 0) && (munPe <= 100) ){
                 try {
@@ -64,20 +62,17 @@ public class ConfingController implements Initializable {
                     
                     String[] colors = {"Azul", "Verde", "Amarillo", "Rojo", "Morado", "Naranja", "Negro"};
                     
-                    if(checkEfectos.isSelected()){//si acepta los efectos de entorno se setean los cambios
-                        wind=Integer.parseInt(viento.getText().trim());
+                    if(checkGravedad.isSelected()){//si acepta los efectos de entorno se setean los cambios
                         gravity=Double.parseDouble(gravedad.getText().trim());
+                        controller.setGravity(gravity);
+                    }
+                    if(checkViento.isSelected()){
+                        wind=Integer.parseInt(viento.getText().trim());
                         if (wind>=1 && wind<=10){
-                            controller.setGravity(gravity);
-                            if("Izquierda" == dir){ //si el viento que se eligió va a la izquierda nuestra formula no varía
-                                controller.setWind(wind,1);
-                            }
-                            else if ("Derecha" == dir){//si se elige derecha nuestra formula si varía
-                                controller.setWind(wind,-1);
-                            }
-                            else{
-                                JOptionPane.showMessageDialog(null, "Datos inválidos, seleccione una dirección");
-                            }
+                            controller.setWind(wind);   
+                        }
+                        else{
+                            JOptionPane.showMessageDialog(null, "Rango de viento mal");
                         }
                     }
                     controller.setBoxes(colors);
@@ -116,8 +111,6 @@ public class ConfingController implements Initializable {
     }
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        this.direccion.getItems().removeAll(this.direccion.getItems());
-        this.direccion.getItems().addAll(direc);
     }    
     
 }
