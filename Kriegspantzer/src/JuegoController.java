@@ -735,23 +735,20 @@ public class JuegoController implements Initializable {
     @FXML
     public void setPanelUsuario(){
         Tanque tanque = jugadores.get(arrayOrden[contOrden]).getTanque();
-        this.tanqueActual.getStyleClass().removeAll();
-        this.vidaTanque.getStyleClass().removeAll();
-        this.balaSeleccionada.getStyleClass().removeAll();
-        this.tanqueActual.getStyleClass().add(tanque.getColor());
+        this.tanqueActual.setImage(new Image("img/Tanque_"+tanque.getColor()+".png"));
         this.vidaTanque.setText((int)Math.round(tanque.getVida())+"%");
         if(tBalas.getValue()!=null){
             if(tBalas.getValue().equals(balasDisp[0])){
-                this.balaSeleccionada.getStyleClass().add("bala60mm");
+                this.balaSeleccionada.setImage(new Image("img/Box60.png"));
             }
             if(tBalas.getValue().equals(balasDisp[1])){
-                this.balaSeleccionada.getStyleClass().add("Perforante");
+                this.balaSeleccionada.setImage(new Image("img/BoxPerforante.png"));
             }
             if(tBalas.getValue().equals(balasDisp[2])){
-                this.balaSeleccionada.getStyleClass().add("bala105mm");
+                this.balaSeleccionada.setImage(new Image("img/Box105.png"));
             }
         }else{
-            this.balaSeleccionada.getStyleClass().add("box");
+            this.balaSeleccionada.setImage(new Image("img/Box.png"));
         }
     }
     //posiciona las balas incialmente arriba de los tanques
