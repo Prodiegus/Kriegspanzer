@@ -6,6 +6,8 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.effect.InnerShadow?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
@@ -17,8 +19,24 @@
          </effect>
          <children>
             <Canvas fx:id="board" height="465.0" layoutY="7.0" width="733.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0" />
-            <Label fx:id="alturaPanel" layoutX="516.0" layoutY="14.0" prefHeight="25.0" prefWidth="173.0" text="Altura máxima: " AnchorPane.rightAnchor="43.39999999999998" AnchorPane.topAnchor="14.0" />
-            <Label fx:id="distanciaPanel" layoutX="516.0" layoutY="40.0" prefHeight="25.0" prefWidth="173.0" text="Distancia máxima: " AnchorPane.rightAnchor="43.39999999999998" AnchorPane.topAnchor="40.0" />
+            <Label fx:id="alturaPanel" layoutX="516.0" layoutY="14.0" prefHeight="25.0" prefWidth="215.0" text="Altura máxima: " AnchorPane.rightAnchor="1.0" AnchorPane.topAnchor="14.0">
+               <font>
+                  <Font name="Consolas Bold" size="14.0" />
+               </font></Label>
+            <Label fx:id="distanciaPanel" layoutX="516.0" layoutY="40.0" prefHeight="25.0" prefWidth="215.0" text="Distancia máxima: " AnchorPane.rightAnchor="1.0" AnchorPane.topAnchor="40.0">
+               <font>
+                  <Font name="Consolas Bold" size="14.0" />
+               </font></Label>
+            <Label fx:id="gravedadPanel" layoutX="14.0" layoutY="14.0" prefHeight="25.0" prefWidth="173.0" text="Gravedad:" AnchorPane.leftAnchor="14.0" AnchorPane.topAnchor="14.0">
+               <font>
+                  <Font name="Consolas Bold" size="14.0" />
+               </font>
+            </Label>
+            <Label fx:id="vientoPanel" layoutX="14.0" layoutY="40.0" prefHeight="25.0" prefWidth="233.0" text="Viento: " AnchorPane.leftAnchor="14.0" AnchorPane.topAnchor="40.0">
+               <font>
+                  <Font name="Consolas Bold" size="14.0" />
+               </font>
+            </Label>
          </children></AnchorPane>
       <AnchorPane layoutX="34.0" layoutY="471.0" prefHeight="119.0" prefWidth="732.0" AnchorPane.bottomAnchor="14.0" AnchorPane.leftAnchor="34.0" AnchorPane.rightAnchor="34.0">
          <children>
@@ -34,13 +52,7 @@
             <ComboBox fx:id="tBalas" layoutX="88.0" layoutY="34.0" onAction="#setPanelUsuario" prefHeight="26.0" prefWidth="204.0" promptText="Tipo de Municion" styleClass="backButton" stylesheets="@Estilos.css" AnchorPane.bottomAnchor="69.0" AnchorPane.leftAnchor="88.0" />
             <AnchorPane layoutX="329.0" layoutY="22.0" nodeOrientation="LEFT_TO_RIGHT" prefHeight="84.0" prefWidth="215.0" styleClass="fondoStats" stylesheets="@Estilos2.css" AnchorPane.bottomAnchor="13.0" AnchorPane.leftAnchor="329.0">
                <children>
-                  <AnchorPane fx:id="balaSeleccionada" layoutX="137.0" layoutY="26.0" prefHeight="45.0" prefWidth="45.0" styleClass="box" stylesheets="@Balas.css" AnchorPane.bottomAnchor="13.0" AnchorPane.leftAnchor="137.0">
-                     <effect>
-                        <InnerShadow />
-                     </effect>
-                  </AnchorPane>
-                  <AnchorPane fx:id="tanqueActual" layoutX="43.0" layoutY="30.0" prefHeight="25.0" prefWidth="39.0" styleClass="Rojo" stylesheets="@Estilos2.css" AnchorPane.bottomAnchor="29.0" AnchorPane.leftAnchor="43.0" />
-                  <Label fx:id="vidaTanque" alignment="CENTER" contentDisplay="CENTER" layoutX="42.0" layoutY="55.0" text="100%" textFill="WHITE" AnchorPane.bottomAnchor="7.0" AnchorPane.leftAnchor="42.0">
+                  <Label fx:id="vidaTanque" alignment="CENTER" contentDisplay="CENTER" layoutX="30.0" layoutY="53.0" text="100%" textFill="WHITE" AnchorPane.bottomAnchor="9.0" AnchorPane.leftAnchor="30.0">
                      <font>
                         <Font name="Consolas" size="19.0" />
                      </font>
@@ -50,6 +62,16 @@
                         <Font name="Consolas Bold" size="16.0" />
                      </font>
                   </Label>
+                  <ImageView fx:id="tanqueActual" fitHeight="28.0" fitWidth="76.0" layoutX="27.0" layoutY="24.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="32.0" AnchorPane.leftAnchor="27.0">
+                     <image>
+                        <Image url="@img/Tanque_Rojo.png" />
+                     </image>
+                  </ImageView>
+                  <ImageView fx:id="balaSeleccionada" fitHeight="46.0" fitWidth="50.0" layoutX="151.0" layoutY="19.0" AnchorPane.bottomAnchor="19.0" AnchorPane.leftAnchor="151.0">
+                     <image>
+                        <Image url="@img/Box.png" />
+                     </image>
+                  </ImageView>
                </children>
                <effect>
                   <InnerShadow choke="1.0" height="5.0" radius="2.0" width="5.0" />

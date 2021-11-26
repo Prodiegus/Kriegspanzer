@@ -134,6 +134,7 @@ public class IniciarJuegoViewController implements Initializable {
                 controller.setBoardSize(this.ancho*0.915106117, this.alto*0.75732899);//escala de proporcionalidada canvas/ventana
                 controller.setScale();
                 controller.setMap(mapa);
+                controller.setWind(viento);
                 controller.ordenTurnos(jugadores);
                 controller.setJugadores(jugadores);
                 controller.actualizaCantBalas(municiones);

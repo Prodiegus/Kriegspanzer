@@ -27,8 +27,8 @@ public class ConfingController implements Initializable {
     @FXML private TextField cantJug;
     @FXML private TextField gravedad;
     @FXML private TextField viento;
-    @FXML private CheckBox checkEfectos;
-    @FXML private ComboBox<String> direccion;
+    @FXML private CheckBox checkGravedad;
+    @FXML private CheckBox checkViento;
     
     int panAncho;
     int panLargo;
@@ -37,9 +37,9 @@ public class ConfingController implements Initializable {
     int mun105;
     int cantJ;
     int wind;
+    String dir;
     double gravity;
     private ArrayList<Jugador> jugadores = new ArrayList<Jugador>();
-    String[] direc={"Izquierda","Derecha"};
     
     @FXML
     private void aceptar(ActionEvent event) {
@@ -62,12 +62,17 @@ public class ConfingController implements Initializable {
                     
                     String[] colors = {"Azul", "Verde", "Amarillo", "Rojo", "Morado", "Naranja", "Negro"};
                     
-                    if(checkEfectos.isSelected()){//si acepta los efectos de entorno se setean los cambios
-                        wind=Integer.parseInt(viento.getText().trim());
+                    if(checkGravedad.isSelected()){//si acepta los efectos de entorno se setean los cambios
                         gravity=Double.parseDouble(gravedad.getText().trim());
+                        controller.setGravity(gravity);
+                    }
+                    if(checkViento.isSelected()){
+                        wind=Integer.parseInt(viento.getText().trim());
                         if (wind>=1 && wind<=10){
-                            controller.setGravity(gravity);
-                            controller.setWind(wind);
+                            controller.setWind(wind);   
+                        }
+                        else{
+                            JOptionPane.showMessageDialog(null, "Rango de viento mal");
                         }
                     }
                     controller.setBoxes(colors);
@@ -76,7 +81,6 @@ public class ConfingController implements Initializable {
                     controller.setCantBalasIni(mun60,munPe,mun105); //falta ver donde validar
                     controller.setCantJug(cantJ);
                     controller.recuperaJugadores(jugadores);
-                    controller.setGravity(10);
                     stage.setResizable(true);
                     stage.setTitle("Kriegspanzer Game");
                     stage.getIcons().add(new Image(getClass().getResourceAsStream("img/icon.png")));
@@ -107,8 +111,6 @@ public class ConfingController implements Initializable {
     }
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        this.direccion.getItems().removeAll(this.direccion.getItems());
-        this.direccion.getItems().addAll(direc);
     }    
     
 }
