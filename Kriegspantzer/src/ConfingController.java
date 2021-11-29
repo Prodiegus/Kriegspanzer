@@ -13,7 +13,6 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.CheckBox;
-import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
@@ -30,12 +29,13 @@ public class ConfingController implements Initializable {
     @FXML private CheckBox checkGravedad;
     @FXML private CheckBox checkViento;
     
-    int panAncho;
-    int panLargo;
-    int mun60;
-    int munPe;
-    int mun105;
-    int cantJ;
+    //definiendo los default y las variables a usar
+    int panAncho = 800;
+    int panLargo = 800;
+    int mun60 = 10;
+    int munPe = 10;
+    int mun105 = 10;
+    int cantJ = 2;
     int wind;
     String dir;
     double gravity;
@@ -43,13 +43,20 @@ public class ConfingController implements Initializable {
     
     @FXML
     private void aceptar(ActionEvent event) {
-        panAncho = Integer.parseInt(pAncho.getText().trim());
-        panLargo = Integer.parseInt(pLargo.getText().trim());
-        mun60 = Integer.parseInt(balas60.getText().trim());
-        munPe = Integer.parseInt(balasPe.getText().trim());
-        mun105 = Integer.parseInt(balas105.getText().trim());
-        cantJ = Integer.parseInt(cantJug.getText().trim());
-        if( (panAncho  <=1600 ) && (panLargo <=1600 ) && (cantJ>=2 && cantJ<=6) ){
+        if(!pAncho.getText().trim().equals(""))
+            panAncho = Integer.parseInt(pAncho.getText().trim());
+        if(!pLargo.getText().trim().equals(""))
+            panLargo = Integer.parseInt(pLargo.getText().trim());
+        if(!balas60.getText().trim().equals(""))
+            mun60 = Integer.parseInt(balas60.getText().trim());
+        if(!balasPe.getText().trim().equals(""))
+            munPe = Integer.parseInt(balasPe.getText().trim());
+        if(!balas105.getText().trim().equals(""))
+            mun105 = Integer.parseInt(balas105.getText().trim());
+        if(!cantJug.getText().trim().equals(""))
+            cantJ = Integer.parseInt(cantJug.getText().trim());
+
+        if( (panAncho  <=1600 ) && (panLargo <=1600 ) && (panAncho >= 800) && (panLargo >= 800 ) && (cantJ>=2 && cantJ<=6) ){
             if ( (mun60>= 0) && (mun60 <= 30) && (mun105>= 0) && (mun105 <= 30) && (munPe>= 0) && (munPe <= 100) ){
                 try {
                     FXMLLoader loader =new FXMLLoader(getClass().getResource("IniciarJuegoView.fxml"));
@@ -76,9 +83,9 @@ public class ConfingController implements Initializable {
                         }
                     }
                     controller.setBoxes(colors);
-                    controller.setAnchoAlto(panAncho, panLargo); //falta ver donde validar
+                    controller.setAnchoAlto(panAncho, panLargo);
                     controller.setMap();
-                    controller.setCantBalasIni(mun60,munPe,mun105); //falta ver donde validar
+                    controller.setCantBalasIni(mun60,munPe,mun105);
                     controller.setCantJug(cantJ);
                     controller.recuperaJugadores(jugadores);
                     stage.setResizable(true);
