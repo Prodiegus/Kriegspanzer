@@ -57,7 +57,6 @@ public class JuegoController implements Initializable {
     @FXML private ActionEvent eventGlobal;
     @FXML private ImageView tanqueActual;
     @FXML private Label vidaTanque;
-    @FXML private ImageView balaSeleccionada;
     @FXML private Button disparar;
     
     int contOrden=0;
@@ -66,10 +65,6 @@ public class JuegoController implements Initializable {
     private Mapa mapa;
     private ArrayList<Jugador> jugadores = new ArrayList<Jugador>();
     private int destruccionMapa = 3;// valores del 1 al inifinito, mientras menor sea mayor sera la destruccion visible en el mapa
-    private Image bala60 = new Image("img/Box60.png");
-    private Image bala105 = new Image("img/Box105.png");
-    private Image balaPerforante = new Image("img/BoxPerforante.png");
-    private Image balaBox = new Image("img/Box.png");
     double altoScale;//la division de ambos anchos de una proporcion de la ventana actual.
     double anchoScale;//la division de ambas alturas de una proporcion de la ventana actual.    
     double altMax=0;
@@ -120,6 +115,7 @@ public class JuegoController implements Initializable {
             mediaPlayer.play();
             MediaView mediaView = new MediaView(mediaPlayer);
             mediaView.getClip();
+            tBalas.setDisable(true);//no se puede modificar la vala durante un disparo
             //las posiciones que se ingresan de "y" están al revés, entonces debemos modificarlas al momento de pasarlas al moverBala
             int [] posBala=jugadores.get(turno).getTanque().getBala().getPosBala();
                 
@@ -415,6 +411,8 @@ public class JuegoController implements Initializable {
                 setJugadores(jugadores);
                 this.tBalas.getItems().removeAll(this.tBalas.getItems());
                 this.tBalas.getItems().addAll(jugadores.get(arrayOrden[contOrden]).getTanque().getBalasDisp());
+                tBalas.setDisable(false);
+                 
                 ang.setText( ""+jugadores.get(arrayOrden[contOrden]).getAng() );
                 vel.setText( ""+jugadores.get(arrayOrden[contOrden]).getVel());
                 if (jugadores.get(arrayOrden[contOrden]).getTanque().getBala().verificaBalas() && jugadores.get(arrayOrden[contOrden]).cheekTanque()){
@@ -485,6 +483,8 @@ public class JuegoController implements Initializable {
                 setJugadores(jugadores);
                 this.tBalas.getItems().removeAll(this.tBalas.getItems());
                 this.tBalas.getItems().addAll(jugadores.get(arrayOrden[contOrden]).getTanque().getBalasDisp());
+                tBalas.setDisable(false);
+                 
                 ang.setText( ""+jugadores.get(arrayOrden[contOrden]).getAng() );
                 vel.setText( ""+jugadores.get(arrayOrden[contOrden]).getVel());
                 if (jugadores.get(arrayOrden[contOrden]).getTanque().getBala().verificaBalas() && jugadores.get(arrayOrden[contOrden]).cheekTanque()){
@@ -521,7 +521,6 @@ public class JuegoController implements Initializable {
                     }
                 }
             }
-            
         });
         return false;
     }
@@ -636,6 +635,8 @@ public class JuegoController implements Initializable {
             }
             this.tBalas.getItems().removeAll(this.tBalas.getItems());
             this.tBalas.getItems().addAll(jugadores.get(arrayOrden[0]).getTanque().getBalasDisp() );
+            tBalas.setDisable(false);
+             
             }
     }
     //se añade las imagenes a nuestro cuadro
@@ -786,38 +787,13 @@ public class JuegoController implements Initializable {
         Tanque tanque = jugadores.get(arrayOrden[contOrden]).getTanque();
         this.tanqueActual.setImage(new Image("img/Tanque_"+tanque.getColor()+".png"));
         this.vidaTanque.setText((int)Math.round(tanque.getVida())+"%");
-        if(tBalas.getValue()!=null){
-            if(tBalas.getValue().equals(balasDisp[0])){
-                this.balaSeleccionada.setImage(bala60);
-            }
-            if(tBalas.getValue().equals(balasDisp[1])){
-                this.balaSeleccionada.setImage(bala105);
-            }
-            if(tBalas.getValue().equals(balasDisp[2])){
-                this.balaSeleccionada.setImage(balaPerforante);
-            }
-        }else{
-            this.balaSeleccionada.setImage(balaBox);
-        }
     }
     @FXML
     public void setPanelUsuario(){
         Tanque tanque = jugadores.get(arrayOrden[contOrden]).getTanque();
         this.tanqueActual.setImage(new Image("img/Tanque_"+tanque.getColor()+".png"));
         this.vidaTanque.setText((int)Math.round(tanque.getVida())+"%");
-        if(tBalas.getValue()!=null){
-            if(tBalas.getValue().equals(balasDisp[0])){
-                this.balaSeleccionada.setImage(bala60);
-            }
-            if(tBalas.getValue().equals(balasDisp[1])){
-                this.balaSeleccionada.setImage(bala105);
-            }
-            if(tBalas.getValue().equals(balasDisp[2])){
-                this.balaSeleccionada.setImage(balaPerforante);
-            }
-        }else{
-            this.balaSeleccionada.setImage(balaBox);
-        }
+        
     }
     //posiciona las balas incialmente arriba de los tanques
     public void  posBarras(){
