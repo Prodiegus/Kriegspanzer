@@ -61,7 +61,7 @@ public class JuegoController implements Initializable {
     
     int contOrden=0;
     int []arrayOrden;
-    int []opcionesViento={-1,0,1};
+    int []opcionesViento={-1,1};
     private Mapa mapa;
     private ArrayList<Jugador> jugadores = new ArrayList<Jugador>();
     private int destruccionMapa = 3;// valores del 1 al inifinito, mientras menor sea mayor sera la destruccion visible en el mapa
@@ -543,7 +543,6 @@ public class JuegoController implements Initializable {
     public void setWind(int wind){
         this.viento=wind;
         gravedadPanel.setText("Gravedad: "+gravedad);
-             
     }
     public void setBoard(){
         // a la hora de recorrer el ciclo se multiplica por sus escalas los valores
@@ -567,16 +566,14 @@ public class JuegoController implements Initializable {
         this.jugadores = jugadores;
         Random r=new Random();
         if (this.viento != 0){
-            this.dirViento = opcionesViento[r.nextInt(3)];
+            this.dirViento = opcionesViento[r.nextInt(2)];
+            this.viento=1+r.nextInt(10);
             switch (dirViento) {
                 case 1:
                     vientoPanel.setText("Viento: "+viento+" a la izquierda.");
                     break;
                 case -1:
                     vientoPanel.setText("Viento: "+viento+" a la derecha.");
-                    break;
-                case 0:
-                    vientoPanel.setText("Sin viento.");
                     break;
             }
         }
