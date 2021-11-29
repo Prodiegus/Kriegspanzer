@@ -1,6 +1,6 @@
 public class Bala{
     private int [] posBala;
-    private int [] cantBalas={3,3,10};      //(0)Proyectil 60mm;(1)Proyectil 105mm; (2)Proyectil perforante; 
+    private int [] cantBalas={10,10,10};      //(0)Proyectil 60mm;(1)Proyectil 105mm; (2)Proyectil perforante; 
     public Bala(int [] posBala){
         this.posBala=posBala;
     }

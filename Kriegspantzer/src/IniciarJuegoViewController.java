@@ -38,7 +38,7 @@ public class IniciarJuegoViewController implements Initializable {
     private int alto = 800;
     private int cantJug=2;
     
-    int[] municiones = {3,3,10}; 
+    int[] municiones = {10,10,10}; 
     double gravedad=9.81;
     int viento=0;
     private ArrayList<Jugador> jugadores = new ArrayList<Jugador>();
