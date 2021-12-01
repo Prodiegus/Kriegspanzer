@@ -65,6 +65,8 @@ public class JuegoController implements Initializable {
     private Mapa mapa;
     private ArrayList<Jugador> jugadores = new ArrayList<Jugador>();
     private int destruccionMapa = 3;// valores del 1 al inifinito, mientras menor sea mayor sera la destruccion visible en el mapa
+    private int anchoMatrizMapa = 733;// largo de la matriz del mapa
+    private int altoMatrizMapa = 465;// ancho de la matriz del mapa
     double altoScale;//la division de ambos anchos de una proporcion de la ventana actual.
     double anchoScale;//la division de ambas alturas de una proporcion de la ventana actual.    
     double altMax=0;
@@ -534,8 +536,8 @@ public class JuegoController implements Initializable {
         setBoard();
     }
     public void setScale(){
-        this.altoScale = board.getWidth()/mapaPanel.getPrefWidth();
-        this.anchoScale = board.getHeight()/mapaPanel.getPrefHeight();
+        this.altoScale = board.getWidth()/anchoMatrizMapa;
+        this.anchoScale = board.getHeight()/altoMatrizMapa;
     }
     public void setGravedad(double gravity){
         this.gravedad=gravity;
@@ -670,7 +672,7 @@ public class JuegoController implements Initializable {
                     jugadores.get(i).getTanque().setPos((int)Math.round(x), y);
                     mapa.addTank((int)Math.round(x), y);
                     for (int k = (int)Math.round(x); k < 20+(int)Math.round(x); k++) {//ancho de un tanque en el mapa
-                        for (int j = y+10; j < 465; j++) {//alto del mapa le ponemos suelo al tanque
+                        for (int j = y+10; j < altoMatrizMapa; j++) {//alto del mapa le ponemos suelo al tanque
                             mapa.setAreas(k, j);
                         }
                         for (int j = 0; j < y; j++){
@@ -687,7 +689,7 @@ public class JuegoController implements Initializable {
 
     @FXML
     public int setYTank(int x) {
-        for (int y = 0; y < 465; y++){//465 son las posibles y
+        for (int y = 0; y < altoMatrizMapa; y++){//465 son las posibles y
             if(mapa.comprobarCoordenadaSolido(x+(int)Math.round(10/anchoScale), y)){
                 return y-10;// se le resta el size en pixeles del tanque
             }
@@ -696,7 +698,7 @@ public class JuegoController implements Initializable {
     }
     public int pixelesY(int x, int y) {
         int i = 0;
-        while(y < 465){//si y sobrepasa este numero el tanque caeria fuera del mapa
+        while(y < altoMatrizMapa){//si y sobrepasa este numero el tanque caeria fuera del mapa
             if(mapa.comprobarCoordenadaSolido(x+(int)Math.round(10/anchoScale), y)){
                 return i;// se retornan los pixeles movidos
             }
@@ -732,12 +734,12 @@ public class JuegoController implements Initializable {
         for (int i = 0; i<jugadores.size(); i++) {
             Double x = jugadores.get(i).getTanque().getPos()[0]*altoScale;
             tanks.get(i).setX(x);
-            int y = setYTank((int)Math.round(x));
+            int y = setYTank((int)Math.round(x/altoScale));
             tanks.get(i).setY(y*anchoScale);
             jugadores.get(i).getTanque().setPos((int)Math.round(x/altoScale), y);
-            mapa.addTank((int)Math.round(x), y);
-            for (int k = (int)Math.round(x); k < 20+(int)Math.round(x); k++) {//ancho de un tanque en el mapa
-                for (int j = y+10; j < 465; j++) {//alto del mapa le ponemos suelo al tanque
+            mapa.addTank((int)Math.round(x/altoScale), y);
+            for (int k = (int)Math.floor(x/altoScale); k < 20+(int)Math.floor(x/altoScale); k++) {//ancho de un tanque en el mapa
+                for (int j = y+10; j < altoMatrizMapa; j++) {//alto del mapa le ponemos suelo al tanque
                      mapa.setAreas(k, j);
                 }
                 for (int j = 0; j < y; j++){
@@ -749,19 +751,20 @@ public class JuegoController implements Initializable {
         setBoard();
 
     }
+
     @FXML
     public void posTank(boolean v){//El metodo "posTank" posicionara los tanques en "mapaPanel"
         for (int i = 0; i<jugadores.size(); i++) {// se recorre el arraylist "jugadores", para proporcionarle cada tanque a su jugador.
             int x = jugadores.get(i).getTanque().getPos()[0];
             int caida = pixelesY(x, jugadores.get(i).getTanque().getPos()[1]+10);//posicion en y actual del tanque los 10 corresponden a los pixeles del tanque
-            int y = setYTank(x);
+            int y = setYTank((int)Math.round(x/altoScale));
             mapa.removeTank(jugadores.get(i).getTanque().getPos()[0], jugadores.get(i).getTanque().getPos()[1]);
             tanks.get(i).setX(jugadores.get(i).getTanque().getPos()[0]*altoScale);
             tanks.get(i).setY(y*anchoScale);
             jugadores.get(i).getTanque().setPos(x, y);
             barras.get(i).setTranslateX( (jugadores.get(i).getTanque().getPos()[0]-15)*altoScale ); //reposiciono la barras con su respectiba escala
             barras.get(i).setTranslateY( (jugadores.get(i).getTanque().getPos()[1]-25)*anchoScale );//reposiciono la barras con su respectiba escala
-            mapa.addTank(x, y);
+            mapa.addTank((int)Math.round(x/altoScale), y);
             //se setean los tanques con el pocisionamiento respectivo y se multiplica con su reescalado.
             Tanque tanque = jugadores.get(i).getTanque();
             tanque.setVida(tanque.getVida()-(caida/(double)4));//danio por caida
