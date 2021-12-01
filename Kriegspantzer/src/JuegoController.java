@@ -64,7 +64,7 @@ public class JuegoController implements Initializable {
     int []opcionesViento={-1,1};
     private Mapa mapa;
     private ArrayList<Jugador> jugadores = new ArrayList<Jugador>();
-    private int destruccionMapa = 1;// valores del 1 al inifinito, mientras menor sea mayor sera la destruccion visible en el mapa default 3
+    private int destruccionMapa = 3;// valores del 1 al inifinito, mientras menor sea mayor sera la destruccion visible en el mapa default 3
     private int anchoMatrizMapa = 733;// largo de la matriz del mapa
     private int altoMatrizMapa = 465;// ancho de la matriz del mapa
     double altoScale;//la division de ambos anchos de una proporcion de la ventana actual.
