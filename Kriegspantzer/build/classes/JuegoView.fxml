@@ -50,7 +50,7 @@
             <Button layoutX="624.0" layoutY="32.0" mnemonicParsing="false" onAction="#reset" opacity="0.77" prefHeight="25.0" prefWidth="94.0" styleClass="backButton2" stylesheets="@Estilos.css" text="Reiniciar" textFill="WHITE" AnchorPane.bottomAnchor="72.0" AnchorPane.rightAnchor="14.0" />
             <Button layoutX="624.0" layoutY="74.0" mnemonicParsing="false" onAction="#close" opacity="0.77" styleClass="backButton2" stylesheets="@Estilos.css" text="Finalizar Juego" textFill="WHITE" AnchorPane.bottomAnchor="30.0" AnchorPane.rightAnchor="14.0" />
             <ComboBox fx:id="tBalas" layoutX="88.0" layoutY="34.0" onAction="#setPanelUsuario" prefHeight="26.0" prefWidth="204.0" promptText="Tipo de Municion" styleClass="backButton" stylesheets="@Estilos.css" AnchorPane.bottomAnchor="69.0" AnchorPane.leftAnchor="88.0" />
-            <AnchorPane layoutX="321.0" layoutY="22.0" nodeOrientation="LEFT_TO_RIGHT" prefHeight="84.0" prefWidth="215.0" styleClass="fondoStats" stylesheets="@Estilos2.css" AnchorPane.bottomAnchor="13.0" AnchorPane.leftAnchor="321.0">
+            <AnchorPane layoutX="321.0" layoutY="22.0" nodeOrientation="LEFT_TO_RIGHT" prefHeight="84.0" prefWidth="215.0" style="-fx-background-color: #274033;" AnchorPane.bottomAnchor="13.0" AnchorPane.leftAnchor="321.0">
                <children>
                   <Label fx:id="vidaTanque" alignment="CENTER" contentDisplay="CENTER" layoutX="87.0" layoutY="59.0" text="100%" textFill="WHITE" AnchorPane.bottomAnchor="3.0" AnchorPane.leftAnchor="87.0">
                      <font>
