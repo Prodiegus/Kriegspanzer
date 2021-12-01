@@ -64,7 +64,7 @@ public class JuegoController implements Initializable {
     int []opcionesViento={-1,1};
     private Mapa mapa;
     private ArrayList<Jugador> jugadores = new ArrayList<Jugador>();
-    private int destruccionMapa = 3;// valores del 1 al inifinito, mientras menor sea mayor sera la destruccion visible en el mapa
+    private int destruccionMapa = 1;// valores del 1 al inifinito, mientras menor sea mayor sera la destruccion visible en el mapa default 3
     private int anchoMatrizMapa = 733;// largo de la matriz del mapa
     private int altoMatrizMapa = 465;// ancho de la matriz del mapa
     double altoScale;//la division de ambos anchos de una proporcion de la ventana actual.
@@ -186,6 +186,7 @@ public class JuegoController implements Initializable {
             }
             else{
                 JOptionPane.showMessageDialog(null, "Debe elegir un tipo de bala");
+                tBalas.setDisable(false);
             }
             /*if(jugadores.get(arrayOrden[cont_orden]).getTanque().getBala().verificaBalas() ){
                 System.out.println("entra a cargarEmpate en esta verificacion1");
@@ -696,6 +697,7 @@ public class JuegoController implements Initializable {
         }
         return 0;
     }
+
     public int pixelesY(int x, int y) {
         int i = 0;
         while(y < altoMatrizMapa){//si y sobrepasa este numero el tanque caeria fuera del mapa
@@ -719,9 +721,10 @@ public class JuegoController implements Initializable {
         d += 20;
         ArrayList<Integer> impactados = new ArrayList<Integer>();
         int i = 0;
-        for (Jugador jugador : jugadores) {
+        for (Jugador jugador : jugadores) { 
             Tanque tanque = jugador.getTanque();
-            if((tanque.getPos()[0]> x-d/2 && tanque.getPos()[0] <= d/2+x) && (tanque.getPos()[1]> y-d/2 && tanque.getPos()[1]> d/2+y)){
+            if((tanque.getPos()[0]< x-d/2 && tanque.getPos()[0] >= d/2+x) && (tanque.getPos()[1]< y-d/2 && tanque.getPos()[1]>= d/2+y)){
+                JOptionPane.showMessageDialog(null, "Tanque: "+jugador.getName());
                 impactados.add(i);
             }
             i++;
