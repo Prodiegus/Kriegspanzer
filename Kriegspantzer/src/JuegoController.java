@@ -453,7 +453,7 @@ public class JuegoController implements Initializable {
                 arrayBalasImagen.get(tipBala).get(arrayOrden[jug]).setVisible(false);
                 //System.out.println("hace invisible la bala del turno: "+jugadores.get(arrayOrden[jug]).getName());
                 //se reinicia la posicion de la bala, en la del tanque
-                mapa.destruir((int)Math.round(x),(int)Math.round(464-y), (int)Math.round(jugadores.get(arrayOrden[jug]).getTanque().getDamageBala()[tipBala]/destruccionMapa));
+                mapa.destruir( (int)Math.round(x),(int)Math.round(464-y), (int)Math.round(jugadores.get(arrayOrden[jug]).getTanque().getDamageBala()[tipBala]/destruccionMapa) );
                 ArrayList<Integer> impactados = impactados((int)Math.round(x),(int)Math.round(464-y), (int)Math.round(jugadores.get(arrayOrden[jug]).getTanque().getDamageBala()[tipBala]/destruccionMapa));
                 for (Integer i : impactados) {
                     jugadores.get(i).getTanque().setVida(jugadores.get(i).getTanque().getVida()-10);//danio colateral por alcanxe de proyectil
@@ -655,33 +655,6 @@ public class JuegoController implements Initializable {
         arrayBalasImagen.add(balasPImagen);
     }
 
-    public void posTank(ArrayList<int[]> campos){
-        //ArrayList<int[]> campos = mapa.getCampos();
-        for (int i = 0; i<jugadores.size(); i++) {
-            Double x = jugadores.get(i).getTanque().getPos()[0]*altoScale;
-            tanks.get(i).setX(x);
-            for (int[] campo : campos) {
-                if(campo[0]==x){
-                    int y = setYTank((int) Math.round(x));
-                    tanks.get(i).setY(y);
-                    jugadores.get(i).getTanque().setPos((int)Math.round(x), y);
-                    mapa.addTank((int)Math.round(x), y);
-                    for (int k = (int)Math.round(x); k < 20+(int)Math.round(x); k++) {//ancho de un tanque en el mapa
-                        for (int j = y+10; j < altoMatrizMapa; j++) {//alto del mapa le ponemos suelo al tanque
-                            mapa.setAreas(k, j);
-                        }
-                        for (int j = 0; j < y; j++){
-                            mapa.fillAire(k, j);
-                        }
-                    }
-                }
-            }
-            mapaPanel.getChildren().add(tanks.get(i));
-        }
-        setBoard();
-
-    }
-
     @FXML
     public int setYTank(int x) {
         for (int y = 0; y < altoMatrizMapa; y++){//465 son las posibles y
@@ -740,7 +713,8 @@ public class JuegoController implements Initializable {
                      mapa.setAreas(k, j);
                 }
                 for (int j = 0; j < y; j++){
-                     mapa.fillAire(k, j);
+                    System.out.print("tanque "+ jugadores.get(i).getName()); System.out.println(", quita terreno en: "+x+","+y);
+                    mapa.fillAire(k, j);
                 }
             }  
             mapaPanel.getChildren().add(tanks.get(i));
@@ -754,10 +728,11 @@ public class JuegoController implements Initializable {
         for (int i = 0; i<jugadores.size(); i++) {// se recorre el arraylist "jugadores", para proporcionarle cada tanque a su jugador.
             int x = jugadores.get(i).getTanque().getPos()[0];
             int caida = pixelesY(x, jugadores.get(i).getTanque().getPos()[1]+10);//posicion en y actual del tanque los 10 corresponden a los pixeles del tanque
-            int y = setYTank(x);
+            int y = setYTank((int)Math.round(jugadores.get(i).getTanque().getPos()[0]));
             mapa.removeTank(jugadores.get(i).getTanque().getPos()[0], jugadores.get(i).getTanque().getPos()[1]);
             tanks.get(i).setX(jugadores.get(i).getTanque().getPos()[0]*altoScale);
             tanks.get(i).setY(y*anchoScale);
+            //.out.println("tanque "+ jugadores.get(i).getName()+" , con altura: "+(y*anchoScale)+",con x,y: "+x+","+y);
             jugadores.get(i).getTanque().setPos(x, y);
             barras.get(i).setTranslateX( (jugadores.get(i).getTanque().getPos()[0]-15)*altoScale ); //reposiciono la barras con su respectiba escala
             barras.get(i).setTranslateY( (jugadores.get(i).getTanque().getPos()[1]-25)*anchoScale );//reposiciono la barras con su respectiba escala
@@ -766,10 +741,14 @@ public class JuegoController implements Initializable {
             Tanque tanque = jugadores.get(i).getTanque();
             tanque.setVida(tanque.getVida()-(caida/(double)4));//danio por caida
             barras.get(i).setProgress(tanque.getVida()/100);//se actualiza la barra de vida
-            if(tanque.getVida()<=0){
+            if(tanque.getVida()<=0 && jugadores.get(i).cheekTanque() ){
                 mapa.removeTank(tanque.getPos()[0], tanque.getPos()[1]);
                 mapaPanel.getChildren().remove(tanks.get(i));     //se borra la imagen del tanque en pantalla
                 mapaPanel.getChildren().remove(barras.get(i));    //se borra la barra del tanque en pantalla
+                jugadores.get(i).quitarKills();// el tanque que muere pierde todas sus kills acumuladas.
+                jugadores.get(i).setEstado(false);// su estado cambia de vivo a muerto.
+                quitarTanque(i);// se eliminara el jugador muerto del sistema de turnos.
+                contOrden--;
             }
             
         }
