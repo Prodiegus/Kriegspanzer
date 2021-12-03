@@ -37,8 +37,9 @@ public class IniciarJuegoViewController implements Initializable {
     private int ancho = 800;
     private int alto = 800;
     private int cantJug=2;
+    private int margenT = 30;
     
-    int[] municiones = {3,3,10}; 
+    int[] municiones = {10,10,10}; 
     double gravedad=9.81;
     int viento=0;
     private ArrayList<Jugador> jugadores = new ArrayList<Jugador>();
@@ -48,8 +49,8 @@ public class IniciarJuegoViewController implements Initializable {
     private boolean handleIngresar(ActionEvent event) {
         //por ahora se generan las posiciones aleatorias de los tanques
         if (jugadores.size()<cantJug){//mientras la cantidad de jugadores ingresados sea menor a la maxima puede ingresar más
-            int valorDado = (int) Math.floor((Math.random()*700));
-            int[] pos={valorDado,10};
+            //int valorDado = (int) Math.floor((Math.random()*700));
+            int[] pos={getX(),10};
             String color=cJugador.getValue();
             Jugador jActual =  new Jugador(nJugador.getText().trim(),IA.isSelected());
             Bala bActual = new Bala(pos);
@@ -124,7 +125,7 @@ public class IniciarJuegoViewController implements Initializable {
                 stage.initModality(Modality.WINDOW_MODAL);
                 stage.setHeight(alto);
                 stage.setWidth(ancho);
-                stage.setResizable(true);
+                stage.setResizable(false);
                 stage.setTitle("Kiegspanzer Game");
                 stage.getIcons().add(new Image(getClass().getResourceAsStream("img/icon.png")));
                 stage.setScene(scene);
@@ -268,7 +269,7 @@ public class IniciarJuegoViewController implements Initializable {
             JOptionPane.showMessageDialog(null, "Mapas no encontrados");
             this.map = 0;
         }
-        this.map = 7;
+        //this.map = 7;
         //System.out.println("Id de mapa: Mapa"+this.map);
         
         //ese valor dentro del nextint es la cantidad de mapas creados en existencia
@@ -276,7 +277,17 @@ public class IniciarJuegoViewController implements Initializable {
         mapaPanel.getStylesheets().add("Estilos.css");
         mapaPanel.getStyleClass().add("map"+(map));
     }
-    
+    private int getX(){
+        Random random = new Random();
+        int xCandidata = random.nextInt(680)+10;
+        for (Jugador jugador : jugadores) {
+            Tanque tanque = jugador.getTanque();
+            if(tanque.getPos()[0]>= xCandidata-margenT && tanque.getPos()[0] <= xCandidata+margenT){
+                getX();
+            }
+        }
+        return xCandidata;
+    }
     //cambia la cantidad de jugadores que habrán
     public void setCantJug(int num){
         this.cantJug=num;

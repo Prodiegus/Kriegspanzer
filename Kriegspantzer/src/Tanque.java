@@ -4,7 +4,7 @@ public class Tanque {
     private Bala bala;
     private double vida=100;
     private final double [] damageBala={30,50,40};   //(0)Proyectil 60mm;(1)Proyectil 105mm; (2)Proyectil perforante; 
-    String[] balasDisp = { "Proyectil 60mm: 3 balas","Proyectil 105mm: 3 balas", "Proyectil Perforador: 10 balas"};
+    String[] balasDisp = { "Proyectil 60mm: 10 balas","Proyectil 105mm: 10 balas", "Proyectil Perforador: 10 balas"};
     
         
     public Tanque (String color, int[] posTanque, Bala bala){
