@@ -732,7 +732,7 @@ public class JuegoController implements Initializable {
             Double x = jugadores.get(i).getTanque().getPos()[0]*altoScale;
             tanks.get(i).setX(x);
             int y = setYTank((int)Math.round(x/altoScale));
-            tanks.get(i).setY(y*anchoScale);
+            tanks.get(i).setY(y*anchoScale+3*anchoScale);
             jugadores.get(i).getTanque().setPos((int)Math.round(x/altoScale), y);
             mapa.addTank((int)Math.round(x/altoScale), y);
             for (int k = (int)Math.floor(x/altoScale); k < 20+(int)Math.floor(x/altoScale); k++) {//ancho de un tanque en el mapa
@@ -754,7 +754,7 @@ public class JuegoController implements Initializable {
         for (int i = 0; i<jugadores.size(); i++) {// se recorre el arraylist "jugadores", para proporcionarle cada tanque a su jugador.
             int x = jugadores.get(i).getTanque().getPos()[0];
             int caida = pixelesY(x, jugadores.get(i).getTanque().getPos()[1]+10);//posicion en y actual del tanque los 10 corresponden a los pixeles del tanque
-            int y = setYTank((int)Math.round(x/altoScale));
+            int y = setYTank(x);
             mapa.removeTank(jugadores.get(i).getTanque().getPos()[0], jugadores.get(i).getTanque().getPos()[1]);
             tanks.get(i).setX(jugadores.get(i).getTanque().getPos()[0]*altoScale);
             tanks.get(i).setY(y*anchoScale);
