@@ -20,6 +20,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
@@ -59,6 +60,7 @@ public class JuegoController implements Initializable {
     @FXML private Label vidaTanque;
     @FXML private Label killsTanque;
     @FXML private Button disparar;
+    @FXML private Label coordenas;//de testing
     
     int contOrden=0;
     int []arrayOrden;
@@ -277,6 +279,13 @@ public class JuegoController implements Initializable {
         } catch (IOException e) {
             JOptionPane.showMessageDialog(null, "Error: 013\nNo se a podido cargar una nueva partida");
         }
+    }
+    //de testing
+    @FXML
+    private void onMouseMove(MouseEvent event){
+        int mouseX = (int)(event.getX()/altoScale);
+        int mouseY = (int)(event.getY()/anchoScale);
+        coordenas.setText("Coordenadas Mouse: ("+mouseX+", "+mouseY+")");
     }
     @FXML
     private void cargarEmpate(ActionEvent event){
@@ -549,7 +558,8 @@ public class JuegoController implements Initializable {
                 if(mapeo[(int)Math.floor(x/altoScale)][(int)Math.floor(y/anchoScale)].equals(Mapa.Area.SOLIDO)){
                     gc.setFill(Color.valueOf("#008080"));
                     gc.fillRect(x, y, 1, 1);
-                }else if(mapeo[(int)Math.floor(x/altoScale)][(int)Math.floor(y/anchoScale)].equals(Mapa.Area.AIRE) ||mapeo[(int)Math.floor(x/altoScale)][(int)Math.floor(y/anchoScale)].equals(Mapa.Area.TANQUE)  ){
+                    //producto del bug ||mapeo[(int)Math.floor(x/altoScale)][(int)Math.floor(y/anchoScale)].equals(Mapa.Area.TANQUE)
+                }else if(mapeo[(int)Math.floor(x/altoScale)][(int)Math.floor(y/anchoScale)].equals(Mapa.Area.AIRE) ){
                     gc.setFill(Color.WHITE);
                     gc.fillRect(x, y, 1, 1);
                 }
@@ -713,7 +723,7 @@ public class JuegoController implements Initializable {
                      mapa.setAreas(k, j);
                 }
                 for (int j = 0; j < y; j++){
-                    System.out.print("tanque "+ jugadores.get(i).getName()); System.out.println(", quita terreno en: "+x+","+y);
+                    //System.out.print("tanque "+ jugadores.get(i).getName()); System.out.println(", quita terreno en: "+x+","+y);
                     mapa.fillAire(k, j);
                 }
             }  
