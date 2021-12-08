@@ -20,6 +20,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
@@ -59,13 +60,14 @@ public class JuegoController implements Initializable {
     @FXML private Label vidaTanque;
     @FXML private Label killsTanque;
     @FXML private Button disparar;
+    @FXML private Label coordenas;//de testing
     
     int contOrden=0;
     int []arrayOrden;
     int []opcionesViento={-1,1};
     private Mapa mapa;
     private ArrayList<Jugador> jugadores = new ArrayList<Jugador>();
-    private int destruccionMapa = 3;// valores del 1 al inifinito, mientras menor sea mayor sera la destruccion visible en el mapa
+    private int destruccionMapa = 3;// valores del 1 al inifinito, mientras menor sea mayor sera la destruccion visible en el mapa default 3
     private int anchoMatrizMapa = 733;// largo de la matriz del mapa
     private int altoMatrizMapa = 465;// ancho de la matriz del mapa
     double altoScale;//la division de ambos anchos de una proporcion de la ventana actual.
@@ -186,6 +188,7 @@ public class JuegoController implements Initializable {
             }
             else{
                 JOptionPane.showMessageDialog(null, "Debe elegir un tipo de bala");
+                tBalas.setDisable(false);
             }
             /*if(jugadores.get(arrayOrden[cont_orden]).getTanque().getBala().verificaBalas() ){
                 System.out.println("entra a cargarEmpate en esta verificacion1");
@@ -276,6 +279,13 @@ public class JuegoController implements Initializable {
         } catch (IOException e) {
             JOptionPane.showMessageDialog(null, "Error: 013\nNo se a podido cargar una nueva partida");
         }
+    }
+    //de testing
+    @FXML
+    private void onMouseMove(MouseEvent event){
+        int mouseX = (int)(event.getX()/altoScale);
+        int mouseY = (int)(event.getY()/anchoScale);
+        coordenas.setText("Coordenadas Mouse: ("+mouseX+", "+mouseY+")");
     }
     @FXML
     private void cargarEmpate(ActionEvent event){
@@ -548,7 +558,8 @@ public class JuegoController implements Initializable {
                 if(mapeo[(int)Math.floor(x/altoScale)][(int)Math.floor(y/anchoScale)].equals(Mapa.Area.SOLIDO)){
                     gc.setFill(Color.valueOf("#008080"));
                     gc.fillRect(x, y, 1, 1);
-                }else if(mapeo[(int)Math.floor(x/altoScale)][(int)Math.floor(y/anchoScale)].equals(Mapa.Area.AIRE) ||mapeo[(int)Math.floor(x/altoScale)][(int)Math.floor(y/anchoScale)].equals(Mapa.Area.TANQUE)  ){
+                    //producto del bug ||mapeo[(int)Math.floor(x/altoScale)][(int)Math.floor(y/anchoScale)].equals(Mapa.Area.TANQUE)
+                }else if(mapeo[(int)Math.floor(x/altoScale)][(int)Math.floor(y/anchoScale)].equals(Mapa.Area.AIRE) ){
                     gc.setFill(Color.WHITE);
                     gc.fillRect(x, y, 1, 1);
                 }
@@ -663,6 +674,7 @@ public class JuegoController implements Initializable {
         }
         return 0;
     }
+
     public int pixelesY(int x, int y) {
         int i = 0;
         while(y < altoMatrizMapa){//si y sobrepasa este numero el tanque caeria fuera del mapa
@@ -686,9 +698,10 @@ public class JuegoController implements Initializable {
         d += 20;
         ArrayList<Integer> impactados = new ArrayList<Integer>();
         int i = 0;
-        for (Jugador jugador : jugadores) {
+        for (Jugador jugador : jugadores) { 
             Tanque tanque = jugador.getTanque();
-            if((tanque.getPos()[0]> x-d/2 && tanque.getPos()[0] <= d/2+x) && (tanque.getPos()[1]> y-d/2 && tanque.getPos()[1]> d/2+y)){
+            if((tanque.getPos()[0]< x-d/2 && tanque.getPos()[0] >= d/2+x) && (tanque.getPos()[1]< y-d/2 && tanque.getPos()[1]>= d/2+y)){
+                JOptionPane.showMessageDialog(null, "Tanque: "+jugador.getName());
                 impactados.add(i);
             }
             i++;
@@ -702,16 +715,15 @@ public class JuegoController implements Initializable {
             Double x = jugadores.get(i).getTanque().getPos()[0]*altoScale;
             tanks.get(i).setX(x);
             int y = setYTank((int)Math.round(x/altoScale));
-            tanks.get(i).setY(y*anchoScale);
-            //System.out.println("tanque "+ jugadores.get(i).getName()+" , con altura: "+(y*anchoScale)+",con x,y: "+jugadores.get(i).getTanque().getPos()[0]+","+y);
+            tanks.get(i).setY((y+10)*anchoScale-9);
             jugadores.get(i).getTanque().setPos((int)Math.round(x/altoScale), y);
             mapa.addTank((int)Math.round(x/altoScale), y);
             for (int k = (int)Math.floor(x/altoScale); k < 20+(int)Math.floor(x/altoScale); k++) {//ancho de un tanque en el mapa
                 for (int j = y+10; j < altoMatrizMapa; j++) {//alto del mapa le ponemos suelo al tanque
                      mapa.setAreas(k, j);
                 }
-                for (int j = 0; j < y; j++){
-                    System.out.print("tanque "+ jugadores.get(i).getName()); System.out.println(", quita terreno en: "+x+","+y);
+                for (int j = 0; j < y+10; j++){
+                    //System.out.print("tanque "+ jugadores.get(i).getName()); System.out.println(", quita terreno en: "+x+","+y);
                     mapa.fillAire(k, j);
                 }
             }  
@@ -729,7 +741,7 @@ public class JuegoController implements Initializable {
             int y = setYTank((int)Math.round(jugadores.get(i).getTanque().getPos()[0]));
             mapa.removeTank(jugadores.get(i).getTanque().getPos()[0], jugadores.get(i).getTanque().getPos()[1]);
             tanks.get(i).setX(jugadores.get(i).getTanque().getPos()[0]*altoScale);
-            tanks.get(i).setY(y*anchoScale);
+            tanks.get(i).setY((y+10)*anchoScale-9);
             //.out.println("tanque "+ jugadores.get(i).getName()+" , con altura: "+(y*anchoScale)+",con x,y: "+x+","+y);
             jugadores.get(i).getTanque().setPos(x, y);
             barras.get(i).setTranslateX( (jugadores.get(i).getTanque().getPos()[0]-15)*altoScale ); //reposiciono la barras con su respectiba escala
@@ -778,7 +790,7 @@ public class JuegoController implements Initializable {
             barras.get(i).setStyle("-fx-accent:#5faf5f");
             barras.get(i).setVisible(true);
             barras.get(i).setTranslateX( (jugadores.get(i).getTanque().getPos()[0]-15)*altoScale );
-            barras.get(i).setTranslateY( (jugadores.get(i).getTanque().getPos()[1]-25)*anchoScale );
+            barras.get(i).setTranslateY( (jugadores.get(i).getTanque().getPos()[1])*anchoScale-10);
             barras.get(i).setProgress(1);
             barras.get(i).setPrefSize(60, 10);
             mapaPanel.getChildren().add(barras.get(i));

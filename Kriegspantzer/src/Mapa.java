@@ -81,10 +81,12 @@ public class Mapa implements Serializable{
             }
         }
     }
+    
     /**@return mapeo el mapa con los tipos con el que se está trabajando*/
     public Area[][] getMapeo(){
         return mapeo;
     }
+
     /**@return campos entrega el array con los distintos tipos de campos*/
     public ArrayList<int[]> getCampos(){
         return campos;
