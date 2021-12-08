@@ -70,6 +70,7 @@ public class JuegoController implements Initializable {
     private int destruccionMapa = 3;// valores del 1 al inifinito, mientras menor sea mayor sera la destruccion visible en el mapa default 3
     private int anchoMatrizMapa = 733;// largo de la matriz del mapa
     private int altoMatrizMapa = 465;// ancho de la matriz del mapa
+    private int altoTanquepx = 10;//tamaño en pixeles del alto de un tanque
     double altoScale;//la division de ambos anchos de una proporcion de la ventana actual.
     double anchoScale;//la division de ambas alturas de una proporcion de la ventana actual.    
     double altMax=0;
@@ -133,7 +134,7 @@ public class JuegoController implements Initializable {
                     arrayBalasImagen.get(0).get(turno).setVisible(true);
                     //System.out.println("hace visible la bala del turno: "+jugadores.get(turno).getName());
                     //se le suman valores a las posiciones para que salga desde arriba y al medio del tanque y no desde una esquina
-                    moverBala(posBala[0]+(double)10,(470-posBala[1]),posBala[0]+(double)10,(470-posBala[1]),angulo,velocidad,tiempo,contOrden,event,0);
+                    moverBala(posBala[0]+(double)altoTanquepx,(470-posBala[1]),posBala[0]+(double)altoTanquepx,(470-posBala[1]),angulo,velocidad,tiempo,contOrden,event,0);
                 }
                 else{
                     if (jugadores.get(arrayOrden[contOrden]).isIA()){
@@ -154,7 +155,7 @@ public class JuegoController implements Initializable {
                     arrayBalasImagen.get(1).get(turno).setVisible(true);
                     //System.out.println("hace visible la bala del turno: "+jugadores.get(turno).getName());
                     //se le suman valores a las posiciones para que salga desde arriba y al medio del tanque y no desde una esquina
-                    moverBala(posBala[0]+(double)10,(470-posBala[1]),posBala[0]+(double)10,(470-posBala[1]),angulo,velocidad,tiempo,contOrden,event,1);
+                    moverBala(posBala[0]+(double)altoTanquepx,(470-posBala[1]),posBala[0]+(double)altoTanquepx,(470-posBala[1]),angulo,velocidad,tiempo,contOrden,event,1);
                 }
                 else{
                     if (jugadores.get(arrayOrden[contOrden]).isIA()){
@@ -175,7 +176,7 @@ public class JuegoController implements Initializable {
                     arrayBalasImagen.get(2).get(turno).setVisible(true);
                     //System.out.println("hace visible la bala del turno: "+jugadores.get(turno).getName());
                     //se le suman valores a las posiciones para que salga desde arriba y al medio del tanque y no desde una esquina
-                    moverBala(posBala[0]+(double)10,(470-posBala[1]),posBala[0]+(double)10,(470-posBala[1]),angulo,velocidad,tiempo,contOrden,event,2);
+                    moverBala(posBala[0]+(double)altoTanquepx,(470-posBala[1]),posBala[0]+(double)altoTanquepx,(470-posBala[1]),angulo,velocidad,tiempo,contOrden,event,2);
                 }
                 else{
                     if (jugadores.get(arrayOrden[contOrden]).isIA()){
@@ -668,8 +669,8 @@ public class JuegoController implements Initializable {
     @FXML
     public int setYTank(int x) {
         for (int y = 0; y < altoMatrizMapa; y++){//465 son las posibles y
-            if(mapa.comprobarCoordenadaSolido(x+(int)Math.round(10/anchoScale), y)){
-                return y-10;// se le resta el size en pixeles del tanque
+            if(mapa.comprobarCoordenadaSolido(x+(int)Math.round(altoTanquepx/anchoScale), y)){
+                return y-altoTanquepx;// se le resta el size en pixeles del tanque
             }
         }
         return 0;
@@ -678,7 +679,7 @@ public class JuegoController implements Initializable {
     public int pixelesY(int x, int y) {
         int i = 0;
         while(y < altoMatrizMapa){//si y sobrepasa este numero el tanque caeria fuera del mapa
-            if(mapa.comprobarCoordenadaSolido(x+(int)Math.round(10/anchoScale), y)){
+            if(mapa.comprobarCoordenadaSolido(x+(int)Math.round(altoTanquepx/anchoScale), y)){
                 return i;// se retornan los pixeles movidos
             }
             y++;
@@ -715,14 +716,14 @@ public class JuegoController implements Initializable {
             Double x = jugadores.get(i).getTanque().getPos()[0]*altoScale;
             tanks.get(i).setX(x);
             int y = setYTank((int)Math.round(x/altoScale));
-            tanks.get(i).setY((y+10)*anchoScale-9);
+            tanks.get(i).setY((y+altoTanquepx)*anchoScale-(altoTanquepx-1));//se le resta 1 para que este bien apegado
             jugadores.get(i).getTanque().setPos((int)Math.round(x/altoScale), y);
             mapa.addTank((int)Math.round(x/altoScale), y);
             for (int k = (int)Math.floor(x/altoScale); k < 20+(int)Math.floor(x/altoScale); k++) {//ancho de un tanque en el mapa
-                for (int j = y+10; j < altoMatrizMapa; j++) {//alto del mapa le ponemos suelo al tanque
+                for (int j = y+altoTanquepx; j < altoMatrizMapa; j++) {//alto del mapa le ponemos suelo al tanque
                      mapa.setAreas(k, j);
                 }
-                for (int j = 0; j < y+10; j++){
+                for (int j = 0; j < y+altoTanquepx; j++){
                     //System.out.print("tanque "+ jugadores.get(i).getName()); System.out.println(", quita terreno en: "+x+","+y);
                     mapa.fillAire(k, j);
                 }
@@ -737,11 +738,11 @@ public class JuegoController implements Initializable {
     public void posTank(boolean v){//El metodo "posTank" posicionara los tanques en "mapaPanel"
         for (int i = 0; i<jugadores.size(); i++) {// se recorre el arraylist "jugadores", para proporcionarle cada tanque a su jugador.
             int x = jugadores.get(i).getTanque().getPos()[0];
-            int caida = pixelesY(x, jugadores.get(i).getTanque().getPos()[1]+10);//posicion en y actual del tanque los 10 corresponden a los pixeles del tanque
+            int caida = pixelesY(x, jugadores.get(i).getTanque().getPos()[1]+altoTanquepx);//posicion en y actual del tanque los 10 corresponden a los pixeles del tanque
             int y = setYTank((int)Math.round(jugadores.get(i).getTanque().getPos()[0]));
             mapa.removeTank(jugadores.get(i).getTanque().getPos()[0], jugadores.get(i).getTanque().getPos()[1]);
             tanks.get(i).setX(jugadores.get(i).getTanque().getPos()[0]*altoScale);
-            tanks.get(i).setY((y+10)*anchoScale-9);
+            tanks.get(i).setY((y+altoTanquepx)*anchoScale-(altoTanquepx-1));
             //.out.println("tanque "+ jugadores.get(i).getName()+" , con altura: "+(y*anchoScale)+",con x,y: "+x+","+y);
             jugadores.get(i).getTanque().setPos(x, y);
             barras.get(i).setTranslateX( (jugadores.get(i).getTanque().getPos()[0]-15)*altoScale ); //reposiciono la barras con su respectiba escala
