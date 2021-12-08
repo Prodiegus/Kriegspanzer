@@ -700,7 +700,8 @@ public class JuegoController implements Initializable {
         int i = 0;
         for (Jugador jugador : jugadores) { 
             Tanque tanque = jugador.getTanque();
-            if((tanque.getPos()[0]< x-d/2 && tanque.getPos()[0] >= d/2+x) && (tanque.getPos()[1]< y-d/2 && tanque.getPos()[1]>= d/2+y)){
+            System.out.println("La posicion de la bala es x="+x+" e y="+y+" el radio de explosion en x es de "+(x-d/2)+" hasta "+ (x+d/2)+" y la posicion del tanque en x es="+tanque.getPos()[0]+" el radio de explosion en y es de "+(y-d/2)+" hasta "+ (y+d/2)+" y la posicion del tanque en y es="+tanque.getPos()[1]);
+            if(((tanque.getPos()[0]> x-d/2 && tanque.getPos()[0]<=x) || (tanque.getPos()[0]< x+d/2 && tanque.getPos()[0]>=x)) && ((tanque.getPos()[1]> y-d/2 && tanque.getPos()[1]<=y) || (tanque.getPos()[1]< y+d/2 && tanque.getPos()[1]>=y))){
                 JOptionPane.showMessageDialog(null, "Tanque: "+jugador.getName());
                 impactados.add(i);
             }
