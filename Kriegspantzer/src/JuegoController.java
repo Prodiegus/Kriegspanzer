@@ -715,14 +715,14 @@ public class JuegoController implements Initializable {
             Double x = jugadores.get(i).getTanque().getPos()[0]*altoScale;
             tanks.get(i).setX(x);
             int y = setYTank((int)Math.round(x/altoScale));
-            tanks.get(i).setY(y*anchoScale+3*anchoScale);
+            tanks.get(i).setY((y+10)*anchoScale-9);
             jugadores.get(i).getTanque().setPos((int)Math.round(x/altoScale), y);
             mapa.addTank((int)Math.round(x/altoScale), y);
             for (int k = (int)Math.floor(x/altoScale); k < 20+(int)Math.floor(x/altoScale); k++) {//ancho de un tanque en el mapa
                 for (int j = y+10; j < altoMatrizMapa; j++) {//alto del mapa le ponemos suelo al tanque
                      mapa.setAreas(k, j);
                 }
-                for (int j = 0; j < y; j++){
+                for (int j = 0; j < y+10; j++){
                     //System.out.print("tanque "+ jugadores.get(i).getName()); System.out.println(", quita terreno en: "+x+","+y);
                     mapa.fillAire(k, j);
                 }
@@ -741,7 +741,7 @@ public class JuegoController implements Initializable {
             int y = setYTank((int)Math.round(jugadores.get(i).getTanque().getPos()[0]));
             mapa.removeTank(jugadores.get(i).getTanque().getPos()[0], jugadores.get(i).getTanque().getPos()[1]);
             tanks.get(i).setX(jugadores.get(i).getTanque().getPos()[0]*altoScale);
-            tanks.get(i).setY(y*anchoScale);
+            tanks.get(i).setY((y+10)*anchoScale-9);
             //.out.println("tanque "+ jugadores.get(i).getName()+" , con altura: "+(y*anchoScale)+",con x,y: "+x+","+y);
             jugadores.get(i).getTanque().setPos(x, y);
             barras.get(i).setTranslateX( (jugadores.get(i).getTanque().getPos()[0]-15)*altoScale ); //reposiciono la barras con su respectiba escala
@@ -790,7 +790,7 @@ public class JuegoController implements Initializable {
             barras.get(i).setStyle("-fx-accent:#5faf5f");
             barras.get(i).setVisible(true);
             barras.get(i).setTranslateX( (jugadores.get(i).getTanque().getPos()[0]-15)*altoScale );
-            barras.get(i).setTranslateY( (jugadores.get(i).getTanque().getPos()[1]-25)*anchoScale );
+            barras.get(i).setTranslateY( (jugadores.get(i).getTanque().getPos()[1])*anchoScale-10);
             barras.get(i).setProgress(1);
             barras.get(i).setPrefSize(60, 10);
             mapaPanel.getChildren().add(barras.get(i));
