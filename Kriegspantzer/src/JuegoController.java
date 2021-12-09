@@ -397,7 +397,7 @@ public class JuegoController implements Initializable {
                     else{//si el estado es true es tanque vivo
                         win=i;// si encuentra un tanque vivo lo designara como ganador.
                     }
-                    if(cont==(jugadores.size())-1){// al identificar que quede un tanque vivo "jugador.size()-1".
+                    if(cont==(jugadores.size())-1 && jugadores.get(win).cheekTanque()){// al identificar que quede un tanque vivo "jugador.size()-1".
                         cargarPantallaFinal(win,eventGlobal);// identificara como al unico tanque vivo como el ganador
                     }
                 }
