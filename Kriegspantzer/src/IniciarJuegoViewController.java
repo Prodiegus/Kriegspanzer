@@ -149,8 +149,9 @@ public class IniciarJuegoViewController implements Initializable {
                 IA ia=new IA(jugadores);
                 controller.verIA(event,0,ia);
             } catch (IOException | InterruptedException e) {
-                JOptionPane.showMessageDialog(null, "Error: 006\nno se a podido cargar el juego");
+                JOptionPane.showMessageDialog(null, "Error: 006\nno se a podido cargar el juego\n");
                 Logger.getLogger(IniciarJuegoViewController.class.getName()).log(Level.SEVERE, null, e);
+                
             }
         }
         
