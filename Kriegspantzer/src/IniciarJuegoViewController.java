@@ -146,15 +146,12 @@ public class IniciarJuegoViewController implements Initializable {
                 controller.setGravedad(gravedad);
                 controller.setPanelUsuario();
                 controller.setEventG(event);
-                try {
-                    IA ia=new IA(jugadores);
-                    controller.verIA(event,0,ia);
-                } catch (InterruptedException ex) {
-                    Logger.getLogger(IniciarJuegoViewController.class.getName()).log(Level.SEVERE, null, ex);
-                }
-
-            } catch (IOException e) {
-                JOptionPane.showMessageDialog(null, "Error: 006\nno se a podido cargar el juego");
+                IA ia=new IA(jugadores);
+                controller.verIA(event,0,ia);
+            } catch (IOException | InterruptedException e) {
+                JOptionPane.showMessageDialog(null, "Error: 006\nno se a podido cargar el juego\n");
+                Logger.getLogger(IniciarJuegoViewController.class.getName()).log(Level.SEVERE, null, e);
+                
             }
         }
         
@@ -269,7 +266,7 @@ public class IniciarJuegoViewController implements Initializable {
             JOptionPane.showMessageDialog(null, "Mapas no encontrados");
             this.map = 0;
         }
-        //this.map = 7;
+        //this.map = 5;
         //System.out.println("Id de mapa: Mapa"+this.map);
         
         //ese valor dentro del nextint es la cantidad de mapas creados en existencia
