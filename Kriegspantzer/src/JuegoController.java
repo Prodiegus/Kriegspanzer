@@ -381,7 +381,7 @@ public class JuegoController implements Initializable {
                         //le quito vida al tanque que se encuentre en esa zona
                         jugadores.get(i).getTanque().setVida( jugadores.get(i).getTanque().getVida()-jugadores.get(i).getTanque().getDamageBala()[tipBala]);
                         barras.get(i).setProgress(jugadores.get(i).getTanque().getVida()/100);
-                        if (jugadores.get(i).getTanque().getVida() <=0 ){// si el jugador al que le cae la bala pierde toda la vida. 
+                        if (jugadores.get(i).getTanque().getVida() <=0 && jugadores.get(i).cheekTanque()){// si el jugador al que le cae la bala pierde toda la vida. 
                             jugadores.get(arrayOrden[contOrden]).masKill();// se le suma la kill al tanque que lo elimino.
                             jugadores.get(i).quitarKills();// el tanque que muere pierde todas sus kills acumuladas.
                             jugadores.get(i).setEstado(false);// su estado cambia de vivo a muerto.
@@ -733,7 +733,7 @@ public class JuegoController implements Initializable {
     @FXML
     public void posTank(boolean v){//El metodo "posTank" posicionara los tanques en "mapaPanel"
         //a los manejos con x se les sumara 1 por el redondeo de la funcion de pos anterior
-        for (int i = 0; i<jugadores.size(); i++) {// se recorre el arraylist "jugadores", para proporcionarle cada tanque a su jugador.
+        for (int i = 0; i<jugadores.size() && jugadores.get(i).cheekTanque(); i++) {// se recorre el arraylist "jugadores", para proporcionarle cada tanque a su jugador.
             int x = (int)(jugadores.get(i).getTanque().getPos()[0]*altoScale);
             int caida = pixelesY((int)(x/altoScale), jugadores.get(i).getTanque().getPos()[1]+altoTanquepx);//posicion en y actual del tanque los 10 corresponden a los pixeles del tanque
             int y = setYTank((int)(jugadores.get(i).getTanque().getPos()[0]));
