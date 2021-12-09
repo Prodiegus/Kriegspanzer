@@ -18,7 +18,7 @@
             <InnerShadow choke="1.0" height="6.17" radius="2.585" width="6.17" />
          </effect>
          <children>
-            <Canvas fx:id="board" height="465.0" layoutY="7.0" onMouseMoved="#onMouseMove" width="733.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0" />
+            <Canvas fx:id="board" height="465.0" layoutY="7.0" width="733.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0" />
             <Label fx:id="alturaPanel" layoutX="516.0" layoutY="14.0" prefHeight="25.0" prefWidth="215.0" text="Altura máxima: " AnchorPane.rightAnchor="45.0" AnchorPane.topAnchor="14.0">
                <font>
                   <Font name="Consolas Bold" size="14.0" />
