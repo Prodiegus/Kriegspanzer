@@ -653,8 +653,20 @@ public class JuegoController implements Initializable {
                 new Image(getClass()
                 .getResourceAsStream("img/Tanque_"+jugadores.get(i).getTanque().getColor()+".png"))));
             balasPredImagen.add(new ImageView(new Image(getClass().getResourceAsStream("img/bala.png"))));
+            for (ImageView bala : balasPredImagen) {
+                bala.setScaleX(altoScale);
+                bala.setScaleY(anchoScale);
+            }
             balasGImagen.add(new ImageView(new Image(getClass().getResourceAsStream("img/balaG.png"))));
+            for (ImageView bala : balasGImagen) {
+                bala.setScaleX(altoScale);
+                bala.setScaleY(anchoScale);
+            }
             balasPImagen.add(new ImageView(new Image(getClass().getResourceAsStream("img/balaP.png"))));
+            for (ImageView bala : balasPImagen) {
+                bala.setScaleX(altoScale);
+                bala.setScaleY(anchoScale);
+            }
         }
         arrayBalasImagen.add(balasPredImagen);
         arrayBalasImagen.add(balasGImagen);
