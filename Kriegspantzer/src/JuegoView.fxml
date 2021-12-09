@@ -11,7 +11,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onKeyPressed="#scale" prefHeight="614.0" prefWidth="800.0" styleClass="Game" stylesheets="@Estilos.css" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="JuegoController">
+<AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" onKeyPressed="#scale" prefHeight="614.0" prefWidth="800.0" styleClass="Game" stylesheets="@Estilos.css" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="JuegoController">
    <children>
       <AnchorPane fx:id="mapaPanel" layoutX="34.0" layoutY="14.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="465.0" prefWidth="733.0" AnchorPane.bottomAnchor="135.0" AnchorPane.leftAnchor="34.0" AnchorPane.rightAnchor="34.0" AnchorPane.topAnchor="14.0">
          <effect>
@@ -19,11 +19,11 @@
          </effect>
          <children>
             <Canvas fx:id="board" height="465.0" layoutY="7.0" onMouseMoved="#onMouseMove" width="733.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0" />
-            <Label fx:id="alturaPanel" layoutX="516.0" layoutY="14.0" prefHeight="25.0" prefWidth="215.0" text="Altura máxima: " AnchorPane.rightAnchor="1.0" AnchorPane.topAnchor="14.0">
+            <Label fx:id="alturaPanel" layoutX="516.0" layoutY="14.0" prefHeight="25.0" prefWidth="215.0" text="Altura máxima: " AnchorPane.rightAnchor="45.0" AnchorPane.topAnchor="14.0">
                <font>
                   <Font name="Consolas Bold" size="14.0" />
                </font></Label>
-            <Label fx:id="distanciaPanel" layoutX="516.0" layoutY="40.0" prefHeight="25.0" prefWidth="215.0" text="Distancia máxima: " AnchorPane.rightAnchor="1.0" AnchorPane.topAnchor="40.0">
+            <Label fx:id="distanciaPanel" layoutX="472.0" layoutY="40.0" prefHeight="25.0" prefWidth="215.0" text="Distancia máxima: " AnchorPane.rightAnchor="45.0" AnchorPane.topAnchor="40.0">
                <font>
                   <Font name="Consolas Bold" size="14.0" />
                </font></Label>
@@ -37,7 +37,6 @@
                   <Font name="Consolas Bold" size="14.0" />
                </font>
             </Label>
-            <Label fx:id="coordenas" layoutX="14.0" layoutY="434.0" text="Coordenadas Mouse: " AnchorPane.bottomAnchor="14.0" AnchorPane.leftAnchor="14.0" />
          </children></AnchorPane>
       <AnchorPane layoutX="34.0" layoutY="471.0" prefHeight="119.0" prefWidth="732.0" AnchorPane.bottomAnchor="14.0" AnchorPane.leftAnchor="34.0" AnchorPane.rightAnchor="34.0">
          <children>
