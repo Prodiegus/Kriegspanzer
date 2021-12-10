@@ -11,7 +11,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" onKeyPressed="#scale" prefHeight="614.0" prefWidth="800.0" styleClass="Game" stylesheets="@Estilos.css" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="JuegoController">
+<AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="614.0" prefWidth="800.0" styleClass="Game" stylesheets="@Estilos.css" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="JuegoController">
    <children>
       <AnchorPane fx:id="mapaPanel" layoutX="34.0" layoutY="14.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="465.0" prefWidth="733.0" AnchorPane.bottomAnchor="135.0" AnchorPane.leftAnchor="34.0" AnchorPane.rightAnchor="34.0" AnchorPane.topAnchor="14.0">
          <effect>
@@ -79,7 +79,6 @@
             </AnchorPane>
          </children>
       </AnchorPane>
-      <Label layoutX="622.0" layoutY="592.0" text="Precione &quot;R&quot; para Reposicionar" textFill="WHITE" AnchorPane.bottomAnchor="5.0" AnchorPane.rightAnchor="14.0" />
    </children>
    <effect>
       <InnerShadow choke="1.0" height="6.17" radius="2.585" width="6.17" />

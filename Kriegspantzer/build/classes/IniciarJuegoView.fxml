@@ -19,10 +19,6 @@
          <rotationAxis>
             <Point3D />
          </rotationAxis>
-         <children>
-            <Button layoutX="88.0" layoutY="426.0" mnemonicParsing="false" onAction="#handleEdMap" styleClass="backButton" stylesheets="@Estilos.css" text="Editar Mapa" textFill="WHITE" AnchorPane.bottomAnchor="14.0" AnchorPane.leftAnchor="88.0" />
-            <TextField fx:id="nMap" layoutX="14.0" layoutY="426.0" prefHeight="25.0" prefWidth="60.0" promptText="Numero" styleClass="backButton2" stylesheets="@Estilos.css" AnchorPane.bottomAnchor="14.0" AnchorPane.leftAnchor="14.0" />
-         </children>
       </AnchorPane>
       <AnchorPane layoutX="24.0" layoutY="481.0" prefHeight="119.0" prefWidth="803.0" AnchorPane.bottomAnchor="14.0" AnchorPane.leftAnchor="27.0" AnchorPane.rightAnchor="21.0">
          <children>
@@ -31,7 +27,7 @@
                <font>
                   <Font name="Consolas Bold" size="15.0" />
                </font></Button>
-            <TextField fx:id="nJugador" layoutX="41.0" layoutY="22.0" prefHeight="36.0" prefWidth="172.0" promptText="- Nombre jugador 1 - " styleClass="backButton" AnchorPane.leftAnchor="41.0">
+            <TextField fx:id="nJugador" layoutX="41.0" layoutY="22.0" onAction="#handleIngresar" prefHeight="36.0" prefWidth="172.0" promptText="- Nombre jugador 1 - " styleClass="backButton" AnchorPane.leftAnchor="41.0">
                <font>
                   <Font name="Consolas Bold" size="14.0" />
                </font></TextField>

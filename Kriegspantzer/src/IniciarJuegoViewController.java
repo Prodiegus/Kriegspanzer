@@ -13,7 +13,6 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.ImageCursor;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -158,35 +157,7 @@ public class IniciarJuegoViewController implements Initializable {
         
         return true;
     }
-    @FXML
-    private void handleEdMap(ActionEvent event){
-        //la instruccion esta dentro de un try catch debido a que se podrian presentar errores en la ejecucion 
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("EditorMapa.fxml"));
-
-            Parent root = loader.load();
-            Scene scene = new Scene(root);
-            Stage stage = new Stage();
-
-            EditorMapaController controller = loader.getController();
-
-            Image img = new Image("img/Cursor32x32.png");
-            scene.setCursor(new ImageCursor(img));
-            controller.setMap(Integer.parseInt(nMap.getText().trim()));
-            controller.iniciarMapa();
-            stage.initModality(Modality.APPLICATION_MODAL);
-            stage.setResizable(false);
-            stage.setTitle("Kriegspanzer Map Editor");
-            stage.getIcons().add(new Image(getClass().getResourceAsStream("img/icon.png")));
-            stage.setScene(scene);
-            stage.show();
-
-        } catch (IOException e) {
-            //en caso de que algo salga mal mostraremos el siguiente mensaje
-            JOptionPane.showMessageDialog(null, "Error 001:\nNo ha sido posible cargar el editor\n"+e.getCause());
-        }
-        
-    }
+    
     @FXML
     private void handleConfings(ActionEvent event){
         //la instruccion esta dentro de un try catch debido a que se podrian presentar errores en la ejecucion 

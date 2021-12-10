@@ -18,8 +18,6 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.KeyCode;
-import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
@@ -84,15 +82,7 @@ public class JuegoController implements Initializable {
     IA ia;
     boolean disparo = false; //mientras la bala esta en aire no se puede disparar
     String[] balasDisp = { "Proyectil 60mm: 3 balas","Proyectil 105mm: 3 balas", "Proyectil Perforador: 10 balas"};
-    
-    
-    @FXML public void scale(KeyEvent event){
-        if(event.getCode().equals(KeyCode.R)){
-            posTank(true);
-            setBoard();
-            //posBala();
-        }
-    }
+
     //closer
     @FXML private void close(ActionEvent event){
         //Node source = (Node) event.getSource();
