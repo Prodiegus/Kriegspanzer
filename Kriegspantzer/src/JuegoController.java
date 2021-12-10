@@ -461,9 +461,12 @@ public class JuegoController implements Initializable {
                     jugadores.get(i).getTanque().setVida(jugadores.get(i).getTanque().getVida()-10);//danio colateral por alcanxe de proyectil
                     barras.get(i).setProgress(jugadores.get(i).getTanque().getVida()/100);
                     Tanque tanque = jugadores.get(i).getTanque();
-                    if(tanque.getVida()<=0){
-                        tanks.remove((int)i);
-                        jugadores.get(arrayOrden[contOrden]).masKill();
+                    if(tanque.getVida()<=0 && jugadores.get(i).cheekTanque()){
+                        jugadores.get(arrayOrden[contOrden]).masKill();// se le suma la kill al tanque que lo elimino.
+                        jugadores.get(i).quitarKills();// el tanque que muere pierde todas sus kills acumuladas.
+                        jugadores.get(i).setEstado(false);// su estado cambia de vivo a muerto.
+                        quitarTanque(i);// se eliminara el jugador muerto del sistema de turnos.
+                        contOrden--;
                         mapa.removeTank(tanque.getPos()[0], tanque.getPos()[1]);
                     }
                 }
