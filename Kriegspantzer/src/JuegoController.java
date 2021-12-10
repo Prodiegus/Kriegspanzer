@@ -197,6 +197,7 @@ public class JuegoController implements Initializable {
         }
         else{ //en caso de que la IA no realize un calculo mal
             if (jugadores.get(arrayOrden[contOrden]).getTanque().getBala().verificaBalas() && jugadores.get(arrayOrden[contOrden]).cheekTanque()){
+                boolean bandera1=true;
                 boolean bandera=true;
                 int maxbala=jugadores.get(0).getKills();
                 int jugwin=0;
@@ -208,7 +209,8 @@ public class JuegoController implements Initializable {
                 }
                 for(int a=0;a<jugadores.size();a++){
                     if(jugwin!=a){
-                        if(jugadores.get(a).getKills()==maxbala){
+                        if(jugadores.get(a).getKills()==maxbala && bandera1){
+                            bandera1=false;
                             bandera=false;
                             cargarEmpate(eventGlobal);
                         }
@@ -421,6 +423,7 @@ public class JuegoController implements Initializable {
                 ang.setText( ""+jugadores.get(arrayOrden[contOrden]).getAng() );
                 vel.setText( ""+jugadores.get(arrayOrden[contOrden]).getVel());
                 if (jugadores.get(arrayOrden[contOrden]).getTanque().getBala().verificaBalas() && jugadores.get(arrayOrden[contOrden]).cheekTanque()){
+                    boolean bandera1=true;
                     boolean bandera=true;
                     int maxbala=jugadores.get(0).getKills();
                     int jugwin=0;
@@ -432,7 +435,8 @@ public class JuegoController implements Initializable {
                     }
                     for(int a=0;a<jugadores.size();a++){
                         if(jugwin!=a){
-                            if(jugadores.get(a).getKills()==maxbala){
+                            if(jugadores.get(a).getKills()==maxbala && bandera1){
+                                bandera1=false;
                                 bandera=false;
                                 cargarEmpate(eventGlobal);
                             }
@@ -492,6 +496,7 @@ public class JuegoController implements Initializable {
                 ang.setText( ""+jugadores.get(arrayOrden[contOrden]).getAng() );
                 vel.setText( ""+jugadores.get(arrayOrden[contOrden]).getVel());
                 if (jugadores.get(arrayOrden[contOrden]).getTanque().getBala().verificaBalas() && jugadores.get(arrayOrden[contOrden]).cheekTanque()){
+                    boolean bandera1=true;
                     boolean bandera=true;
                     int maxbala=jugadores.get(0).getKills();
                     int jugwin=0;
@@ -503,7 +508,8 @@ public class JuegoController implements Initializable {
                     }
                     for(int a=0;a<jugadores.size();a++){
                         if(jugwin!=a){
-                            if(jugadores.get(a).getKills()==maxbala){
+                            if(jugadores.get(a).getKills()==maxbala && bandera1){
+                                bandera1=false;
                                 bandera=false;
                                 cargarEmpate(eventGlobal);
                             }
