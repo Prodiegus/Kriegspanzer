@@ -89,6 +89,7 @@ public class JuegoController implements Initializable {
     @FXML public void scale(KeyEvent event){
         if(event.getCode().equals(KeyCode.R)){
             posTank(true);
+            setBoard();
             //posBala();
         }
     }
@@ -387,8 +388,7 @@ public class JuegoController implements Initializable {
                             jugadores.get(i).setEstado(false);// su estado cambia de vivo a muerto.
                             quitarTanque(i);// se eliminara el jugador muerto del sistema de turnos.
                             contOrden--;
-                            Tanque tanque = jugadores.get(i).getTanque();
-                            mapa.removeTank(tanque.getPos()[0], tanque.getPos()[1]);// se remueve el tanque en ambito de matriz del mapa.
+                            
                         }
                     }
                     if(!jugadores.get(i).cheekTanque()){//si el estado es falso es tanque destruido
@@ -552,8 +552,12 @@ public class JuegoController implements Initializable {
                 if(mapeo[(int)Math.floor(x/altoScale)][(int)Math.floor(y/anchoScale)].equals(Mapa.Area.SOLIDO)){
                     gc.setFill(Color.valueOf("#008080"));
                     gc.fillRect(x, y, 1, 1);
-                }else if(mapeo[(int)Math.floor(x/altoScale)][(int)Math.floor(y/anchoScale)].equals(Mapa.Area.AIRE) || mapeo[(int)Math.floor(x/altoScale)][(int)Math.floor(y/anchoScale)].equals(Mapa.Area.TANQUE)){
+                    //|| mapeo[(int)Math.floor(x/altoScale)][(int)Math.floor(y/anchoScale)].equals(Mapa.Area.TANQUE)
+                }else if(mapeo[(int)Math.floor(x/altoScale)][(int)Math.floor(y/anchoScale)].equals(Mapa.Area.AIRE) ){
                     gc.setFill(Color.WHITE);
+                    gc.fillRect(x, y, 1, 1);
+                }else if(mapeo[(int)Math.floor(x/altoScale)][(int)Math.floor(y/anchoScale)].equals(Mapa.Area.TANQUE)){
+                    gc.setFill(Color.BLUEVIOLET);
                     gc.fillRect(x, y, 1, 1);
                 }
             }
@@ -614,6 +618,8 @@ public class JuegoController implements Initializable {
     public void quitarTanque(int jugMuerto){// este metodo servira para eliminar al tanque muerto del sistema de turnos.
         int[] aux = new int [this.arrayOrden.length-1];// se creara un arreglo auxiliar para guardar el nuevo arreglo de turnos.
         int cont=0;
+        Tanque tanque = jugadores.get(jugMuerto).getTanque();
+        mapa.removeTank(tanque.getPos()[0], tanque.getPos()[1]);// se remueve el tanque en ambito de matriz del mapa.
         //System.out.println("el jugador muerto es: "+jugMuerto);
         for(int i=0;i<this.arrayOrden.length;i++){//se recorrera el arreglo de sistema de turnos.
             if(this.arrayOrden[i]!=jugMuerto){//al encontrar un tanque que no sea el eliminado actualmente.
