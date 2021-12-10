@@ -740,7 +740,7 @@ public class JuegoController implements Initializable {
             tanks.get(i).setX(x+altoScale*altoScale*altoScale+altoScale+1);
             tanks.get(i).setY((y+altoTanquepx)*anchoScale-(altoTanquepx-anchoScale-1)*anchoScale);
             jugadores.get(i).getTanque().setPos((int)(x/altoScale)+1, y);
-            barras.get(i).setTranslateX((jugadores.get(i).getTanque().getPos()[0]-15)*altoScale); //reposiciono la barras con su respectiba escala
+            barras.get(i).setTranslateX((jugadores.get(i).getTanque().getPos()[0]-5)*altoScale); //reposiciono la barras con su respectiba escala
             barras.get(i).setTranslateY((jugadores.get(i).getTanque().getPos()[1]-25)*anchoScale);//reposiciono la barras con su respectiba escala
             mapa.removeTank(jugadores.get(i).getTanque().getPos()[0], jugadores.get(i).getTanque().getPos()[1]);//antes de agregar un nuevo tanque eliminaremos el viejo del mapa
             mapa.addTank((int)Math.round(x/altoScale)+1, y);
@@ -785,7 +785,7 @@ public class JuegoController implements Initializable {
             barras.add(new ProgressBar(1));
             barras.get(i).setStyle("-fx-accent:#5faf5f");
             barras.get(i).setVisible(true);
-            barras.get(i).setTranslateX( (jugadores.get(i).getTanque().getPos()[0]-15)*altoScale );//posicion de barras
+            barras.get(i).setTranslateX( (jugadores.get(i).getTanque().getPos()[0]-5)*altoScale );//posicion de barras
             barras.get(i).setTranslateY( (jugadores.get(i).getTanque().getPos()[1]-25)*anchoScale);//posicion de barras
             barras.get(i).setProgress(1);
             barras.get(i).setPrefSize(60, 10);
