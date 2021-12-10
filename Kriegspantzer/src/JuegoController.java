@@ -530,10 +530,11 @@ public class JuegoController implements Initializable {
     }
     public void setGravedad(double gravity){
         this.gravedad=gravity;
+        gravedadPanel.setText("Gravedad: "+gravedad);
     }
     public void setWind(int wind){
         this.viento=wind;
-        gravedadPanel.setText("Gravedad: "+gravedad);
+        //gravedadPanel.setText("Gravedad: "+gravedad);
     }
     public void setBoard(){
         // a la hora de recorrer el ciclo se multiplica por sus escalas los valores
@@ -734,7 +735,6 @@ public class JuegoController implements Initializable {
             }  
             mapaPanel.getChildren().add(tanks.get(i));
         }
-        //posTank(true);
         setBoard();
     }
 

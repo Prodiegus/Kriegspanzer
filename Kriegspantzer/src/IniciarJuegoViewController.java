@@ -36,7 +36,7 @@ public class IniciarJuegoViewController implements Initializable {
     private int ancho = 800;
     private int alto = 800;
     private int cantJug=2;
-    private int margenT = 30;
+    private int margenT = 60;
     
     int[] municiones = {10,10,10}; 
     double gravedad=9.81;
@@ -250,7 +250,7 @@ public class IniciarJuegoViewController implements Initializable {
         int xCandidata = random.nextInt(680)+10;
         for (Jugador jugador : jugadores) {
             Tanque tanque = jugador.getTanque();
-            if(tanque.getPos()[0]>= xCandidata-margenT && tanque.getPos()[0] <= xCandidata+margenT){
+            if(tanque.getPos()[0]< xCandidata-margenT && tanque.getPos()[0] > xCandidata+margenT){
                 getX();
             }
         }
