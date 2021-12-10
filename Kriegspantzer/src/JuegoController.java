@@ -382,7 +382,7 @@ public class JuegoController implements Initializable {
                         //le quito vida al tanque que se encuentre en esa zona
                         jugadores.get(i).getTanque().setVida( jugadores.get(i).getTanque().getVida()-jugadores.get(i).getTanque().getDamageBala()[tipBala]);
                         barras.get(i).setProgress(jugadores.get(i).getTanque().getVida()/100);
-                        if (jugadores.get(i).getTanque().getVida() <=0 && jugadores.get(i).cheekTanque() ){// si el jugador al que le cae la bala pierde toda la vida. 
+                        if (jugadores.get(i).getTanque().getVida() <=0 && jugadores.get(i).cheekTanque()){// si el jugador al que le cae la bala pierde toda la vida. 
                             jugadores.get(arrayOrden[contOrden]).masKill();// se le suma la kill al tanque que lo elimino.
                             jugadores.get(i).quitarKills();// el tanque que muere pierde todas sus kills acumuladas.
                             jugadores.get(i).setEstado(false);// su estado cambia de vivo a muerto.
@@ -767,6 +767,7 @@ public class JuegoController implements Initializable {
             tanque.setVida(tanque.getVida()-(caida/(double)4));//danio por caida
             barras.get(i).setProgress(tanque.getVida()/100);//se actualiza la barra de vida
             if(tanque.getVida()<=0 && jugadores.get(i).cheekTanque() ){
+                jugadores.get(arrayOrden[contOrden]).getKills();
                 mapa.removeTank(tanque.getPos()[0], tanque.getPos()[1]);
                 mapaPanel.getChildren().remove(tanks.get(i));     //se borra la imagen del tanque en pantalla
                 mapaPanel.getChildren().remove(barras.get(i));    //se borra la barra del tanque en pantalla
