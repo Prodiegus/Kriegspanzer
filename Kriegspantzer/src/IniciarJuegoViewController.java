@@ -40,6 +40,7 @@ public class IniciarJuegoViewController implements Initializable {
     private int margenT = 30;
     
     int[] municiones = {10,10,10}; 
+    int []intervalosTotales = {0,0};
     double gravedad=9.81;
     int viento=0;
     private ArrayList<Jugador> jugadores = new ArrayList<Jugador>();
@@ -277,10 +278,15 @@ public class IniciarJuegoViewController implements Initializable {
     private int getX(){
         Random random = new Random();
         int xCandidata = random.nextInt(680)+10;
-        for (Jugador jugador : jugadores) {
-            Tanque tanque = jugador.getTanque();
-            if(tanque.getPos()[0]>= xCandidata-margenT && tanque.getPos()[0] <= xCandidata+margenT){
-                getX();
+        int largoMapa=731;
+        int intervalo=largoMapa/cantJug;
+        boolean flag=true;
+        while(flag){
+            int interAzar=random.nextInt(cantJug);
+            if (this.intervalosTotales[interAzar] == 0){//si el intervalo es 0 es porque no existe un tanque ahí
+                xCandidata=random.nextInt(intervalo)+intervalo*interAzar;
+                this.intervalosTotales[interAzar] = 1;
+                flag=false;
             }
         }
         return xCandidata;
@@ -288,6 +294,11 @@ public class IniciarJuegoViewController implements Initializable {
     //cambia la cantidad de jugadores que habrán
     public void setCantJug(int num){
         this.cantJug=num;
+        int []aux=new int[num];
+        for(int i=0;i<num;i++){
+            aux[i]=0;
+        }
+        this.intervalosTotales=aux;
     }
 
     @Override
