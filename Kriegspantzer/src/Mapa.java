@@ -67,7 +67,7 @@ public class Mapa implements Serializable{
     //le da el valor de TANQUE a la posicion entregada
     public void addTank(int x, int y){
         for(int i=x; i<x+20;i++){
-            for(int j=y; j<y+10;j++){
+            for(int j=y-4; j<y+10;j++){
                 mapeo[i][j] = Area.TANQUE;
             }
         }
@@ -75,16 +75,18 @@ public class Mapa implements Serializable{
 
     //le da el valor de Aire a la posicion entregada
     public void removeTank(int x, int y){
-        for(int i=x; i<x+20;i++){
-            for(int j=y; j<y+10;j++){
-                mapeo[i][j] = Area.AIRE;
+        for(int i=x; i<x+21;i++){
+            for(int j=y-4; j<y+10;j++){
+                this.mapeo[i][j] = Area.AIRE;
             }
         }
     }
+    
     /**@return mapeo el mapa con los tipos con el que se está trabajando*/
     public Area[][] getMapeo(){
         return mapeo;
     }
+
     /**@return campos entrega el array con los distintos tipos de campos*/
     public ArrayList<int[]> getCampos(){
         return campos;

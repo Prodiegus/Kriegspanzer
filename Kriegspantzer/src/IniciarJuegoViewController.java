@@ -13,7 +13,6 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.ImageCursor;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -37,8 +36,9 @@ public class IniciarJuegoViewController implements Initializable {
     private int ancho = 800;
     private int alto = 800;
     private int cantJug=2;
+    private int margenT = 30;
     
-    int[] municiones = {3,3,10}; 
+    int[] municiones = {10,10,10}; 
     double gravedad=9.81;
     int viento=0;
     private ArrayList<Jugador> jugadores = new ArrayList<Jugador>();
@@ -48,8 +48,8 @@ public class IniciarJuegoViewController implements Initializable {
     private boolean handleIngresar(ActionEvent event) {
         //por ahora se generan las posiciones aleatorias de los tanques
         if (jugadores.size()<cantJug){//mientras la cantidad de jugadores ingresados sea menor a la maxima puede ingresar más
-            int valorDado = (int) Math.floor((Math.random()*700));
-            int[] pos={valorDado,10};
+            //int valorDado = (int) Math.floor((Math.random()*700));
+            int[] pos={getX(),10};
             String color=cJugador.getValue();
             Jugador jActual =  new Jugador(nJugador.getText().trim(),IA.isSelected());
             Bala bActual = new Bala(pos);
@@ -124,7 +124,7 @@ public class IniciarJuegoViewController implements Initializable {
                 stage.initModality(Modality.WINDOW_MODAL);
                 stage.setHeight(alto);
                 stage.setWidth(ancho);
-                stage.setResizable(true);
+                stage.setResizable(false);
                 stage.setTitle("Kiegspanzer Game");
                 stage.getIcons().add(new Image(getClass().getResourceAsStream("img/icon.png")));
                 stage.setScene(scene);
@@ -145,50 +145,19 @@ public class IniciarJuegoViewController implements Initializable {
                 controller.setGravedad(gravedad);
                 controller.setPanelUsuario();
                 controller.setEventG(event);
-                try {
-                    IA ia=new IA(jugadores);
-                    controller.verIA(event,0,ia);
-                } catch (InterruptedException ex) {
-                    Logger.getLogger(IniciarJuegoViewController.class.getName()).log(Level.SEVERE, null, ex);
-                }
-
-            } catch (IOException e) {
-                JOptionPane.showMessageDialog(null, "Error: 006\nno se a podido cargar el juego");
+                IA ia=new IA(jugadores);
+                controller.verIA(event,0,ia);
+            } catch (IOException | InterruptedException e) {
+                JOptionPane.showMessageDialog(null, "Error: 006\nno se a podido cargar el juego\n");
+                Logger.getLogger(IniciarJuegoViewController.class.getName()).log(Level.SEVERE, null, e);
+                
             }
         }
         
         
         return true;
     }
-    @FXML
-    private void handleEdMap(ActionEvent event){
-        //la instruccion esta dentro de un try catch debido a que se podrian presentar errores en la ejecucion 
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("EditorMapa.fxml"));
-
-            Parent root = loader.load();
-            Scene scene = new Scene(root);
-            Stage stage = new Stage();
-
-            EditorMapaController controller = loader.getController();
-
-            Image img = new Image("img/Cursor32x32.png");
-            scene.setCursor(new ImageCursor(img));
-            controller.setMap(Integer.parseInt(nMap.getText().trim()));
-            controller.iniciarMapa();
-            stage.initModality(Modality.APPLICATION_MODAL);
-            stage.setResizable(false);
-            stage.setTitle("Kriegspanzer Map Editor");
-            stage.getIcons().add(new Image(getClass().getResourceAsStream("img/icon.png")));
-            stage.setScene(scene);
-            stage.show();
-
-        } catch (IOException e) {
-            //en caso de que algo salga mal mostraremos el siguiente mensaje
-            JOptionPane.showMessageDialog(null, "Error 001:\nNo ha sido posible cargar el editor\n"+e.getCause());
-        }
-        
-    }
+    
     @FXML
     private void handleConfings(ActionEvent event){
         //la instruccion esta dentro de un try catch debido a que se podrian presentar errores en la ejecucion 
@@ -268,7 +237,7 @@ public class IniciarJuegoViewController implements Initializable {
             JOptionPane.showMessageDialog(null, "Mapas no encontrados");
             this.map = 0;
         }
-        this.map = 7;
+        //this.map = 5;
         //System.out.println("Id de mapa: Mapa"+this.map);
         
         //ese valor dentro del nextint es la cantidad de mapas creados en existencia
@@ -276,7 +245,17 @@ public class IniciarJuegoViewController implements Initializable {
         mapaPanel.getStylesheets().add("Estilos.css");
         mapaPanel.getStyleClass().add("map"+(map));
     }
-    
+    private int getX(){
+        Random random = new Random();
+        int xCandidata = random.nextInt(680)+10;
+        for (Jugador jugador : jugadores) {
+            Tanque tanque = jugador.getTanque();
+            if(tanque.getPos()[0]>= xCandidata-margenT && tanque.getPos()[0] <= xCandidata+margenT){
+                getX();
+            }
+        }
+        return xCandidata;
+    }
     //cambia la cantidad de jugadores que habrán
     public void setCantJug(int num){
         this.cantJug=num;

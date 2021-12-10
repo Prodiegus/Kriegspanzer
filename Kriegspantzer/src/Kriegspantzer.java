@@ -20,7 +20,7 @@ public class Kriegspantzer extends Application {
 
         controller.setBoxes(colors);//agrega los colores a las boxes
         controller.setMap();
-        stage.setResizable(false);
+        stage.setResizable(true);
         stage.setTitle("Kriegspanzer Game");
         stage.getIcons().add(new Image(getClass().getResourceAsStream("img/icon.png")));
         stage.setScene(scene);

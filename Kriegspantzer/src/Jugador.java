@@ -20,7 +20,6 @@ public class Jugador{
     public int getKills() {
         return kills;
     }
-
     public void masKill() {
         this.kills+=1;
     }
