@@ -552,12 +552,8 @@ public class JuegoController implements Initializable {
                 if(mapeo[(int)Math.floor(x/altoScale)][(int)Math.floor(y/anchoScale)].equals(Mapa.Area.SOLIDO)){
                     gc.setFill(Color.valueOf("#008080"));
                     gc.fillRect(x, y, 1, 1);
-                    //|| mapeo[(int)Math.floor(x/altoScale)][(int)Math.floor(y/anchoScale)].equals(Mapa.Area.TANQUE)
-                }else if(mapeo[(int)Math.floor(x/altoScale)][(int)Math.floor(y/anchoScale)].equals(Mapa.Area.AIRE) ){
+                }else if(mapeo[(int)Math.floor(x/altoScale)][(int)Math.floor(y/anchoScale)].equals(Mapa.Area.AIRE) || mapeo[(int)Math.floor(x/altoScale)][(int)Math.floor(y/anchoScale)].equals(Mapa.Area.TANQUE)){
                     gc.setFill(Color.WHITE);
-                    gc.fillRect(x, y, 1, 1);
-                }else if(mapeo[(int)Math.floor(x/altoScale)][(int)Math.floor(y/anchoScale)].equals(Mapa.Area.TANQUE)){
-                    gc.setFill(Color.BLUEVIOLET);
                     gc.fillRect(x, y, 1, 1);
                 }
             }
@@ -620,6 +616,7 @@ public class JuegoController implements Initializable {
         int cont=0;
         Tanque tanque = jugadores.get(jugMuerto).getTanque();
         mapa.removeTank(tanque.getPos()[0], tanque.getPos()[1]);// se remueve el tanque en ambito de matriz del mapa.
+        
         //System.out.println("el jugador muerto es: "+jugMuerto);
         for(int i=0;i<this.arrayOrden.length;i++){//se recorrera el arreglo de sistema de turnos.
             if(this.arrayOrden[i]!=jugMuerto){//al encontrar un tanque que no sea el eliminado actualmente.
@@ -760,8 +757,8 @@ public class JuegoController implements Initializable {
             jugadores.get(i).getTanque().setPos((int)(x/altoScale)+1, y);
             barras.get(i).setTranslateX((jugadores.get(i).getTanque().getPos()[0]-5)*altoScale); //reposiciono la barras con su respectiba escala
             barras.get(i).setTranslateY((jugadores.get(i).getTanque().getPos()[1]-25)*anchoScale);//reposiciono la barras con su respectiba escala
-            mapa.removeTank(jugadores.get(i).getTanque().getPos()[0], jugadores.get(i).getTanque().getPos()[1]);//antes de agregar un nuevo tanque eliminaremos el viejo del mapa
-            mapa.addTank((int)Math.round(x/altoScale)+1, y);
+            this.mapa.removeTank(jugadores.get(i).getTanque().getPos()[0], jugadores.get(i).getTanque().getPos()[1]);//antes de agregar un nuevo tanque eliminaremos el viejo del mapa
+            this.mapa.addTank((int)Math.round(x/altoScale)+1, y);
             //se setean los tanques con el pocisionamiento respectivo y se multiplica con su reescalado.
             Tanque tanque = jugadores.get(i).getTanque();
             tanque.setVida(tanque.getVida()-(caida/(double)4));//danio por caida

@@ -75,9 +75,9 @@ public class Mapa implements Serializable{
 
     //le da el valor de Aire a la posicion entregada
     public void removeTank(int x, int y){
-        for(int i=x; i<x+20;i++){
+        for(int i=x; i<x+21;i++){
             for(int j=y-4; j<y+10;j++){
-                mapeo[i][j] = Area.AIRE;
+                this.mapeo[i][j] = Area.AIRE;
             }
         }
     }
