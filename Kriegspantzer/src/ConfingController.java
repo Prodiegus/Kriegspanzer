@@ -28,6 +28,7 @@ public class ConfingController implements Initializable {
     @FXML private TextField viento;
     @FXML private CheckBox checkGravedad;
     @FXML private CheckBox checkViento;
+    String[] colors;
     
     //definiendo los default y las variables a usar
     int panAncho = 800;
@@ -66,8 +67,7 @@ public class ConfingController implements Initializable {
                     Stage stage = new Stage();
 
                     IniciarJuegoViewController controller = loader.getController();
-                    
-                    String[] colors = {"Azul", "Verde", "Amarillo", "Rojo", "Morado", "Naranja", "Negro"};
+                
                     
                     if(checkGravedad.isSelected()){//si acepta los efectos de entorno se setean los cambios
                         gravity=Double.parseDouble(gravedad.getText().trim());
@@ -82,6 +82,7 @@ public class ConfingController implements Initializable {
                             JOptionPane.showMessageDialog(null, "Rango de viento mal");
                         }
                     }
+                    
                     controller.setBoxes(colors);
                     controller.setAnchoAlto(panAncho, panLargo);
                     controller.setMap();
@@ -109,6 +110,9 @@ public class ConfingController implements Initializable {
     
     public void guardaJugadores(ArrayList<Jugador> jug){
         this.jugadores=jug;
+    }
+    public void guardaColores(String[] colores){
+        this.colors=colores;
     }
     //closer
     @FXML private void close(ActionEvent event) {

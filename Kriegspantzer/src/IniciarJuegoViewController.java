@@ -48,10 +48,9 @@ public class IniciarJuegoViewController implements Initializable {
     @FXML
     private boolean handleIngresar(ActionEvent event) {
         //por ahora se generan las posiciones aleatorias de los tanques
-        if (jugadores.size()<cantJug){//mientras la cantidad de jugadores ingresados sea menor a la maxima puede ingresar más
-            //int valorDado = (int) Math.floor((Math.random()*700));
+        String color=cJugador.getValue();
+        if (jugadores.size()<cantJug && color!=null){//mientras la cantidad de jugadores ingresados sea menor a la maxima puede ingresar más
             int[] pos={getX(),10};
-            String color=cJugador.getValue();
             Jugador jActual =  new Jugador(nJugador.getText().trim(),IA.isSelected());
             Bala bActual = new Bala(pos);
             Tanque tActual =  new Tanque(color, pos,bActual);
@@ -68,7 +67,7 @@ public class IniciarJuegoViewController implements Initializable {
             return true;
         }
         else{
-            JOptionPane.showMessageDialog(null, "No puede agregar más jugadores, aprete jugar o reinicie configuraciones.");
+            JOptionPane.showMessageDialog(null, "No puede agregar más jugadores o ingrese color, aprete jugar o reinicie configuraciones.");
             return false;
         }
         
@@ -171,6 +170,7 @@ public class IniciarJuegoViewController implements Initializable {
 
             ConfingController controller = loader.getController();
             controller.guardaJugadores(jugadores); //para que no se pierdan los jugadores creados
+            controller.guardaColores(colors);
             
             stage.initModality(Modality.APPLICATION_MODAL);
             stage.setResizable(false);
@@ -196,7 +196,9 @@ public class IniciarJuegoViewController implements Initializable {
         stage.close();
     }
 
-    
+    public void setColores(String[] colores){
+        this.colors=colores;
+    }
     public void setAnchoAlto(int ancho, int alto) {
         this.alto = alto;
         this.ancho = ancho;
