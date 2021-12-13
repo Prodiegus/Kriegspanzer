@@ -371,7 +371,7 @@ public class JuegoController implements Initializable {
                     e2.printStackTrace();
                 }
             }
-            else if(mapa.comprobarCoordenadaTanque((int)Math.round(x),(int)Math.round(limSup-y))){ //entra al if si es que toca tanque
+            else if((x>=limIzq && x<=limDer && (limSup-y)>limInf && (limSup-y)<limSup  ) && mapa.comprobarCoordenadaTanque((int)Math.round(x),(int)Math.round(limSup-y))){ //entra al if si es que toca tanque
                 int win=0;
                 arrayBalasImagen.get(tipBala).get(arrayOrden[jug]).setVisible(false);
                 arrayBalasImagen.get(tipBala).get(arrayOrden[jug]).setX(xI);
@@ -718,7 +718,9 @@ public class JuegoController implements Initializable {
             tanks.get(i).setScaleX(altoScale);
             tanks.get(i).setScaleY(anchoScale);
             jugadores.get(i).getTanque().setPos((int)Math.round(x/altoScale), y);
-            mapa.addTank((int)Math.round(x/altoScale), y);
+            if ( (int)Math.round(x/altoScale)>=limDer && (int)Math.round(x/altoScale)<limIzq ){
+                mapa.addTank(limDer-1, y);
+            }
             for (int k = (int)Math.floor(x/altoScale); k < anchoTanquepx+(int)Math.floor(x/altoScale); k++) {//ancho de un tanque en el mapa
                 for (int j = y+altoTanquepx; j < altoMatrizMapa; j++) {//alto del mapa le ponemos suelo al tanque
                      mapa.setAreas(k, j);
@@ -745,8 +747,11 @@ public class JuegoController implements Initializable {
             jugadores.get(i).getTanque().setPos((int)(x/altoScale)+1, y);
             barras.get(i).setTranslateX((jugadores.get(i).getTanque().getPos()[0]-5)*altoScale); //reposiciono la barras con su respectiba escala
             barras.get(i).setTranslateY((jugadores.get(i).getTanque().getPos()[1]-25)*anchoScale);//reposiciono la barras con su respectiba escala
-            mapa.removeTank(jugadores.get(i).getTanque().getPos()[0], jugadores.get(i).getTanque().getPos()[1]);//antes de agregar un nuevo tanque eliminaremos el viejo del mapa
-            mapa.addTank((int)Math.round(x/altoScale)+1, y);
+            if (x<limDer && x>limIzq){
+                mapa.removeTank(jugadores.get(i).getTanque().getPos()[0], jugadores.get(i).getTanque().getPos()[1]);//antes de agregar un nuevo tanque eliminaremos el viejo del mapa
+                mapa.addTank((int)Math.round(x/altoScale)+1, y);
+            }
+            
             //se setean los tanques con el pocisionamiento respectivo y se multiplica con su reescalado.
             Tanque tanque = jugadores.get(i).getTanque();
             tanque.setVida(tanque.getVida()-(caida/(double)4));//danio por caida
